@@ -249,7 +249,7 @@ params = add_param(params,"mu_strategy","adaptive");
 params = add_param(params,"hessian_constant","yes");
 //params = add_param(params,"mu_strategy","monotone");
 
-params = add_param(params,"journal_level",4);
+params = add_param(params,"journal_level",5);
 
 [x_sol, f_sol, extra] = ipopt(xm, objfun, gradf, confun, dg, sparse_dg, dh, sparse_dh, var_lin_type, constr_lin_type, constr_rhs, constr_lhs, lower, upper, params);
 

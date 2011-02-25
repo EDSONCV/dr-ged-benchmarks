@@ -21,34 +21,34 @@
 // 11 Equipments 
 // the measures
 clear xm sd jac nc nv i1 i2 nnz sparse_dg sparse_dh lower upper var_lin_type constr_lin_type constr_lhs constr_rhs
-xm =[0.86
-1
-111.82
-109.96
-53.27
-112.27
-2.32
-164.05
-0.83
-52.41
-14.86
-67.27
-111.27
-91.86
-60
-23.64
-32.73
-16.23
-7.85
-10.5
-87.32
-5.45
-2.59
-46.63
-85.46
-81.32
-70.79
-72.23
+xm =[0.875
+0.989
+108.426
+107.799
+50.149
+110.327
+2.201
+165.779
+0.821
+51.779
+14.757
+67.183
+107.734
+89.855
+58.554
+23.258
+31.879
+15.843
+7.920
+10.130
+91.047
+5.555
+2.471
+44.687
+81.656
+82.839
+70.685
+72.913
 ];
 // in original paper the standard deviation is given. so it must be squared.
 sd = [0.022
@@ -78,7 +78,7 @@ sd = [0.022
 2.137
 2.033
 1.770
-1.806].^2
+1.806].^2;
 //The jacobian of the constraints
 //      1   2   3   4   5   6   7   8    9   10  11  12  13    14    15    16    17    18   19   20    21   22    23    24    25    26    27    28
 jac = [ 1   1   -1  1   0   0   0   0    0   0   0   0   0     0     0      0    0      0    0    0     0    0     0     0     0     0    0      0
@@ -177,12 +177,17 @@ constr_rhs(1:nc) = 0;
 
 params = init_param();
 // We use the given Hessian
+//params = add_param(params,"tol",1e-8);
+//params = add_param(params,"acceptable_tol",1e-8);
+//params = add_param(params,"mu_strategy","adaptive");
+//Tuned for dificult optimizations
 params = add_param(params,"hessian_approximation","exact");
 params = add_param(params,"derivative_test","first-order");
-params = add_param(params,"tol",1e-8);
-params = add_param(params,"acceptable_tol",1e-8);
-params = add_param(params,"mu_strategy","adaptive");
-
+params = add_param(params,"tol",1e-3);
+params = add_param(params,"acceptable_tol",1e-3);
+params = add_param(params,"constr_viol_tol",1e-3);
+params = add_param(params,"acceptable_constr_viol_tol",1e-3);
+params = add_param(params,"mu_strategy","monotone");
 params = add_param(params,"journal_level",5);
 
 [x_sol, f_sol, extra] = ipopt(xm, objfun, gradf, confun, dg, sparse_dg, dh, sparse_dh, var_lin_type, constr_lin_type, constr_rhs, constr_lhs, lower, upper, params);
