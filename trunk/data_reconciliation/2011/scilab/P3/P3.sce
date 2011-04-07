@@ -35,7 +35,7 @@ xm =[190.26000
 18.22500
 54.83800
 ];
-//the standard deviation:
+//the variance proposed by the original author
 // in original paper the standard deviation is given, so it must be squared.
 sd = [2.14120
 1.94840
@@ -50,6 +50,7 @@ sd = [2.14120
 0.20011
 0.64530
 ].^2;
+//sd = ones(12,1);
 //The jacobian of the constraints
 //      1   2   3   4   5   6   7   8    9   10  11  12  
 jac = [ 1  -1   1   0   0   0   0   0    0   0   -1   0  

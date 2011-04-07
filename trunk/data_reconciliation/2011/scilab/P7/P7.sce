@@ -41,8 +41,10 @@ xm =[3707
 57
 668
 ];
-//the variance
-sd = 0.0001*ones(11,1).^2;
+//the variance proposed by the original author
+//sd = 0.0001*ones(11,1).^2;
+//the variance proposed by this work (must not change the original results, since they are all equal)
+sd =(0.0001*ones(11,1)).^2;
 //The jacobian of the constraints
 //      1   2   3   4   5   6   7   8    9   10  11  
 jac = [ 1   -1  -1  0   0   0   0   0    0   0  0    

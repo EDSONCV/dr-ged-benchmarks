@@ -31,9 +31,16 @@ xm =[110.1
 37.8
 ];
 //the variance
-sd = ones(8,1);
+sd = [0.9870
+0.4110
+0.7890
+0.3020
+1.0910
+0.1980
+0.5760
+0.3780];
 
-//Je jacobian of the constraints
+//The jacobian of the constraints
 //      1    2  3    4    5   6   7    8  
 jac = [ 1   -1  0    0    0   0   -1   0
         0   1  -1    0    0   0    0   1

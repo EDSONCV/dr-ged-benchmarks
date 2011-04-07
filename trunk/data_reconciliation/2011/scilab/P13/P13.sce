@@ -34,7 +34,7 @@ xm =[54.4
 201.7
 16.3
 ];
-//the variance
+//the variance test
 sd = [0.284217
 2.132184
 2.373325
@@ -60,7 +60,9 @@ sd = [0.284217
 3.907185
 0.025517
 ];
-
+//
+//the variance proposed by this work
+//sd = ones(24,1);
 //The jacobian of the constraints
 //      1   2   3   4   5   6   7   8    9   10  11  12  13    14    15    16    17    18   19   20    21   22    23    24    
 jac = [ 1   1  1    1   -1  0   0   0    0   0   0   0   0     0     0      0    0      0    0    0     0    0     0     0    //M1

@@ -39,21 +39,23 @@ xm =[250.5
 47.7
 
 ];
-//the variance
+//the variance proposed by the original author
 sd = [34.5
 1.05
-2
+5
 1.75
 2
 0.75
 7.95
-2
-2
+1
+5
 2
 23
 2.2
 ];
-sd=sd.^2;
+//sd=sd.^2;
+//the variance proposed by this work 
+//sd = ones(12,1);
 //Je jacobian of the constraints
 //      1   2   3   4   5   6   7   8    9   10  11  12  
 jac = [ 1  -1  -1   0   0   0   0   0    0   0   0   0   
