@@ -46,22 +46,24 @@ xm =[24.7
 7.69]
 // in original paper the standard deviation is given. so it must be squared.
 sd=[1
-1.33
+1.325
 1.46
-1
-0.92
-1.1
+0.20
+0.916
+1.101
 1.04
-0.47
-0.4
-0.21
-1
-0.33
-0.05
-0.37
+0.472
+0.401
+0.207
+0.3
+0.328
+0.052
+0.369
 0.25
-0.39
+0.385
 ].^2;
+//the variance proposed by this work
+//sd = ones(16,1);
 //The jacobian of the constraints
 //      1   2   3   4   5   6   7   8    9   10  11  12  13    14    15    16    
 jac = [ 1   -1  0   1   0   0   0   0    0   0   0   0   0     0     0      0    

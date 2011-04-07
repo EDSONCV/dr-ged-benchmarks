@@ -40,7 +40,7 @@ xm =[100.49
 81.06
 101.57
 ];
-//the variance or uncertainties 
+//the variance or uncertainties  proposed by the original author
 sd = [1
 0.3
 0.4
@@ -54,6 +54,8 @@ sd = [1
 0.8
 1];
 sd=sd.^2;
+//the variance proposed by this work
+//sd = ones(12,1);
 //The jacobian of the constraints
 //      1   2   3   4   5   6   7   8    9   10  11  12  
 jac = [ 1  -1  -1  -1   0   0   0   0    0   0   0   0   

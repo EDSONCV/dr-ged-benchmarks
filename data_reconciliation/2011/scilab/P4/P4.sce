@@ -28,7 +28,7 @@ clear xm sd jac nc nv i1 i2 nnz sparse_dg sparse_dh lower upper var_lin_type con
 xm =[101.91;64.45;34.65;64.2;36.44;98.88];
 //the variance
 sd = ones(6,1);
-//Je jacobian of the constraints
+//The jacobian of the constraints
 jac = [ 1  -1  -1    0  0   0
         0   1   0   -1  0   0
         0   0   1    0 -1   0

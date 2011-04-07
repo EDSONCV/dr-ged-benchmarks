@@ -32,15 +32,15 @@ xm =[11
 7
 3.8
 ];
-//the variance 
-//the author uses the variance
-sd = [0.0001
-0.01
-0.01
-0.0005
-0.0005
-0.0001
+//the variance proposed by this work
+sd = [0.11
+0.10
+0.21
+0.11
+0.04
+0.04
 ];
+
 //The jacobian of the constraints
 jac = [ 1   1  -1    0  0   0
         0   -1  1   -1  0   0
