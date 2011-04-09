@@ -33,7 +33,7 @@ xm =[9.22
 
 ];
 //the variance proposed by the original author
-sd = 0.0001*ones(3,1).^2;
+sd = (0.0001*ones(3,1)).^2;
 //The jacobian of the constraints
 //      1   2   3  
 jac = [ 1  -1   -1  ];                                
