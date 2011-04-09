@@ -43,7 +43,7 @@ xm =[691.67
 9.31
 ];
 //the variance proposed by the original author
-sd = 0.0001*ones(12,1).^2;
+sd = (0.0001*ones(12,1)).^2;
 //the variance proposed by this work (must not change the original results, since they are all equal)
 //sd = ones(12,1);
 //The jacobian of the constraints
