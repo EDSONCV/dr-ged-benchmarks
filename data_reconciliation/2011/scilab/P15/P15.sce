@@ -2,24 +2,29 @@
 // Author: Edson Cordeiro do Valle
 // Contact - edsoncv@{gmail.com}{vrtech.com.br}
 // Skype: edson.cv
-// Atmospheric tower example from:
-// Zhang, P, G Rong, and Y Wang. 2001.
-// A new method of redundancy analysis in data reconciliation and its application.
-// Computers and Chemical Engineering 25: 941-949.
+// Ethylene plant:
+// Zhang, Zhengjiang and Shao, Zhijiang and Chen, Xi and Wang, Kexin and Qian, Jixin, 2010
+// Quasi-weighted least squares estimator for data reconciliation.
+// Computers and Chemical Engineering 34: 154-162.
 
 //Bibtex Citation
-
-//@article{Zhang2001,
-//author = {Zhang, P and Rong, G and Wang, Y},
-//journal = {Computers and Chemical Engineering},
-//pages = {941--949},
-//title = {{A new method of redundancy analysis in data reconciliation and its application}},
-//volume = {25},
-//year = {2001}
+//@article{Zhang2010,
+//author = {Zhang, Zhengjiang and Shao, Zhijiang and Chen, Xi and Wang, Kexin and Qian, Jixin},
+//isbn = {0098-1354},
+//journal = {Computers \& Chemical Engineering},
+//keywords = {Data reconciliation,Gross error detection,Quasi-weighted least squares,Robust estimator,Weighted least squares},
+//month = feb,
+//number = {2},
+//pages = {154--162},
+//title = {{Quasi-weighted least squares estimator for data reconciliation}},
+//url = {http://www.sciencedirect.com/science/article/B6TFT-4XDCHNS-1/2/63a2b79a4cc89a3afb57ff83c4063242},
+//volume = {34},
+//year = {2010}
 //}
+
 // 50 Streams
 // 26 Equipments 
-clear xm sd jac nc nv i1 i2 nnz sparse_dg sparse_dh lower upper var_lin_type constr_lin_type constr_lhs constr_rhs
+clear xm var jac nc nv i1 i2 nnz sparse_dg sparse_dh lower upper var_lin_type constr_lin_type constr_lhs constr_rhs
 // the measures
 xm =[225.35
 168.02
@@ -75,7 +80,7 @@ xm =[225.35
 
 //the standard deviation
 // in original paper the standard deviation is given, so it must be squared.
-sd =[
+var =[
 2.06
 1.31
 11.12
@@ -168,7 +173,7 @@ nnz = size(i1,2)
 
 function f = objfun ( x )
 
-	f = sum(((x-xm).^2)./sd);
+	f = sum(((x-xm).^2)./var);
 
 endfunction
 
@@ -183,13 +188,13 @@ endfunction
 
 function gf = gradf ( x )
 
-gf=2*(x-xm)./sd;
+gf=2*(x-xm)./var;
 
 endfunction
 
 function H = hessf ( x )
 
-	H = diag(2*ones(nv,1)./sd);
+	H = diag(2*ones(nv,1)./var);
 endfunction
 
 function y = dg1(x)

@@ -25,7 +25,7 @@
 // 12 Streams
 // 6 Equipments 
 
-clear xm sd jac nc nv i1 i2 nnz sparse_dg sparse_dh lower upper var_lin_type constr_lin_type constr_lhs constr_rhs
+clear xm var jac nc nv i1 i2 nnz sparse_dg sparse_dh lower upper var_lin_type constr_lin_type constr_lhs constr_rhs
 
 xm =[100.49
 29.46
@@ -53,9 +53,9 @@ sd = [1
 0.4
 0.8
 1];
-sd=sd.^2;
+var=sd.^2;
 //the variance proposed by this work
-//sd = ones(12,1);
+//var = ones(12,1);
 //The jacobian of the constraints
 //      1   2   3   4   5   6   7   8    9   10  11  12  
 jac = [ 1  -1  -1  -1   0   0   0   0    0   0   0   0   
@@ -77,7 +77,7 @@ nnz = size(i1,2)
 
 function f = objfun ( x )
 
-	f = sum(((x-xm).^2)./sd);
+	f = sum(((x-xm).^2)./var);
 
 endfunction
 
@@ -92,13 +92,13 @@ endfunction
 
 function gf = gradf ( x )
 
-gf=2*(x-xm)./sd;
+gf=2*(x-xm)./var;
 
 endfunction
 
 function H = hessf ( x )
 
-	H = diag(2*ones(nv,1)./sd);
+	H = diag(2*ones(nv,1)./var);
 endfunction
 
 function y = dg1(x)

@@ -27,7 +27,7 @@
 // 16 Streams
 // 9 Equipments 
 // the measures
-clear xm sd jac nc nv i1 i2 nnz sparse_dg sparse_dh lower upper var_lin_type constr_lin_type constr_lhs constr_rhs
+clear xm var jac nc nv i1 i2 nnz sparse_dg sparse_dh lower upper var_lin_type constr_lin_type constr_lhs constr_rhs
 xm =[24.7
 26.5
 29.2
@@ -45,7 +45,7 @@ xm =[24.7
 4.99
 7.69]
 // in original paper the standard deviation is given. so it must be squared.
-sd=[1
+var=[1
 1.325
 1.46
 0.20
@@ -62,8 +62,6 @@ sd=[1
 0.25
 0.385
 ].^2;
-//the variance proposed by this work
-//sd = ones(16,1);
 //The jacobian of the constraints
 //      1   2   3   4   5   6   7   8    9   10  11  12  13    14    15    16    
 jac = [ 1   -1  0   1   0   0   0   0    0   0   0   0   0     0     0      0    
@@ -74,7 +72,7 @@ jac = [ 1   -1  0   1   0   0   0   0    0   0   0   0   0     0     0      0
 //      1   2   3   4   5   6   7   8    9   10  11  12  13    14    15    16    
         0   0   0   0   0   0   1   0    -1   -1  0   0   0     0     0      0    
         0   0   0   0   0   0   0   0    0   0   1   -1   -1    0     0      1    
-        0   0   0   0   0   0   0   0    0   0   0   1   1     -1     0      0
+        0   0   0   0   0   0   0   0    0   0   0   1   1     -1     0       0
         0   0   0   0   0   0   0   0    0   0   0   0   0     1     -1      -1];                                
 //      1   2   3   4   5   6   7   8    9   10  11  12  13    14    15    16    
 // From here on, the problem generation is automatic
@@ -88,7 +86,7 @@ nnz = size(i1,2)
 
 function f = objfun ( x )
 
-	f = sum(((x-xm).^2)./sd);
+	f = sum(((x-xm).^2)./var);
 
 endfunction
 
@@ -103,13 +101,13 @@ endfunction
 
 function gf = gradf ( x )
 
-gf=2*(x-xm)./sd;
+gf=2*(x-xm)./var;
 
 endfunction
 
 function H = hessf ( x )
 
-	H = diag(2*ones(nv,1)./sd);
+	H = diag(2*ones(nv,1)./var);
 endfunction
 
 function y = dg1(x)
