@@ -26,7 +26,7 @@
 // 12 Streams
 // 7 Equipments 
 
-clear xm sd jac nc nv i1 i2 nnz sparse_dg sparse_dh lower upper var_lin_type constr_lin_type constr_lhs constr_rhs
+clear xm var jac nc nv i1 i2 nnz sparse_dg sparse_dh lower upper var_lin_type constr_lin_type constr_lhs constr_rhs
 // In the original paper, all streams for this problem are unmeasures, 
 //theses values are estimates givem by the paper's original author.
 xm =[691.67
@@ -43,9 +43,9 @@ xm =[691.67
 9.31
 ];
 //the variance proposed by the original author
-sd = (0.0001*ones(12,1)).^2;
-//the variance proposed by this work (must not change the original results, since they are all equal)
-//sd = ones(12,1);
+//var = (0.0001*ones(12,1)).^2;
+//the variance proposed by this work 
+var = (0.03*xm).^2;
 //The jacobian of the constraints
 //      1   2   3   4   5   6   7   8    9   10  11  12
 jac = [ 1   -1  0   0   1   0   0   0    0   0   0   0 
@@ -67,7 +67,7 @@ nnz = size(i1,2)
 
 function f = objfun ( x )
 
-	f = sum(((x-xm).^2)./sd);
+	f = sum(((x-xm).^2)./var);
 
 endfunction
 
@@ -82,13 +82,13 @@ endfunction
 
 function gf = gradf ( x )
 
-gf=2*(x-xm)./sd;
+gf=2*(x-xm)./var;
 
 endfunction
 
 function H = hessf ( x )
 
-	H = diag(2*ones(nv,1)./sd);
+	H = diag(2*ones(nv,1)./var);
 endfunction
 
 function y = dg1(x)
@@ -146,6 +146,20 @@ params = add_param(params,"mu_strategy","adaptive");
 params = add_param(params,"journal_level",5);
 
 [x_sol, f_sol, extra] = ipopt(xm, objfun, gradf, confun, dg, sparse_dg, dh, sparse_dh, var_lin_type, constr_lin_type, constr_rhs, constr_lhs, lower, upper, params);
+
+Q = 2*hessf ( xm );
+p=-4*(xm./var)';
+C=jac;
+me=nc;
+b=zeros(nc,1);
+ci=lower;
+cs=upper;
+
+//[x,iact,iter,f_sol]=qpsolve(Q,p,C,b,ci,cs,me)
+//[x_solqp,lagr,info]=qld(Q,p,C,b,ci,cs,me, 1.0e-8)
+//status = info;
+//x_sol = x';
+//f_sol=0;
 
 mprintf("\n\nSolution: , x\n");
 for i = 1 : nv

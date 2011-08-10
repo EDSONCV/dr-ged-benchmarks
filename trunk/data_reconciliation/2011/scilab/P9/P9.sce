@@ -1,4 +1,4 @@
-// Data Reconciliation Benchmark Problems From Lietrature Review
+    // Data Reconciliation Benchmark Problems From Lietrature Review
 // Author: Edson Cordeiro do Valle
 // Contact - edsoncv@{gmail.com}{vrtech.com.br}
 // Skype: edson.cv
@@ -23,7 +23,7 @@
 // 13 Streams
 // 8 Equipments 
 
-clear xm sd jac nc nv i1 i2 nnz sparse_dg sparse_dh lower upper var_lin_type constr_lin_type constr_lhs constr_rhs
+clear xm var jac nc nv i1 i2 nnz sparse_dg sparse_dh lower upper var_lin_type constr_lin_type constr_lhs constr_rhs
 // the measures
 xm =[28.06
 3.06
@@ -39,14 +39,14 @@ xm =[28.06
 15.0
 13.33
 ];
-//the variance proposed by the original author
-sd = [0.075618
+//the variance proposed by the original author with some modifications
+var = [0.075618
 0.002498
-1.673401
+0.029749
 0.021084
-7.787169
-0.908304
-1.043769
+0.138439
+0.016148
+0.018556
 0.002062
 0.009067
 0.005259
@@ -55,7 +55,7 @@ sd = [0.075618
 0.017065
 ];
 //the variance proposed by this work 
-//sd = ones(13,1);
+//var = ones(13,1);
 //The jacobian of the constraints
 //      1   2   3   4   5   6   7   8    9   10  11  12  13
 jac = [ 1  -1  -1  -1  -1   0   0   0    0   0   0   0   0
@@ -78,7 +78,7 @@ nnz = size(i1,2)
 
 function f = objfun ( x )
 
-	f = sum(((x-xm).^2)./sd);
+	f = sum(((x-xm).^2)./var);
 
 endfunction
 
@@ -93,13 +93,13 @@ endfunction
 
 function gf = gradf ( x )
 
-gf=2*(x-xm)./sd;
+gf=2*(x-xm)./var;
 
 endfunction
 
 function H = hessf ( x )
 
-	H = diag(2*ones(nv,1)./sd);
+	H = diag(2*ones(nv,1)./var);
 endfunction
 
 function y = dg1(x)

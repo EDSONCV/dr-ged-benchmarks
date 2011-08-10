@@ -26,7 +26,7 @@
 // 12 Streams
 // 7 Equipments 
 
-clear xm sd jac nc nv i1 i2 nnz sparse_dg sparse_dh lower upper var_lin_type constr_lin_type constr_lhs constr_rhs
+clear xm var jac nc nv i1 i2 nnz sparse_dg sparse_dh lower upper var_lin_type constr_lin_type constr_lhs constr_rhs
 // In the original paper, streams 2,3 and 9 are unmeasured 
 // in these streams (2,3 and 9), values are estimates givem by the paper's original author.
 xm =[3707
@@ -42,9 +42,9 @@ xm =[3707
 668
 ];
 //the variance proposed by the original author
-//sd = 0.0001*ones(11,1).^2;
-//the variance proposed by this work (must not change the original results, since they are all equal)
-sd =(0.0001*ones(11,1)).^2;
+//var = 0.0001*ones(11,1).^2;
+//the variance proposed by this work 
+var = (0.03*xm).^2;
 //The jacobian of the constraints
 //      1   2   3   4   5   6   7   8    9   10  11  
 jac = [ 1   -1  -1  0   0   0   0   0    0   0  0    
@@ -63,7 +63,7 @@ nnz = size(i1,2)
 
 function f = objfun ( x )
 
-	f = sum(((x-xm).^2)./sd);
+	f = sum(((x-xm).^2)./var);
 
 endfunction
 
@@ -78,13 +78,13 @@ endfunction
 
 function gf = gradf ( x )
 
-gf=2*(x-xm)./sd;
+gf=2*(x-xm)./var;
 
 endfunction
 
 function H = hessf ( x )
 
-	H = diag(2*ones(nv,1)./sd);
+	H = diag(2*ones(nv,1)./var);
 endfunction
 
 function y = dg1(x)
@@ -123,9 +123,9 @@ sparse_dh = [ [1:nv]', [1:nv]']
 // the variables have lower bounds of 0
 lower = zeros(nv,1);
 // the variables have upper bounds of 50000
-upper = 50000*ones(nv,1);
+upper = 4000*ones(nv,1);
 var_lin_type(1:nv) = 1; // Non-Linear
-constr_lin_type (1:nc) = 0; // Non-Linear
+constr_lin_type (1:nc) = 0; // Linear
 
 // the constraints has lower bound of 0
 constr_lhs(1:nc) = 0;
@@ -136,8 +136,8 @@ params = init_param();
 // We use the given Hessian
 params = add_param(params,"hessian_approximation","exact");
 params = add_param(params,"derivative_test","first-order");
-params = add_param(params,"tol",1e-8);
-params = add_param(params,"acceptable_tol",1e-8);
+params = add_param(params,"tol",1e-4);
+params = add_param(params,"acceptable_tol",1e-4);
 params = add_param(params,"mu_strategy","adaptive");
 
 params = add_param(params,"journal_level",5);

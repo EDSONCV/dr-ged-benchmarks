@@ -20,7 +20,7 @@
 // 28 Streams
 // 11 Equipments 
 // the measures
-clear xm sd jac nc nv i1 i2 nnz sparse_dg sparse_dh lower upper var_lin_type constr_lin_type constr_lhs constr_rhs
+clear xm var jac nc nv i1 i2 nnz sparse_dg sparse_dh lower upper var_lin_type constr_lin_type constr_lhs constr_rhs
 xm =[0.875
 0.989
 108.426
@@ -51,7 +51,7 @@ xm =[0.875
 72.913
 ];
 // in original paper the standard deviation is given. so it must be squared.
-sd = [0.022
+var = [0.022
 0.025
 2.796
 2.749
@@ -106,7 +106,7 @@ nnz = size(i1,2)
 
 function f = objfun ( x )
 
-	f = sum(((x-xm).^2)./sd);
+	f = sum(((x-xm).^2)./var);
 
 endfunction
 
@@ -121,13 +121,13 @@ endfunction
 
 function gf = gradf ( x )
 
-gf=2*(x-xm)./sd;
+gf=2*(x-xm)./var;
 
 endfunction
 
 function H = hessf ( x )
 
-	H = diag(2*ones(nv,1)./sd);
+	H = diag(2*ones(nv,1)./var);
 endfunction
 
 function y = dg1(x)
