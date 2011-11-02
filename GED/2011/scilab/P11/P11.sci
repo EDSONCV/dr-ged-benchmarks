@@ -3,39 +3,39 @@
 // Contact - edsoncv@{gmail.com}{vrtech.com.br}
 // Skype: edson.cv
 
-//Mitsas, Christos L. 2010. Data reconciliation and variable classification by null space methods. 
-//Measurement 43, no. 5 (June): 702-707.
-// http://apps.isiknowledge.com/full_record.do?product=UA&search_mode=GeneralSearch&qid=2&SID=2A@bF9dN34I72L1Am9M&page=2&doc=17&colname=WOS.
-
+//Rao, R Ramesh, and Shankar Narasimhan. 1996.
+//“Comparison of Techniques for Data Reconciliation of Multicomponent Processes.” 
+//Industrial & Engineering Chemistry Research 35:1362-1368. 
+//http://dx.doi.org/10.1021/ie940538b.
 //Bibtex Citation
 
-//@article{Mitsas2010a,
-//author = {Mitsas, Christos L.},
-//journal = {Measurement},
-//month = jun,
-//number = {5},
-//pages = {702--707},
-//publisher = {ELSEVIER SCI LTD},
-//title = {{Data reconciliation and variable classification by null space methods}},
-//url = {http://apps.isiknowledge.com/full\_record.do?product=UA\&search\_mode=GeneralSearch\&qid=2\&SID=2A@bF9dN34I72L1Am9M\&page=2\&doc=17\&colname=WOS},
-//volume = {43},
-//year = {2010}
+//@article{Rao1996,
+//author = {Rao, R Ramesh and Narasimhan, Shankar},
+//isbn = {0888-5885},
+//journal = {Industrial \& Engineering Chemistry Research},
+//month = apr,
+//number = {4},
+//pages = {1362--1368},
+//publisher = {American Chemical Society},
+//title = {{Comparison of Techniques for Data Reconciliation of Multicomponent Processes}},
+//url = {http://dx.doi.org/10.1021/ie940538b},
+//volume = {35},
+//year = {1996}
 //}
 
 // 12 Streams
-// 6 Equipments 
-
-function [x_sol, f_sol, status]=P11(xm, sd)
+// 7 Equipments 
+function [x_sol, f_sol, status]=P10(xm, sd)
 //The jacobian of the constraints
-//      1   2   3   4   5   6   7   8    9   10  11  12  
-jac = [ 1  -1  -1  -1   0   0   0   0    0   0   0   0   
-        0    1  0   0   -1  -1  -1  0    0   0   0   0   
-        0    0  1   0   1   1   1   -1   0   0   0   0
-        0    0  0   1   0   0   0   0    -1  -1  0   0
-        0    0  0   0   0   0   0   1    1   0   -1  0
-        0    0  0   0   0   0   0   0    0   1   1   -1
-        ];                                
-//      1   2   3   4   5   6   7   8    9   10  11  12  
+//      1   2   3   4   5   6   7   8    9   10  11  12
+jac = [ 1   -1  0   0   1   0   0   0    0   0   0   0 
+        0   1   -1  0   0   0   -1  0    0   0   0   0 
+        0   0   1   -1  0   -1  0   0    0   0   0   0 
+        0   0   0   0   -1  1   0   1    0   0   0   0 
+        0   0   0   0   0   0   0   -1   1   0   0  -1  
+        0   0   0   0   0   0   1   0    -1  1   0   0
+        0   0   0   0   0   0   0   0    0   -1  -1  1 ];                                
+//      1   2   3   4   5   6   7   8    9   10  11  12
 // From here on, the problem generation is automatic
 // No need to edit below
 //The problem size: nc = number of constraints and nv number of variables
@@ -95,7 +95,6 @@ function y=dg(x)
 	
 endfunction
 
-
 // The sparsity structure of the constraints
 
 sparse_dg = [i1', i2']
@@ -127,9 +126,6 @@ params = add_param(params,"mu_strategy","adaptive");
 params = add_param(params,"journal_level",0);
 
 [x_sol, f_sol, extra] = ipopt(xm, objfun, gradf, confun, dg, sparse_dg, dh, sparse_dh, var_lin_type, constr_lin_type, constr_rhs, constr_lhs, lower, upper, params);
-
-
-
 status = extra('status');
 x_sol = x_sol';
 endfunction
@@ -137,15 +133,13 @@ endfunction
 function [jac]=jacP11()
 //The jacobian of the constraints
 //      1   2   3   4   5   6   7   8    9   10  11  12
-//The jacobian of the constraints
-//      1   2   3   4   5   6   7   8    9   10  11  12  
-jac = [ 1  -1  -1  -1   0   0   0   0    0   0   0   0   
-        0    1  0   0   -1  -1  -1  0    0   0   0   0   
-        0    0  1   0   1   1   1   -1   0   0   0   0
-        0    0  0   1   0   0   0   0    -1  -1  0   0
-        0    0  0   0   0   0   0   1    1   0   -1  0
-        0    0  0   0   0   0   0   0    0   1   1   -1
-        ];  
+jac = [ 1   -1  0   0   1   0   0   0    0   0   0   0 
+        0   1   -1  0   0   0   -1  0    0   0   0   0 
+        0   0   1   -1  0   -1  0   0    0   0   0   0 
+        0   0   0   0   -1  1   0   1    0   0   0   0 
+        0   0   0   0   0   0   0   -1   1   0   0  -1  
+        0   0   0   0   0   0   1   0    -1  1   0   0
+        0   0   0   0   0   0   0   0    0   -1  -1  1 ];                                
+//      1   2   3   4   5   6   7   8    9   10  11  12
 endfunction
 
- 

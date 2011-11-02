@@ -2,34 +2,45 @@
 // Author: Edson Cordeiro do Valle
 // Contact - edsoncv@{gmail.com}{vrtech.com.br}
 // Skype: edson.cv
+// Fictitious but realistic mineral processing plant
+//Alhaj-Dibo, Moustapha, Didier Maquin, and José Ragot. 2008.
+//Data reconciliation: A robust approach using a contaminated distribution.
+//Control Engineering Practice 16, no. 2 (February): 159-170.
+// http://www.sciencedirect.com/science/article/B6V2H-4N4406D-1/2/50cac92b050f160a20a795faec990dc7.
 
-//Proposed by author
+//Bibtex Citation
 
-// 24 Streams
-// 14 Equipments 
+//@article{Alhaj-Dibo2008,
+//author = {Alhaj-Dibo, Moustapha and Maquin, Didier and Ragot, Jos\'{e}},
+//isbn = {0967-0661},
+//journal = {Control Engineering Practice},
+//keywords = {Data reconciliation,Gross error detection,Linear and bilinear mass balances,Robust estimation},
+//month = feb,
+//number = {2},
+//pages = {159--170},
+//title = {{Data reconciliation: A robust approach using a contaminated distribution}},
+//url = {http://www.sciencedirect.com/science/article/B6V2H-4N4406D-1/2/50cac92b050f160a20a795faec990dc7},
+//volume = {16},
+//year = {2008}
+//}
 
-function [x_sol, f_sol, status]=P13(xm, sd)
-
+// 16 Streams
+// 9 Equipments 
+// the measures
+function [x_sol, f_sol, status]=P12(xm, sd)
 //The jacobian of the constraints
-//      1   2   3   4   5   6   7   8    9   10  11  12  13    14    15    16    17    18   19   20    21   22    23    24    
-jac = [ 1   1  1    1   -1  0   0   0    0   0   0   0   0     0     0      0    0      0    0    0     0    0     0     0    //M1
-        0   0   0   0   1   -1  0   0    0   0   0   0   0     0     0      0    0      0    0    0     0    0     0     0    //F1
-        0   0   0   0   0   1  -1   0    0   0   0   0   0     0     0      0    0      0    0    0     0    0     0     0    //T1
-        0   0   0   0   0   0   1   -1   -1  0   0   0   0     0     0      0    0      0    0    0     0    0     0     0   //S1  
-        0   0   0   0   0   0   0   0    1  -1   0   0   0     0     0      0    0      0    0    0     0    0     0     0     //F2
-//      1   2   3   4   5   6   7   8    9   10  11  12  13    14    15    16    17    18   19   20    21   22    23    24    
-        0   0   0   0   0   0   0   0    0   1   -1  0   0     0     -1     0    0      0    0    0     0    0     0     0    //M2
-        0   0   0   0   0   0    0  0    0   0   1  -1  -1     0     0      0    0      0    0    0     0    0     0     0    //S3
-        0   0   0   0   0   0   0   0    0   0   0   1   0     -1    0      0    0      0    0    0     0    0     0     0   //F3
-        0   0   0   0   0   0   0   0    0   0   0   0   0     0     1      -1   0      0    -1   0     0    0     0     0    //F4
-        0   0   0   0   0   0   0   0    0   0   0   0   0     0     0      1    -1     0    0    0     0    0     0     0    //F5
-//      1   2   3   4   5   6   7   8    9   10  11  12  13    14    15    16    17    18   19   20    21   22    23    24    
-        0   0   0   0   0   0   0    0   0   0   0   0   1     0     0      0    1     -1    0    0     0    0     0     0    //S5
-        0   0   0   0   0   0   0    0   0   0   0   0   0     0     0      0    0      0    1    -1    0    0     0     0    //T2
-        0   0   0   0   0   0   0    0   0   0   0   0   0     0     0      0    0      0    0    1     -1   -1    0     0    //S4
-        0   0   0   0   0   0   0    1   0   0   0   0   0     0     0      0    0      0    0    0     0    0     -1    -1    //S2
-        ];                                
-//      1   2   3   4   5   6   7   8    9   10  11  12  13    14    15    16    17    18   19   20    21   22    23    24    
+//      1   2   3   4   5   6   7   8    9   10  11  12  13    14    15    16    
+jac = [ 1   -1  0   1   0   0   0   0    0   0   0   0   0     0     0      0    
+        0   1   -1  0   0   0   0   0    0   0   -1   0   0     0     0      0    
+        0   0   1   -1  -1  0   0   0    0   0   0   0   0     0     0      0    
+        0   0   0   0   1   -1  0   0    0   1   0   0   0     0     0      0    
+        0   0   0   0   0   1   -1  -1   0   0   0   0   0     0     0      0   
+//      1   2   3   4   5   6   7   8    9   10  11  12  13    14    15    16    
+        0   0   0   0   0   0   1   0    -1   -1  0   0   0     0     0      0    
+        0   0   0   0   0   0   0   0    0   0   1   -1   -1    0     0      1    
+        0   0   0   0   0   0   0   0    0   0   0   1   1     -1     0      0
+        0   0   0   0   0   0   0   0    0   0   0   0   0     1     -1      -1];                                
+//      1   2   3   4   5   6   7   8    9   10  11  12  13    14    15    16    
 // From here on, the problem generation is automatic
 // No need to edit below
 //The problem size: nc = number of constraints and nv number of variables
@@ -122,33 +133,24 @@ params = add_param(params,"journal_level",0);
 
 [x_sol, f_sol, extra] = ipopt(xm, objfun, gradf, confun, dg, sparse_dg, dh, sparse_dh, var_lin_type, constr_lin_type, constr_rhs, constr_lhs, lower, upper, params);
 
-
 status = extra('status');
 x_sol = x_sol';
 endfunction
 
 function [jac]=jacP13()
 //The jacobian of the constraints
-//The jacobian of the constraints
-//      1   2   3   4   5   6   7   8    9   10  11  12  13    14    15    16    17    18   19   20    21   22    23    24    
-jac = [ 1   1  1    1   -1  0   0   0    0   0   0   0   0     0     0      0    0      0    0    0     0    0     0     0    //M1
-        0   0   0   0   1   -1  0   0    0   0   0   0   0     0     0      0    0      0    0    0     0    0     0     0    //F1
-        0   0   0   0   0   1  -1   0    0   0   0   0   0     0     0      0    0      0    0    0     0    0     0     0    //T1
-        0   0   0   0   0   0   1   -1   -1  0   0   0   0     0     0      0    0      0    0    0     0    0     0     0   //S1  
-        0   0   0   0   0   0   0   0    1  -1   0   0   0     0     0      0    0      0    0    0     0    0     0     0     //F2
-//      1   2   3   4   5   6   7   8    9   10  11  12  13    14    15    16    17    18   19   20    21   22    23    24    
-        0   0   0   0   0   0   0   0    0   1   -1  0   0     0     -1     0    0      0    0    0     0    0     0     0    //M2
-        0   0   0   0   0   0    0  0    0   0   1  -1  -1     0     0      0    0      0    0    0     0    0     0     0    //S3
-        0   0   0   0   0   0   0   0    0   0   0   1   0     -1    0      0    0      0    0    0     0    0     0     0   //F3
-        0   0   0   0   0   0   0   0    0   0   0   0   0     0     1      -1   0      0    -1   0     0    0     0     0    //F4
-        0   0   0   0   0   0   0   0    0   0   0   0   0     0     0      1    -1     0    0    0     0    0     0     0    //F5
-//      1   2   3   4   5   6   7   8    9   10  11  12  13    14    15    16    17    18   19   20    21   22    23    24    
-        0   0   0   0   0   0   0    0   0   0   0   0   1     0     0      0    1     -1    0    0     0    0     0     0    //S5
-        0   0   0   0   0   0   0    0   0   0   0   0   0     0     0      0    0      0    1    -1    0    0     0     0    //T2
-        0   0   0   0   0   0   0    0   0   0   0   0   0     0     0      0    0      0    0    1     -1   -1    0     0    //S4
-        0   0   0   0   0   0   0    1   0   0   0   0   0     0     0      0    0      0    0    0     0    0     -1    -1    //S2
-        ];                                
-//      1   2   3   4   5   6   7   8    9   10  11  12  13    14    15    16    17    18   19   20    21   22    23    24   
+//      1   2   3   4   5   6   7   8    9   10  11  12  13    14    15    16    
+jac = [ 1   -1  0   1   0   0   0   0    0   0   0   0   0     0     0      0    
+        0   1   -1  0   0   0   0   0    0   0   -1   0   0     0     0      0    
+        0   0   1   -1  -1  0   0   0    0   0   0   0   0     0     0      0    
+        0   0   0   0   1   -1  0   0    0   1   0   0   0     0     0      0    
+        0   0   0   0   0   1   -1  -1   0   0   0   0   0     0     0      0   
+//      1   2   3   4   5   6   7   8    9   10  11  12  13    14    15    16    
+        0   0   0   0   0   0   1   0    -1   -1  0   0   0     0     0      0    
+        0   0   0   0   0   0   0   0    0   0   1   -1   -1    0     0      1    
+        0   0   0   0   0   0   0   0    0   0   0   1   1     -1     0      0
+        0   0   0   0   0   0   0   0    0   0   0   0   0     1     -1      -1];                                
+//      1   2   3   4   5   6   7   8    9   10  11  12  13    14    15    16    
 endfunction
 
- 
+

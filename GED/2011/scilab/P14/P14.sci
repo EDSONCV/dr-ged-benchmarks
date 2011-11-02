@@ -2,41 +2,34 @@
 // Author: Edson Cordeiro do Valle
 // Contact - edsoncv@{gmail.com}{vrtech.com.br}
 // Skype: edson.cv
-// Steam metering system
-//Serth, R W, and W A Heenan. 1986.
-// Gross error detection and data reconciliation in steam-metering systems. 
-//AIChE Journal 32: 733-747.
-//Bibtex Citation
 
-//@article{Serth1986,
-//author = {Serth, R W and Heenan, W A},
-//journal = {AIChE Journal},
-//pages = {733--747},
-//title = {{Gross error detection and data reconciliation in steam-metering systems}},
-//volume = {32},
-//year = {1986}
-//}
+//Proposed by author
 
-// 28 Streams
-// 11 Equipments 
-// the measures
-function [x_sol, f_sol, status]=P14(xm, sd)
+// 24 Streams
+// 14 Equipments 
+
+function [x_sol, f_sol, status]=P13(xm, sd)
+
 //The jacobian of the constraints
-//      1   2   3   4   5   6   7   8    9   10  11  12  13    14    15    16    17    18   19   20    21   22    23    24    25    26    27    28
-jac = [ 1   1   -1  1   0   0   0   0    0   0   0   0   0     0     0      0    0      0    0    0     0    0     0     0     0     0    0      0
-        0   0   0   0  -1   -1  1   1    -1  0   0   0   0     0     0      0    0      0    0    0     0    0     0     0     0     0    0      0 
-        -1  0   0   0   1    0   0   0   0  -1   0   0   0     0     0      0    0      0    0    0     0    0     0     0     0     0    0      0
-        0   0   0   0   0   0   0   0    0   1   1   -1  0     0     0      0    0      0    0    0     0    0     0     0     0     0    0      0
-        0   0   1   0   0   0   0   0    0   0   -1  0   1     -1    -1     -1   -1     0    0    0     0    0     0     0     0     0    0      0  
-//      1   2   3   4   5   6   7   8    9   10  11  12  13    14    15    16    17    18   19   20    21   22    23    24    25    26    27    28
-        0   -1  0   0   0   1   0   0    0   0   0   0   -1     0     0     0    0      0    0    0     0    0     0     0     0     0    0      0
-        0   0   0   0   0   0   -1  0    0   0   0   0   0     1     0      0    0      1    -1   -1    -1   0     0     0     0     0    0      0
-        0   0   0   0   0   0   0   0    0   0   0   0   0     0     1      0    0      -1   0    0     0    1     -1    -1    0     0    0      0
-        0   0   0   0   0   0   0   0    0   0   0   1   0     0     0      1    0      0    0    0     0    -1    0     0     -1    0    0      0  
-        0   0   0   0   0   0   0   0    0   0   0   0   0     0     0      0    0      0    1    0     0    0     1     0     0     -1    1     0
-        0   0   0   0   0   0   0   -1   0   0   0   0   0     0     0      0    0      0    0    1     0    0     0     0     0     1     0     1
+//      1   2   3   4   5   6   7   8    9   10  11  12  13    14    15    16    17    18   19   20    21   22    23    24    
+jac = [ 1   1  1    1   -1  0   0   0    0   0   0   0   0     0     0      0    0      0    0    0     0    0     0     0    //M1
+        0   0   0   0   1   -1  0   0    0   0   0   0   0     0     0      0    0      0    0    0     0    0     0     0    //F1
+        0   0   0   0   0   1  -1   0    0   0   0   0   0     0     0      0    0      0    0    0     0    0     0     0    //T1
+        0   0   0   0   0   0   1   -1   -1  0   0   0   0     0     0      0    0      0    0    0     0    0     0     0   //S1  
+        0   0   0   0   0   0   0   0    1  -1   0   0   0     0     0      0    0      0    0    0     0    0     0     0     //F2
+//      1   2   3   4   5   6   7   8    9   10  11  12  13    14    15    16    17    18   19   20    21   22    23    24    
+        0   0   0   0   0   0   0   0    0   1   -1  0   0     0     -1     0    0      0    0    0     0    0     0     0    //M2
+        0   0   0   0   0   0    0  0    0   0   1  -1  -1     0     0      0    0      0    0    0     0    0     0     0    //S3
+        0   0   0   0   0   0   0   0    0   0   0   1   0     -1    0      0    0      0    0    0     0    0     0     0   //F3
+        0   0   0   0   0   0   0   0    0   0   0   0   0     0     1      -1   0      0    -1   0     0    0     0     0    //F4
+        0   0   0   0   0   0   0   0    0   0   0   0   0     0     0      1    -1     0    0    0     0    0     0     0    //F5
+//      1   2   3   4   5   6   7   8    9   10  11  12  13    14    15    16    17    18   19   20    21   22    23    24    
+        0   0   0   0   0   0   0    0   0   0   0   0   1     0     0      0    1     -1    0    0     0    0     0     0    //S5
+        0   0   0   0   0   0   0    0   0   0   0   0   0     0     0      0    0      0    1    -1    0    0     0     0    //T2
+        0   0   0   0   0   0   0    0   0   0   0   0   0     0     0      0    0      0    0    1     -1   -1    0     0    //S4
+        0   0   0   0   0   0   0    1   0   0   0   0   0     0     0      0    0      0    0    0     0    0     -1    -1    //S2
         ];                                
-//      1   2   3   4   5   6   7   8    9   10  11  12  13    14    15    16    17    18   19   20    21   22    23    24    25    26    27    28
+//      1   2   3   4   5   6   7   8    9   10  11  12  13    14    15    16    17    18   19   20    21   22    23    24    
 // From here on, the problem generation is automatic
 // No need to edit below
 //The problem size: nc = number of constraints and nv number of variables
@@ -99,11 +92,11 @@ endfunction
 
 // The sparsity structure of the constraints
 
-sparse_dg = [i1', i2'];
+sparse_dg = [i1', i2']
 
 // The sparsity structure of the Lagrangian
 // the Hessian for this problem is diagonal
-sparse_dh = [ [1:nv]', [1:nv]'];
+sparse_dh = [ [1:nv]', [1:nv]']
 
 // the variables have lower bounds of 0
 lower = zeros(nv,1);
@@ -119,17 +112,12 @@ constr_rhs(1:nc) = 0;
 
 params = init_param();
 // We use the given Hessian
-//params = add_param(params,"tol",1e-8);
-//params = add_param(params,"acceptable_tol",1e-8);
-//params = add_param(params,"mu_strategy","adaptive");
-//Tuned for dificult optimizations
 params = add_param(params,"hessian_approximation","exact");
 //params = add_param(params,"derivative_test","first-order");
-params = add_param(params,"tol",1e-3);
-params = add_param(params,"acceptable_tol",1e-3);
-params = add_param(params,"constr_viol_tol",1e-3);
-params = add_param(params,"acceptable_constr_viol_tol",1e-3);
-params = add_param(params,"mu_strategy","monotone");
+params = add_param(params,"tol",1e-8);
+params = add_param(params,"acceptable_tol",1e-8);
+params = add_param(params,"mu_strategy","adaptive");
+
 params = add_param(params,"journal_level",0);
 
 [x_sol, f_sol, extra] = ipopt(xm, objfun, gradf, confun, dg, sparse_dg, dh, sparse_dh, var_lin_type, constr_lin_type, constr_rhs, constr_lhs, lower, upper, params);
@@ -141,23 +129,26 @@ endfunction
 
 function [jac]=jacP14()
 //The jacobian of the constraints
-//      1   2   3   4   5   6   7   8    9   10  11  12  13    14    15    16    17    18   19   20    21   22    23    24    25    26    27    28
-jac = [ 1   1   -1  1   0   0   0   0    0   0   0   0   0     0     0      0    0      0    0    0     0    0     0     0     0     0    0      0
-        0   0   0   0  -1   -1  1   1    -1  0   0   0   0     0     0      0    0      0    0    0     0    0     0     0     0     0    0      0 
-        -1  0   0   0   1    0   0   0   0  -1   0   0   0     0     0      0    0      0    0    0     0    0     0     0     0     0    0      0
-        0   0   0   0   0   0   0   0    0   1   1   -1  0     0     0      0    0      0    0    0     0    0     0     0     0     0    0      0
-        0   0   1   0   0   0   0   0    0   0   -1  0   1     -1    -1     -1   -1     0    0    0     0    0     0     0     0     0    0      0  
-//      1   2   3   4   5   6   7   8    9   10  11  12  13    14    15    16    17    18   19   20    21   22    23    24    25    26    27    28
-        0   -1  0   0   0   1   0   0    0   0   0   0   -1     0     0     0    0      0    0    0     0    0     0     0     0     0    0      0
-        0   0   0   0   0   0   -1  0    0   0   0   0   0     1     0      0    0      1    -1   -1    -1   0     0     0     0     0    0      0
-        0   0   0   0   0   0   0   0    0   0   0   0   0     0     1      0    0      -1   0    0     0    1     -1    -1    0     0    0      0
-        0   0   0   0   0   0   0   0    0   0   0   1   0     0     0      1    0      0    0    0     0    -1    0     0     -1    0    0      0  
-        0   0   0   0   0   0   0   0    0   0   0   0   0     0     0      0    0      0    1    0     0    0     1     0     0     -1    1     0
-        0   0   0   0   0   0   0   -1   0   0   0   0   0     0     0      0    0      0    0    1     0    0     0     0     0     1     0     1
+//The jacobian of the constraints
+//      1   2   3   4   5   6   7   8    9   10  11  12  13    14    15    16    17    18   19   20    21   22    23    24    
+jac = [ 1   1  1    1   -1  0   0   0    0   0   0   0   0     0     0      0    0      0    0    0     0    0     0     0    //M1
+        0   0   0   0   1   -1  0   0    0   0   0   0   0     0     0      0    0      0    0    0     0    0     0     0    //F1
+        0   0   0   0   0   1  -1   0    0   0   0   0   0     0     0      0    0      0    0    0     0    0     0     0    //T1
+        0   0   0   0   0   0   1   -1   -1  0   0   0   0     0     0      0    0      0    0    0     0    0     0     0   //S1  
+        0   0   0   0   0   0   0   0    1  -1   0   0   0     0     0      0    0      0    0    0     0    0     0     0     //F2
+//      1   2   3   4   5   6   7   8    9   10  11  12  13    14    15    16    17    18   19   20    21   22    23    24    
+        0   0   0   0   0   0   0   0    0   1   -1  0   0     0     -1     0    0      0    0    0     0    0     0     0    //M2
+        0   0   0   0   0   0    0  0    0   0   1  -1  -1     0     0      0    0      0    0    0     0    0     0     0    //S3
+        0   0   0   0   0   0   0   0    0   0   0   1   0     -1    0      0    0      0    0    0     0    0     0     0   //F3
+        0   0   0   0   0   0   0   0    0   0   0   0   0     0     1      -1   0      0    -1   0     0    0     0     0    //F4
+        0   0   0   0   0   0   0   0    0   0   0   0   0     0     0      1    -1     0    0    0     0    0     0     0    //F5
+//      1   2   3   4   5   6   7   8    9   10  11  12  13    14    15    16    17    18   19   20    21   22    23    24    
+        0   0   0   0   0   0   0    0   0   0   0   0   1     0     0      0    1     -1    0    0     0    0     0     0    //S5
+        0   0   0   0   0   0   0    0   0   0   0   0   0     0     0      0    0      0    1    -1    0    0     0     0    //T2
+        0   0   0   0   0   0   0    0   0   0   0   0   0     0     0      0    0      0    0    1     -1   -1    0     0    //S4
+        0   0   0   0   0   0   0    1   0   0   0   0   0     0     0      0    0      0    0    0     0    0     -1    -1    //S2
         ];                                
-//      1   2   3   4   5   6   7   8    9   10  11  12  13    14    15    16    17    18   19   20    21   22    23    24    25    26    27    28
-
+//      1   2   3   4   5   6   7   8    9   10  11  12  13    14    15    16    17    18   19   20    21   22    23    24   
 endfunction
 
-
-
+ 

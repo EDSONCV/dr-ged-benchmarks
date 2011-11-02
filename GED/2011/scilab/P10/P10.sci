@@ -2,40 +2,38 @@
 // Author: Edson Cordeiro do Valle
 // Contact - edsoncv@{gmail.com}{vrtech.com.br}
 // Skype: edson.cv
+//Martins, Márcio A.F., Carolina A. Amaro, Leonardo S. Souza, Ricardo A. Kalid, and Asher Kiperstok. 2010. 
+//New objective function for data reconciliation in water balance from industrial processes. 
+//Journal of Cleaner Production (March): 1-6. doi:10.1016/j.jclepro.2010.03.014. http://linkinghub.elsevier.com/retrieve/pii/S0959652610001149.
 
-//Rao, R Ramesh, and Shankar Narasimhan. 1996.
-//“Comparison of Techniques for Data Reconciliation of Multicomponent Processes.” 
-//Industrial & Engineering Chemistry Research 35:1362-1368. 
-//http://dx.doi.org/10.1021/ie940538b.
 //Bibtex Citation
-
-//@article{Rao1996,
-//author = {Rao, R Ramesh and Narasimhan, Shankar},
-//isbn = {0888-5885},
-//journal = {Industrial \& Engineering Chemistry Research},
-//month = apr,
-//number = {4},
-//pages = {1362--1368},
-//publisher = {American Chemical Society},
-//title = {{Comparison of Techniques for Data Reconciliation of Multicomponent Processes}},
-//url = {http://dx.doi.org/10.1021/ie940538b},
-//volume = {35},
-//year = {1996}
+//@article{Martins2010,
+//author = {Martins, M\'{a}rcio A.F. and Amaro, Carolina A. and Souza, Leonardo S. and Kalid, Ricardo A. and Kiperstok, Asher},
+//doi = {10.1016/j.jclepro.2010.03.014},
+//file = {::},
+//issn = {09596526},
+//journal = {Journal of Cleaner Production},
+//month = mar,
+//pages = {1--6},
+//title = {{New objective function for data reconciliation in water balance from industrial processes}},
+//url = {http://linkinghub.elsevier.com/retrieve/pii/S0959652610001149},
+//year = {2010}
 //}
 
-// 12 Streams
-// 7 Equipments 
-function [x_sol, f_sol, status]=P10(xm, sd)
+// 13 Streams
+// 8 Equipments 
+function [x_sol, f_sol, status]=P9(xms, sd)
 //The jacobian of the constraints
-//      1   2   3   4   5   6   7   8    9   10  11  12
-jac = [ 1   -1  0   0   1   0   0   0    0   0   0   0 
-        0   1   -1  0   0   0   -1  0    0   0   0   0 
-        0   0   1   -1  0   -1  0   0    0   0   0   0 
-        0   0   0   0   -1  1   0   1    0   0   0   0 
-        0   0   0   0   0   0   0   -1   1   0   0  -1  
-        0   0   0   0   0   0   1   0    -1  1   0   0
-        0   0   0   0   0   0   0   0    0   -1  -1  1 ];                                
-//      1   2   3   4   5   6   7   8    9   10  11  12
+//      1   2   3   4   5   6   7   8    9   10  11  12  13
+jac = [ 1  -1  -1  -1  -1   0   0   0    0   0   0   0   0
+        0   1   0   0   0   0   0  -1    0   0   0   0   0
+        0   0   1   0   0   0   0   0   -1   0   0   0   0
+        0   0   0   1   0  -1  -1   0    0   0   0   0   0        
+        0   0   0   0   1   0   0   0    0   0   1  -1   0
+        0   0   0   0   0   1   0   0    0  -1   0   0   0
+        0   0   0   0   0   0   1   0    0   0  -1   0   0
+        0   0   0   0   0   0   0   1    1   1   0   0  -1];                                
+//      1   2   3   4   5   6   7   8    9   10  11  12  13
 // From here on, the problem generation is automatic
 // No need to edit below
 //The problem size: nc = number of constraints and nv number of variables
@@ -95,13 +93,20 @@ function y=dg(x)
 	
 endfunction
 
+// The constraints
+function y=dg(x)
+
+	y = dg1(x)
+	
+endfunction
+
 // The sparsity structure of the constraints
 
-sparse_dg = [i1', i2']
+sparse_dg = [i1', i2'];
 
 // The sparsity structure of the Lagrangian
 // the Hessian for this problem is diagonal
-sparse_dh = [ [1:nv]', [1:nv]']
+sparse_dh = [ [1:nv]', [1:nv]'];
 
 // the variables have lower bounds of 0
 lower = zeros(nv,1);
@@ -121,25 +126,35 @@ params = add_param(params,"hessian_approximation","exact");
 //params = add_param(params,"derivative_test","first-order");
 params = add_param(params,"tol",1e-8);
 params = add_param(params,"acceptable_tol",1e-8);
-params = add_param(params,"mu_strategy","adaptive");
-
-params = add_param(params,"journal_level",0);
-
-[x_sol, f_sol, extra] = ipopt(xm, objfun, gradf, confun, dg, sparse_dg, dh, sparse_dh, var_lin_type, constr_lin_type, constr_rhs, constr_lhs, lower, upper, params);
-status = extra('status');
+params = add_param(params,"mu_oracle","probing");
+params = add_param(params,"hessian_constant","yes");
+params = add_param(params,"jac_d_constant","yes");
+params = add_param(params,"jac_c_constant","yes");
+//params = add_param(params,"fast_step_computation","yes");
+//params = add_param(params,"mu_oracle","probing");
+//params = add_param(params,"mehrotra_algorithm","yes");
+params = add_param(params,"mu_strategy","monotone");
+tic
+for i=1:size(xms,1)
+xm=xms(i,:)'
+[x_sol(1:nv,i), f_sol(i), extra] = ipopt(xm, objfun, gradf, confun, dg, sparse_dg, dh, sparse_dh, var_lin_type, constr_lin_type, constr_rhs, constr_lhs, lower, upper, params);
+status(i) = extra('status');
+end
+b=toc;
+printf('toc: %f',b());
 x_sol = x_sol';
 endfunction
 
 function [jac]=jacP10()
-//The jacobian of the constraints
-//      1   2   3   4   5   6   7   8    9   10  11  12
-jac = [ 1   -1  0   0   1   0   0   0    0   0   0   0 
-        0   1   -1  0   0   0   -1  0    0   0   0   0 
-        0   0   1   -1  0   -1  0   0    0   0   0   0 
-        0   0   0   0   -1  1   0   1    0   0   0   0 
-        0   0   0   0   0   0   0   -1   1   0   0  -1  
-        0   0   0   0   0   0   1   0    -1  1   0   0
-        0   0   0   0   0   0   0   0    0   -1  -1  1 ];                                
-//      1   2   3   4   5   6   7   8    9   10  11  12
+//      1   2   3   4   5   6   7   8    9   10  11  12  13
+jac = [ 1  -1  -1  -1  -1   0   0   0    0   0   0   0   0
+        0   1   0   0   0   0   0  -1    0   0   0   0   0
+        0   0   1   0   0   0   0   0   -1   0   0   0   0
+        0   0   0   1   0  -1  -1   0    0   0   0   0   0        
+        0   0   0   0   1   0   0   0    0   0   1  -1   0
+        0   0   0   0   0   1   0   0    0  -1   0   0   0
+        0   0   0   0   0   0   1   0    0   0  -1   0   0
+        0   0   0   0   0   0   0   1    1   1   0   0  -1];                                
+//      1   2   3   4   5   6   7   8    9   10  11  12  13   
 endfunction
 

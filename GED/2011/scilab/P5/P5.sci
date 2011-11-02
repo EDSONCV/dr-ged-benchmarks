@@ -20,7 +20,7 @@
 // 8 Streams
 // 4 Equipments 
 
-function [x_sol, f_sol, status]=P5(xm, sd)
+function [x_sol, f_sol, status]=P5(xm, sd,xr)
 
 //The jacobian of the constraints
 //      1    2  3    4    5   6   7    8  
@@ -119,7 +119,7 @@ params = add_param(params,"mu_strategy","adaptive");
 
 params = add_param(params,"journal_level",0);
 
-[x_sol, f_sol, extra] = ipopt(xm, objfun, gradf, confun, dg, sparse_dg, dh, sparse_dh, var_lin_type, constr_lin_type, constr_rhs, constr_lhs, lower, upper, params);
+[x_sol, f_sol, extra] = ipopt(xr, objfun, gradf, confun, dg, sparse_dg, dh, sparse_dh, var_lin_type, constr_lin_type, constr_rhs, constr_lhs, lower, upper, params);
 
 status = extra('status');
 x_sol = x_sol';
