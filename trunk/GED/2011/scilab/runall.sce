@@ -1,82 +1,81 @@
 //cd P1
-//exec ged_P1.sce;
-//save ('P1.sav');
+//exec ged_P1_sim.sce;
+//
 //cd '..'
-
-cd P2
-exec ged_P2.sce;
-save ('P2.sav');
-cd '..'
-
+//
+//cd P2
+//exec ged_P2_sim.sce;
+//
+//cd '..'
+//
 //cd P3
-//exec ged_P3.sce;
-//save ('P3.sav');
+//exec ged_P3_sim.sce;
+//
 //cd '..'
-
-cd P4
-exec ged_P4.sce;
-save ('P4.sav');
-cd '..'
-
-cd P5
-exec ged_P5.sce;
-save ('P5.sav');
-cd '..'
+//
+//cd P4
+//exec ged_P4_sim.sce;
+//
+//cd '..'
+//
+//cd P5
+//exec ged_P5_sim.sce;
+//
+//cd '..'
 
 cd P6
-exec ged_P6.sce;
-save ('P6.sav');
+exec ged_P6_sim.sce;
 cd '..'
 
 cd P7
-exec ged_P7.sce;
-save ('P7.sav');
+exec ged_P7_sim.sce;
 cd '..'
 
 cd P8
-exec ged_P8.sce;
-save ('P8.sav');
+exec ged_P8_sim.sce;
 cd '..'
 
 cd P9
-exec ged_P9.sce;
-save ('P9.sav');
+exec ged_P9_sim.sce;
 cd '..'
 
 
 cd P10
-exec ged_P10.sce;
-save ('P10.sav');
+exec ged_P10_sim.sce;
 cd '..'
 
 
 cd P11
-exec ged_P11.sce;
-save ('P11.sav');
+exec ged_P11_sim.sce;
 cd '..'
 
 
 cd P12
-exec ged_P12.sce;
-save ('P12.sav');
+exec ged_P12_sim.sce;
+
 cd '..'
 
 
 cd P13
-exec ged_P13.sce;
-save ('P13.sav');
+exec ged_P13_sim.sce;
+
 cd '..'
 
 
 cd P14
-exec ged_P14.sce;
-save ('P14.sav');
+exec ged_P14_sim.sce;
+
 cd '..'
 
 
 cd P15
-exec ged_P15.sce;
-save ('P15.sav');
+exec ged_P15_sim.sce;
+
+cd '..'
+
+cd P16
+exec ged_P16_sim.sce;
+
 cd '..'
 
 

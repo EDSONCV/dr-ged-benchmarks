@@ -2,44 +2,27 @@
 // Author: Edson Cordeiro do Valle
 // Contact - edsoncv@{gmail.com}{vrtech.com.br}
 // Skype: edson.cv
+// Proposed by author
+//10 Streams 
+//6 Equipments
 
-//Rao, R Ramesh, and Shankar Narasimhan. 1996.
-//“Comparison of Techniques for Data Reconciliation of Multicomponent Processes.” 
-//Industrial & Engineering Chemistry Research 35:1362-1368. 
-//http://dx.doi.org/10.1021/ie940538b.
-//Bibtex Citation
-
-//@article{Rao1996,
-//author = {Rao, R Ramesh and Narasimhan, Shankar},
-//isbn = {0888-5885},
-//journal = {Industrial \& Engineering Chemistry Research},
-//month = apr,
-//number = {4},
-//pages = {1362--1368},
-//publisher = {American Chemical Society},
-//title = {{Comparison of Techniques for Data Reconciliation of Multicomponent Processes}},
-//url = {http://dx.doi.org/10.1021/ie940538b},
-//volume = {35},
-//year = {1996}
-//}
-
-// 12 Streams
-// 7 Equipments 
-
-function [x_sol, f_sol, status]=P7(xm, sd)
-//      1   2   3   4   5   6   7   8    9   10  11  
-jac = [ 1   -1  -1  0   0   0   0   0    0   0  0    
-        0   1   1   -1  -1  -1  -1  0    0   0  0    
-        0   0   0   0   1   0   0   0    0   -1 -1    
-        0   0   0   1   0   0   0   -1   -1  0  0     ];                                
-//      1   2   3   4   5   6   7   8    9   10  11  
+function [x_sol, f_sol, status]=P6(xm, sd)
+//The jacobian of the constraints
+//      1   2   3   4   5   6   7   8    9   10    
+jac = [ 1   -1   0  0   0   1   0   0    0   0      
+        0   1    -1  0   0   0   0  0    0   0      
+        0   0    1  -1   -1   0   0  0   1   0     
+        0   0    0  0   1   -1   -1  0    0   0
+        0   0    0  0   0   0   1   -1    0   0
+        0   0    0  0   0   0   0   1    -1   -1       ];                                
+//      1   2   3   4   5   6   7   8    9   10    
 // From here on, the problem generation is automatic
 // No need to edit below
 //The problem size: nc = number of constraints and nv number of variables
 [nc,nv] = size(jac);
 // index of the non-zero elements of the Jacobian
 [i1,i2]=find(jac<>0);
-
+// number of non-zero elements
 nonz = nnz(jac);
 
 function f = objfun ( x )
@@ -92,7 +75,6 @@ function y=dg(x)
 	
 endfunction
 
-
 // The sparsity structure of the constraints
 
 sparse_dg = [i1', i2']
@@ -124,20 +106,17 @@ params = add_param(params,"mu_strategy","adaptive");
 params = add_param(params,"journal_level",0);
 
 [x_sol, f_sol, extra] = ipopt(xm, objfun, gradf, confun, dg, sparse_dg, dh, sparse_dh, var_lin_type, constr_lin_type, constr_rhs, constr_lhs, lower, upper, params);
-
 status = extra('status');
 x_sol = x_sol';
 endfunction
 
 function [jac]=jacP7()
-//      1   2   3   4   5   6   7   8    9   10  11  
-jac = [ 1   -1  -1  0   0   0   0   0    0   0  0    
-        0   1   1   -1  -1  -1  -1  0    0   0  0    
-        0   0   0   0   1   0   0   0    0   -1 -1    
-        0   0   0   1   0   0   0   -1   -1  0  0     ];                                
-//      1   2   3   4   5   6   7   8    9   10  11    
+//The jacobian of the constraints
+//The jacobian of the constraints
+//      1   2     3   4   5   6   7   
+jac = [ 1   -1    0   1   0   1   0  
+        0    1   -1   0   0   0   0 
+        0    0    1  -1  -1   0   0
+        0    0    0   0   1   -1   -1];                                 
+//      1   2   3   4   5   6   7   
 endfunction
-
-
-
-

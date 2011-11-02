@@ -2,38 +2,37 @@
 // Author: Edson Cordeiro do Valle
 // Contact - edsoncv@{gmail.com}{vrtech.com.br}
 // Skype: edson.cv
-//Mandel, Denis, Ali Abdollahzadeh, Didier Maquin, and Jos� Ragot. 1998. 
-//Data reconciliation by inequality balance equilibration: a LMI approach. 
-//International Journal of Mineral Processing 53, no. 3 (April): 157-169. 
-//http://www.sciencedirect.com/science/article/B6VBN-3VM1X8N-3/2/8bffe94a1153eea8647eed5af0031d36.
 
+//Rao, R Ramesh, and Shankar Narasimhan. 1996.
+//“Comparison of Techniques for Data Reconciliation of Multicomponent Processes.” 
+//Industrial & Engineering Chemistry Research 35:1362-1368. 
+//http://dx.doi.org/10.1021/ie940538b.
 //Bibtex Citation
-//@article{Mandel1998,
-//author = {Mandel, Denis and Abdollahzadeh, Ali and Maquin, Didier and Ragot, Jos�},
-//isbn = {0301-7516},
-//journal = {International Journal of Mineral Processing},
-//keywords = {Linear Matrix Inequality Techniques,data reconciliation,error detection,error isolation},
+
+//@article{Rao1996,
+//author = {Rao, R Ramesh and Narasimhan, Shankar},
+//isbn = {0888-5885},
+//journal = {Industrial \& Engineering Chemistry Research},
 //month = apr,
-//number = {3},
-//pages = {157--169},
-//title = {{Data reconciliation by inequality balance equilibration: a LMI approach}},
-//url = {http://www.sciencedirect.com/science/article/B6VBN-3VM1X8N-3/2/8bffe94a1153eea8647eed5af0031d36},
-//volume = {53},
-//year = {
+//number = {4},
+//pages = {1362--1368},
+//publisher = {American Chemical Society},
+//title = {{Comparison of Techniques for Data Reconciliation of Multicomponent Processes}},
+//url = {http://dx.doi.org/10.1021/ie940538b},
+//volume = {35},
+//year = {1996}
+//}
 
 // 12 Streams
-// 5 Equipments 
-// the measures
-function [x_sol, f_sol, status]=P8(xm, sd)
-//The jacobian of the constraints
-//      1   2   3   4   5   6   7   8    9   10  11  12  
-jac = [ 1  -1  -1   0   0   0   0   0    0   0   0   0   
-        0   0   1   -1  -1  0   0    0   0   0   0   0   
-        0    0  0   0   0   0  1    1    -1  0   0   0
-        0    0  0   0   0   0   0   -1    0  1   0   -1
-        0    0  0   0   0   0   0   0    1   -1  -1  0
-        ];                                
-//      1   2   3   4   5   6   7   8    9   10  11  12  
+// 7 Equipments 
+
+function [x_sol, f_sol, status]=P7(xm, sd,xr)
+//      1   2   3   4   5   6   7   8    9   10  11  
+jac = [ 1   -1  -1  0   0   0   0   0    0   0  0    
+        0   1   1   -1  -1  -1  -1  0    0   0  0    
+        0   0   0   0   1   0   0   0    0   -1 -1    
+        0   0   0   1   0   0   0   -1   -1  0  0     ];                                
+//      1   2   3   4   5   6   7   8    9   10  11  
 // From here on, the problem generation is automatic
 // No need to edit below
 //The problem size: nc = number of constraints and nv number of variables
@@ -41,7 +40,7 @@ jac = [ 1  -1  -1   0   0   0   0   0    0   0   0   0
 // index of the non-zero elements of the Jacobian
 [i1,i2]=find(jac<>0);
 
-nonz = nnz(jac);
+nonz = length(i1);
 
 function f = objfun ( x )
 
@@ -93,6 +92,7 @@ function y=dg(x)
 	
 endfunction
 
+
 // The sparsity structure of the constraints
 
 sparse_dg = [i1', i2']
@@ -117,25 +117,30 @@ params = init_param();
 // We use the given Hessian
 params = add_param(params,"hessian_approximation","exact");
 //params = add_param(params,"derivative_test","first-order");
-params = add_param(params,"tol",1e-8);
-params = add_param(params,"acceptable_tol",1e-8);
-params = add_param(params,"mu_strategy","adaptive");
+params = add_param(params,"mu_oracle","probing");
+params = add_param(params,"hessian_constant","yes");
+params = add_param(params,"jac_d_constant","yes");
+params = add_param(params,"jac_c_constant","yes");
+//params = add_param(params,"fast_step_computation","yes");
+//params = add_param(params,"mu_oracle","probing");
+//params = add_param(params,"mehrotra_algorithm","yes");
+params = add_param(params,"mu_strategy","monotone");
 
-params = add_param(params,"journal_level",5);
+[x_sol, f_sol, extra] = ipopt(xr, objfun, gradf, confun, dg, sparse_dg, dh, sparse_dh, var_lin_type, constr_lin_type, constr_rhs, constr_lhs, lower, upper, params);
 
-[x_sol, f_sol, extra] = ipopt(xm, objfun, gradf, confun, dg, sparse_dg, dh, sparse_dh, var_lin_type, constr_lin_type, constr_rhs, constr_lhs, lower, upper, params);
 status = extra('status');
 x_sol = x_sol';
 endfunction
 
 function [jac]=jacP8()
-jac = [ 1  -1  -1   0   0   0   0   0    0   0   0   0   
-        0   0   1   -1  -1  0   0    0   0   0   0   0   
-        0    0  0   0   0   0  1    1    -1  0   0   0
-        0    0  0   0   0   0   0   -1    0  1   0   -1
-        0    0  0   0   0   0   0   0    1   -1  -1  0
-        ];    
+//      1   2   3   4   5   6   7   8    9   10  11  
+jac = [ 1   -1  -1  0   0   0   0   0    0   0  0    
+        0   1   1   -1  -1  -1  -1  0    0   0  0    
+        0   0   0   0   1   0   0   0    0   -1 -1    
+        0   0   0   1   0   0   0   -1   -1  0  0     ];                                
+//      1   2   3   4   5   6   7   8    9   10  11    
 endfunction
 
 
-  
+
+

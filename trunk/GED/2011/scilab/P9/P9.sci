@@ -2,38 +2,39 @@
 // Author: Edson Cordeiro do Valle
 // Contact - edsoncv@{gmail.com}{vrtech.com.br}
 // Skype: edson.cv
-//Martins, Márcio A.F., Carolina A. Amaro, Leonardo S. Souza, Ricardo A. Kalid, and Asher Kiperstok. 2010. 
-//New objective function for data reconciliation in water balance from industrial processes. 
-//Journal of Cleaner Production (March): 1-6. doi:10.1016/j.jclepro.2010.03.014. http://linkinghub.elsevier.com/retrieve/pii/S0959652610001149.
+//Mandel, Denis, Ali Abdollahzadeh, Didier Maquin, and Jos� Ragot. 1998. 
+//Data reconciliation by inequality balance equilibration: a LMI approach. 
+//International Journal of Mineral Processing 53, no. 3 (April): 157-169. 
+//http://www.sciencedirect.com/science/article/B6VBN-3VM1X8N-3/2/8bffe94a1153eea8647eed5af0031d36.
 
 //Bibtex Citation
-//@article{Martins2010,
-//author = {Martins, M\'{a}rcio A.F. and Amaro, Carolina A. and Souza, Leonardo S. and Kalid, Ricardo A. and Kiperstok, Asher},
-//doi = {10.1016/j.jclepro.2010.03.014},
-//file = {::},
-//issn = {09596526},
-//journal = {Journal of Cleaner Production},
-//month = mar,
-//pages = {1--6},
-//title = {{New objective function for data reconciliation in water balance from industrial processes}},
-//url = {http://linkinghub.elsevier.com/retrieve/pii/S0959652610001149},
-//year = {2010}
-//}
+//@article{Mandel1998,
+//author = {Mandel, Denis and Abdollahzadeh, Ali and Maquin, Didier and Ragot, Jos�},
+//isbn = {0301-7516},
+//journal = {International Journal of Mineral Processing},
+//keywords = {Linear Matrix Inequality Techniques,data reconciliation,error detection,error isolation},
+//month = apr,
+//number = {3},
+//pages = {157--169},
+//title = {{Data reconciliation by inequality balance equilibration: a LMI approach}},
+//url = {http://www.sciencedirect.com/science/article/B6VBN-3VM1X8N-3/2/8bffe94a1153eea8647eed5af0031d36},
+//volume = {53},
+//year = {
 
-// 13 Streams
-// 8 Equipments 
-function [x_sol, f_sol, status]=P9(xm, sd)
+// 12 Streams
+// 5 Equipments 
+// the measures
+function [x_sol, f_sol, status]=P8(xm, sd)
 //The jacobian of the constraints
-//      1   2   3   4   5   6   7   8    9   10  11  12  13
-jac = [ 1  -1  -1  -1  -1   0   0   0    0   0   0   0   0
-        0   1   0   0   0   0   0  -1    0   0   0   0   0
-        0   0   1   0   0   0   0   0   -1   0   0   0   0
-        0   0   0   1   0  -1  -1   0    0   0   0   0   0        
-        0   0   0   0   1   0   0   0    0   0   1  -1   0
-        0   0   0   0   0   1   0   0    0  -1   0   0   0
-        0   0   0   0   0   0   1   0    0   0  -1   0   0
-        0   0   0   0   0   0   0   1    1   1   0   0  -1];                                
-//      1   2   3   4   5   6   7   8    9   10  11  12  13
+//      1   2   3   4   5   6   7   8    9   10  11  12  
+jac = [ 1  -1  -1   0   0   0   0   0    0   0   0   0   
+        0   0   1   -1  -1  0   0    0   0   0   0   0   
+        0   0   0   0   1   -1  -1  0    0   0   0   0 
+        0   0   0   0   0   0   1    1    -1  0   0   0
+        0   0   0   0   0   0   0   -1    0  1   0   -1
+        0   0  0   0   0   0   0   0    1   -1  -1  0
+        ];                                
+//      1   2   3   4   5   6   7   8    9   10  11  12  
 // From here on, the problem generation is automatic
 // No need to edit below
 //The problem size: nc = number of constraints and nv number of variables
@@ -93,13 +94,6 @@ function y=dg(x)
 	
 endfunction
 
-// The constraints
-function y=dg(x)
-
-	y = dg1(x)
-	
-endfunction
-
 // The sparsity structure of the constraints
 
 sparse_dg = [i1', i2']
@@ -126,26 +120,28 @@ params = add_param(params,"hessian_approximation","exact");
 //params = add_param(params,"derivative_test","first-order");
 params = add_param(params,"tol",1e-8);
 params = add_param(params,"acceptable_tol",1e-8);
-params = add_param(params,"mu_strategy","adaptive");
+params = add_param(params,"mu_oracle","probing");
+
+params = add_param(params,"hessian_constant","yes");
+params = add_param(params,"jac_d_constant","yes");
+params = add_param(params,"jac_c_constant","yes");
 
 params = add_param(params,"journal_level",0);
 
 [x_sol, f_sol, extra] = ipopt(xm, objfun, gradf, confun, dg, sparse_dg, dh, sparse_dh, var_lin_type, constr_lin_type, constr_rhs, constr_lhs, lower, upper, params);
-
 status = extra('status');
 x_sol = x_sol';
 endfunction
 
 function [jac]=jacP9()
-//      1   2   3   4   5   6   7   8    9   10  11  12  13
-jac = [ 1  -1  -1  -1  -1   0   0   0    0   0   0   0   0
-        0   1   0   0   0   0   0  -1    0   0   0   0   0
-        0   0   1   0   0   0   0   0   -1   0   0   0   0
-        0   0   0   1   0  -1  -1   0    0   0   0   0   0        
-        0   0   0   0   1   0   0   0    0   0   1  -1   0
-        0   0   0   0   0   1   0   0    0  -1   0   0   0
-        0   0   0   0   0   0   1   0    0   0  -1   0   0
-        0   0   0   0   0   0   0   1    1   1   0   0  -1];                                
-//      1   2   3   4   5   6   7   8    9   10  11  12  13   
+jac = [ 1  -1  -1   0   0   0   0   0    0   0   0   0   
+        0   0   1   -1  -1  0   0    0   0   0   0   0   
+        0   0   0   0   1   -1  -1  0    0   0   0   0 
+        0   0   0   0   0   0   1    1    -1  0   0   0
+        0   0   0   0   0   0   0   -1    0  1   0   -1
+        0   0  0   0   0   0   0   0    1   -1  -1  0
+        ];    
 endfunction
 
+
+  

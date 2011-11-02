@@ -2,45 +2,40 @@
 // Author: Edson Cordeiro do Valle
 // Contact - edsoncv@{gmail.com}{vrtech.com.br}
 // Skype: edson.cv
-// Fictitious but realistic mineral processing plant
-//Alhaj-Dibo, Moustapha, Didier Maquin, and José Ragot. 2008.
-//Data reconciliation: A robust approach using a contaminated distribution.
-//Control Engineering Practice 16, no. 2 (February): 159-170.
-// http://www.sciencedirect.com/science/article/B6V2H-4N4406D-1/2/50cac92b050f160a20a795faec990dc7.
+
+//Mitsas, Christos L. 2010. Data reconciliation and variable classification by null space methods. 
+//Measurement 43, no. 5 (June): 702-707.
+// http://apps.isiknowledge.com/full_record.do?product=UA&search_mode=GeneralSearch&qid=2&SID=2A@bF9dN34I72L1Am9M&page=2&doc=17&colname=WOS.
 
 //Bibtex Citation
 
-//@article{Alhaj-Dibo2008,
-//author = {Alhaj-Dibo, Moustapha and Maquin, Didier and Ragot, Jos\'{e}},
-//isbn = {0967-0661},
-//journal = {Control Engineering Practice},
-//keywords = {Data reconciliation,Gross error detection,Linear and bilinear mass balances,Robust estimation},
-//month = feb,
-//number = {2},
-//pages = {159--170},
-//title = {{Data reconciliation: A robust approach using a contaminated distribution}},
-//url = {http://www.sciencedirect.com/science/article/B6V2H-4N4406D-1/2/50cac92b050f160a20a795faec990dc7},
-//volume = {16},
-//year = {2008}
+//@article{Mitsas2010a,
+//author = {Mitsas, Christos L.},
+//journal = {Measurement},
+//month = jun,
+//number = {5},
+//pages = {702--707},
+//publisher = {ELSEVIER SCI LTD},
+//title = {{Data reconciliation and variable classification by null space methods}},
+//url = {http://apps.isiknowledge.com/full\_record.do?product=UA\&search\_mode=GeneralSearch\&qid=2\&SID=2A@bF9dN34I72L1Am9M\&page=2\&doc=17\&colname=WOS},
+//volume = {43},
+//year = {2010}
 //}
 
-// 16 Streams
-// 9 Equipments 
-// the measures
-function [x_sol, f_sol, status]=P12(xm, sd)
+// 12 Streams
+// 6 Equipments 
+
+function [x_sol, f_sol, status]=P11(xm, sd)
 //The jacobian of the constraints
-//      1   2   3   4   5   6   7   8    9   10  11  12  13    14    15    16    
-jac = [ 1   -1  0   1   0   0   0   0    0   0   0   0   0     0     0      0    
-        0   1   -1  0   0   0   0   0    0   0   -1   0   0     0     0      0    
-        0   0   1   -1  -1  0   0   0    0   0   0   0   0     0     0      0    
-        0   0   0   0   1   -1  0   0    0   1   0   0   0     0     0      0    
-        0   0   0   0   0   1   -1  -1   0   0   0   0   0     0     0      0   
-//      1   2   3   4   5   6   7   8    9   10  11  12  13    14    15    16    
-        0   0   0   0   0   0   1   0    -1   -1  0   0   0     0     0      0    
-        0   0   0   0   0   0   0   0    0   0   1   -1   -1    0     0      1    
-        0   0   0   0   0   0   0   0    0   0   0   1   1     -1     0      0
-        0   0   0   0   0   0   0   0    0   0   0   0   0     1     -1      -1];                                
-//      1   2   3   4   5   6   7   8    9   10  11  12  13    14    15    16    
+//      1   2   3   4   5   6   7   8    9   10  11  12  
+jac = [ 1  -1  -1  -1   0   0   0   0    0   0   0   0   
+        0    1  0   0   -1  -1  -1  0    0   0   0   0   
+        0    0  1   0   1   1   1   -1   0   0   0   0
+        0    0  0   1   0   0   0   0    -1  -1  0   0
+        0    0  0   0   0   0   0   1    1   0   -1  0
+        0    0  0   0   0   0   0   0    0   1   1   -1
+        ];                                
+//      1   2   3   4   5   6   7   8    9   10  11  12  
 // From here on, the problem generation is automatic
 // No need to edit below
 //The problem size: nc = number of constraints and nv number of variables
@@ -133,24 +128,24 @@ params = add_param(params,"journal_level",0);
 
 [x_sol, f_sol, extra] = ipopt(xm, objfun, gradf, confun, dg, sparse_dg, dh, sparse_dh, var_lin_type, constr_lin_type, constr_rhs, constr_lhs, lower, upper, params);
 
+
+
 status = extra('status');
 x_sol = x_sol';
 endfunction
 
 function [jac]=jacP12()
 //The jacobian of the constraints
-//      1   2   3   4   5   6   7   8    9   10  11  12  13    14    15    16    
-jac = [ 1   -1  0   1   0   0   0   0    0   0   0   0   0     0     0      0    
-        0   1   -1  0   0   0   0   0    0   0   -1   0   0     0     0      0    
-        0   0   1   -1  -1  0   0   0    0   0   0   0   0     0     0      0    
-        0   0   0   0   1   -1  0   0    0   1   0   0   0     0     0      0    
-        0   0   0   0   0   1   -1  -1   0   0   0   0   0     0     0      0   
-//      1   2   3   4   5   6   7   8    9   10  11  12  13    14    15    16    
-        0   0   0   0   0   0   1   0    -1   -1  0   0   0     0     0      0    
-        0   0   0   0   0   0   0   0    0   0   1   -1   -1    0     0      1    
-        0   0   0   0   0   0   0   0    0   0   0   1   1     -1     0      0
-        0   0   0   0   0   0   0   0    0   0   0   0   0     1     -1      -1];                                
-//      1   2   3   4   5   6   7   8    9   10  11  12  13    14    15    16    
+//      1   2   3   4   5   6   7   8    9   10  11  12
+//The jacobian of the constraints
+//      1   2   3   4   5   6   7   8    9   10  11  12  
+jac = [ 1  -1  -1  -1   0   0   0   0    0   0   0   0   
+        0    1  0   0   -1  -1  -1  0    0   0   0   0   
+        0    0  1   0   1   1   1   -1   0   0   0   0
+        0    0  0   1   0   0   0   0    -1  -1  0   0
+        0    0  0   0   0   0   0   1    1   0   -1  0
+        0    0  0   0   0   0   0   0    0   1   1   -1
+        ];  
 endfunction
 
-
+ 
