@@ -2,34 +2,20 @@
 // Author: Edson Cordeiro do Valle
 // Contact - edsoncv@{gmail.com}{vrtech.com.br}
 // Skype: edson.cv
-
-//Rosenberg, J and Mah, R S H and Iordache, C
-//Evaluation of Schemes for Detecting and Identifying Gross Errors in Process Data
-//Ind. & Eng. Chem. Proc. Des. Dev, Vol., V. 26:555--564
-
-//Bibtex Citation
-//@article{Rosenberg1987a, 
-//author = {Rosenberg, J and Mah, R S H and Iordache, C},
-//journal = {Ind. \& Eng. Chem. Proc. Des. Dev, Vol.},
-//pages = {555--564},
-//title = {{Evaluation of Schemes for Detecting and Identifying Gross Errors in Process Data}},
-//volume = {26},
-//year = {1987}
-//}
-
-
-//7 Streams 
-//4 Equipments
+// Proposed by author
+//10 Streams 
+//6 Equipments
 
 function [x_sol, f_sol, status]=P7(xm, sd)
 //The jacobian of the constraints
 //      1   2   3   4   5   6   7   8    9   10    
-//      1   2     3   4   5   6   7   
-jac = [ 1   -1    0   1   0   1   0  
-        0    1   -1   0   0   0   0 
-        0    0    1  -1  -1   0   0
-        0    0    0   0   1   -1   -1];                                 
-//      1   2   3   4   5   6   7   
+jac = [ 1   -1   0  0   0   1   0   0    0   0      
+        0   1    -1  0   0   0   0  0    0   0      
+        0   0    1  -1   -1   0   0  0   1   0     
+        0   0    0  0   1   -1   -1  0    0   0
+        0   0    0  0   0   0   1   -1    0   0
+        0   0    0  0   0   0   0   1    -1   -1       ];                                
+//      1   2   3   4   5   6   7   8    9   10    
 // From here on, the problem generation is automatic
 // No need to edit below
 //The problem size: nc = number of constraints and nv number of variables
@@ -126,11 +112,12 @@ endfunction
 
 function [jac]=jacP7()
 //The jacobian of the constraints
-//The jacobian of the constraints
-//      1   2     3   4   5   6   7   
-jac = [ 1   -1    0   1   0   1   0  
-        0    1   -1   0   0   0   0 
-        0    0    1  -1  -1   0   0
-        0    0    0   0   1   -1   -1];                                 
-//      1   2   3   4   5   6   7   
+//      1   2   3   4   5   6   7   8    9   10    
+jac = [ 1   -1   0  0   0   1   0   0    0   0      
+        0   1    -1  0   0   0   0  0    0   0      
+        0   0    1  -1   -1   0   0  0   1   0     
+        0   0    0  0   1   -1   -1  0    0   0
+        0   0    0  0   0   0   1   -1    0   0
+        0   0    0  0   0   0   0   1    -1   -1       ];                                
+//      1   2   3   4   5   6   7   8    9   10    
 endfunction
