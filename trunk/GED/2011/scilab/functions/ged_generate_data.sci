@@ -13,9 +13,9 @@ resGrossErrorNodalRand = zeros(runsize*jac_row, jac_row);
 //rerror=grand(runsize,szx,'nor',0,1);
 // random number generators: rerror1 prefered as rerror
 for i=1:szx
-//this line must be commeted if the user wants to test just one measurement 
-// (see instructions at the beginng of the file)        
-    rerror1(:,i)=grand(runsize,1,'nor',0,sd(i));
+    rerror1(:,i)=grand(runsize,1,'nor',0,sd(i));        
+//the above line must be commeted and the beelow line uncommented if the user wants to test just one measurement 
+//    rerror1(:,i)=0;
 end
 
 // adding random error to exact x
@@ -25,8 +25,9 @@ for i=1:runsize
 end
 // gross errors for measurements (Measurement Test)
 // random sign generator to add to gross error
-
+// for some tests, like the MT it doesn't matter because the absolute value of the adjustments are considered
 mySign=sign(grand(runsize,szx,'unf',-1,1));
+
 k=0;
 for i=1:szx
     for j=1:runsize
