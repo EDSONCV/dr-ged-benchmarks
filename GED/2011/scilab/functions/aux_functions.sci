@@ -28,3 +28,53 @@ function [adj, detect, V, V_inv, sigma_inv, diag_diag_V, Wbar] = adjust(sigma, j
     end
 
 endfunction
+function [a,  b] = between(m, tol)
+ // return a vector of indexes of vector elements between max values within tolerance
+
+[a, b] = find (m > max(m) - tol & m < max(m) + tol)    
+endfunction
+function out=rrn(Ncifras,x)
+// Source http://stackoverflow.com/questions/202302/rounding-to-an-arbitrary-number-of-significant-digits
+// with some modifications to allow vectors as inputs    
+// Return Ncifras significative digits for the given x 
+[a b] = size(x);
+out = zeros(a,b);
+for i = 1:a
+    for j=1:b
+        if (x(i,j) == 0) then,
+            out(i,j)=0;
+            continue;
+        end
+        if (x(i,j) < 0 ) then
+            x(i,j) = -x(i,j);        
+        end
+        d = ceil(log(x(i,j)));
+        power = Ncifras - int(d);
+        magnitude = 10.^ power;
+        shifted = round(x(i,j)*magnitude);
+        out(i,j) =  shifted/magnitude;
+//        signo=sign(x(i,j));
+//        x(i,j)=signo*x(i,j);                 // x is now positive
+//        pot=round(log(x(i,j))./log(10)); //log base 10 rounded to the nearest integer
+////        mprintf('%f\n',pot);
+//        out(i,j)=signo*round(x(i,j)./10.^(pot-Ncifras+1))*10.^(pot-Ncifras+1); // include sign
+    end
+end
+return;
+endfunction
+function a = generateStreamName(sizex)
+    // generate a string with the stream names
+    a = string('');
+    for i = 1: sizex
+        a = a + string(' ') + string(i);
+    end
+endfunction
+function a = generateEqpName(sufix, sizex)
+    // generate a string with the equipment names
+    // Do not separate sufix with spaces
+    a = string('');
+    for i = 1: sizex
+        a = a + string(' ') + sufix + string(i);
+    end
+endfunction
+    

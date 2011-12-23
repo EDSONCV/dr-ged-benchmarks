@@ -7,6 +7,7 @@ function [avti_glr, op_glr_mt, aee_mt, aee_nt, op_glr_nt, avti_glr_nt ] = calc_G
     jac_col= size(jac,2); 
     runsizefinal = size(res,1);
     runsizenodal = size(resGrossErrorNodalRandFi,1);
+
     // GLR for measurement error dataset
     // the gross error signature for measurement bias
     fi = jac';
@@ -18,7 +19,7 @@ function [avti_glr, op_glr_mt, aee_mt, aee_nt, op_glr_nt, avti_glr_nt ] = calc_G
     Tsupindex= zeros(runsizefinal-runsize,2);
     Tsuplow= zeros(runsize);
     Tsupindexlow= zeros(runsize,2);
-
+//    disp(V_inv)
     for j = 1 : runsizefinal
         for i = 1: size(fi,1)
             // Narasimhan pg. 188 eq. 7-31
@@ -34,11 +35,22 @@ function [avti_glr, op_glr_mt, aee_mt, aee_nt, op_glr_nt, avti_glr_nt ] = calc_G
             //catches Tsup for random noise, used in AVTI
             [Tsuplow(j), Tsupindexlow(j,:)] = max(Ti(:,j));
         else
-            //catches Tsup for gross errors, used in OP
-            [Tsup(j - runsize), Tsupindex(j - runsize,:)] = max(Ti(:,j));
-        end
-    end
+ //catches Tsup for gross errors, used in OP
 
+        [a, b] = between(Ti(:,j)', 1.0e-6);
+        if length(b) > 1 then
+//            c = int((j-1)/runsize);    
+            Tsup(j - runsize) =  Ti(a(1),j);
+            Tsupindex(j - runsize,:) = -1;
+
+        else
+
+            [Tsup(j - runsize), Tsupindex(j - runsize,:)] = max(Ti(:,j));
+
+        end        end
+    end
+//    pause
+//    disp(Ti)
     //Qglr=0.145;
     //Qglr=0.14;
     // The choice of Qglr must be choosen to guarantee that all methods has the same AVTI in order to compare the 
@@ -56,6 +68,8 @@ function [avti_glr, op_glr_mt, aee_mt, aee_nt, op_glr_nt, avti_glr_nt ] = calc_G
     ge_avg_glr_abs_mt2 = zeros(jac_col);
     ge_avg_glr_mt = zeros(jac_col);
     ge_avg_glr_mt2 = zeros(jac_col);
+//    disp(length(Tsupindex))
+//    disp(Tsupindex)
     if length(Tsupindex) > 0 then
         for i = 1 : jac_col
             correct_index_mt = [];
@@ -84,13 +98,13 @@ function [avti_glr, op_glr_mt, aee_mt, aee_nt, op_glr_nt, avti_glr_nt ] = calc_G
 
             // Overall Power
             op_glr_mt(i) = ge_glr_mt(i)/runsize;
-            clear correct_index_nt;
+//            clear correct_index_nt;
         end // for
     end //if
-
+//    pause
     // Average of Type I error for measurement random noise
     avti_glr = length(find(Tsuplow >=  xchiglr))/runsize;
-
+//    pause
     // To reduce memory use, can be commented for debug or small problems
     clear di Ci bi Ti Tsup Tsupindex Tsuplow Tsupindexlow;
 
@@ -181,6 +195,5 @@ function [avti_glr, op_glr_mt, aee_mt, aee_nt, op_glr_nt, avti_glr_nt ] = calc_G
 
     // Average of Type I error
     avti_glr_nt = length(find(Tsup_nt_low >=  xchiglr_nt))/runsize;
-    // To reduce memory use, can be commented for debug or small problems
     //GLR ENDS HERE
 endfunction

@@ -9,6 +9,8 @@ V_inv = inv(V);
 Wbar=sigma*jac'*inv(V)*jac*sigma;
 // variance-covariance matrix: narasimham pg. 178 eq. 7-3
 diag_diag_V = diag(diag(V));
+diag_diag_inv_V = diag(diag(V_inv));
+
 sigma_inv=inv(sigma);
 rj=rank(jac);
 jac_col = size(jac,2);
@@ -59,9 +61,15 @@ for i=1:runsizefinal
 // zr_nt_nodal is calculated as Narasimhan pg. 180 eq 7.5 also but the residuals used are the
 // residuals from gross errors in the balances (leakings)                  
             zr_nt_nodal(i,k)=abs(resGrossErrorNodalRandFi(i,k))./(diag_diag_V(k,k).^0.5);  
-            
+// for maximum power constraint test (Narasimhan pg. 180 eq 7.9), comment the line above and uncomment the 2 lines bellow
+//pause
+//            V_inv_res = (V_inv*resGrossErrorNodalRandFi(i,:)')';
+//            zr_nt_nodal(i,k)=abs(V_inv_res(k))./(diag_diag_inv_V(k,k).^0.5);  
             if i <= runsize then
-                zr_nt_nodal_rand(i,k)=abs(res(i,k))./(diag_diag_V(k,k).^0.5);                    
+                 zr_nt_nodal_rand(i,k)=abs(res(i,k))./(diag_diag_V(k,k).^0.5); 
+// for maximum power constraint test (Narasimhan pg. 180 eq 7.9), comment the line above and uncomment the 2 lines bellow
+//                 V_inv_res = (V_inv*res(i,:)')';
+//                 zr_nt_nodal_rand(i,k)=abs(V_inv_res(k))./(diag_diag_inv_V(k,k).^0.5);                    
             end //if
          end
     end //for
