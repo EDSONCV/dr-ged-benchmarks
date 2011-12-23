@@ -27,7 +27,7 @@
 // 16 Streams
 // 9 Equipments 
 // the measures
-function [x_sol, f_sol, status]=P12(xm, sd)
+function [x_sol, f_sol, status]=P13(xm, sd)
 //The jacobian of the constraints
 //      1   2   3   4   5   6   7   8    9   10  11  12  13    14    15    16    
 jac = [ 1   -1  0   1   0   0   0   0    0   0   0   0   0     0     0      0    
