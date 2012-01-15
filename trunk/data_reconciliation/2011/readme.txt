@@ -44,22 +44,24 @@ P4	Narasimhan, S, and C Jordache. 2000. Data Reconciliation and Gross Error Dete
 
 P5	Yang, Youqi, Rongbo Ten, and Luiqun Jao. 1995. “A study of gross error detection and data reconciliation in process industries.” Comp. & Chem. Eng 19S:S217-S222.
 
-P6	Proposed
+P6	﻿Rosenberg, J, R S H Mah, and C Iordache. 1987. “Evaluation of Schemes for Detecting and Identifying Gross Errors in Process Data.” Ind. & Eng. Chem. Proc. Des. Dev, Vol. 26: 555-564.
 
-P7	Rao, R Ramesh, and Shankar Narasimhan. 1996. “Comparison of Techniques for Data Reconciliation of Multicomponent Processes.” Industrial & Engineering Chemistry Research 35:1362-1368. http://dx.doi.org/10.1021/ie940538b.
+P7	Proposed
 
-P8	Mandel, Denis, Ali Abdollahzadeh, Didier Maquin, and José Ragot. 1998. “Data reconciliation by inequality balance equilibration: a LMI approach.” International Journal of Mineral Processing 53:157-169. http://www.sciencedirect.com/science/article/B6VBN-3VM1X8N-3/2/8bffe94a1153eea8647eed5af0031d36.
+P8	Rao, R Ramesh, and Shankar Narasimhan. 1996. “Comparison of Techniques for Data Reconciliation of Multicomponent Processes.” Industrial & Engineering Chemistry Research 35:1362-1368. http://dx.doi.org/10.1021/ie940538b.
 
-P9	Martins, Márcio A.F., Carolina A. Amaro, Leonardo S. Souza, Ricardo A. Kalid, and Asher Kiperstok. 2010. “New objective function for data reconciliation in water balance from industrial processes.” Journal of Cleaner Production 1-6. http://linkinghub.elsevier.com/retrieve/pii/S0959652610001149.
+P9	Mandel, Denis, Ali Abdollahzadeh, Didier Maquin, and José Ragot. 1998. “Data reconciliation by inequality balance equilibration: a LMI approach.” International Journal of Mineral Processing 53:157-169. http://www.sciencedirect.com/science/article/B6VBN-3VM1X8N-3/2/8bffe94a1153eea8647eed5af0031d36.
 
-P10	Rao, R Ramesh, and Shankar Narasimhan. 1996. “Comparison of Techniques for Data Reconciliation of Multicomponent Processes.” Industrial & Engineering Chemistry Research 35:1362-1368. http://dx.doi.org/10.1021/ie940538b.
+P10	Martins, Márcio A.F., Carolina A. Amaro, Leonardo S. Souza, Ricardo A. Kalid, and Asher Kiperstok. 2010. “New objective function for data reconciliation in water balance from industrial processes.” Journal of Cleaner Production 1-6. http://linkinghub.elsevier.com/retrieve/pii/S0959652610001149.
 
-P11	Mitsas, Christos L. 2010. “Data reconciliation and variable classification by null space methods.” Measurement 43:702-707. http://apps.isiknowledge.com/full_record.do?product=UA&search_mode=GeneralSearch&qid=2&SID=2A@bF9dN34I72L1Am9M&page=2&doc=17&colname=WOS (Accessed July 22, 2010).
+P11	Rao, R Ramesh, and Shankar Narasimhan. 1996. “Comparison of Techniques for Data Reconciliation of Multicomponent Processes.” Industrial & Engineering Chemistry Research 35:1362-1368. http://dx.doi.org/10.1021/ie940538b.
 
-P12	Alhaj-Dibo, Moustapha, Didier Maquin, and José Ragot. 2008. “Data reconciliation: A robust approach using a contaminated distribution.” Control Engineering Practice 16:159-170. http://www.sciencedirect.com/science/article/B6V2H-4N4406D-1/2/50cac92b050f160a20a795faec990dc7.
+P12	Mitsas, Christos L. 2010. “Data reconciliation and variable classification by null space methods.” Measurement 43:702-707. http://apps.isiknowledge.com/full_record.do?product=UA&search_mode=GeneralSearch&qid=2&SID=2A@bF9dN34I72L1Am9M&page=2&doc=17&colname=WOS (Accessed July 22, 2010).
 
-P13	Proposed
+P13	Alhaj-Dibo, Moustapha, Didier Maquin, and José Ragot. 2008. “Data reconciliation: A robust approach using a contaminated distribution.” Control Engineering Practice 16:159-170. http://www.sciencedirect.com/science/article/B6V2H-4N4406D-1/2/50cac92b050f160a20a795faec990dc7.
 
-P14	Serth, R W, and W A Heenan. 1986. “Gross error detection and data reconciliation in steam-metering systems.” AIChE Journal 32:733-747.
+P14	Proposed
 
-P15	Zhang, Zhengjiang, Zhijiang Shao, Xi Chen, Kexin Wang, and Jixin Qian. 2010. “Quasi-weighted least squares estimator for data reconciliation.” Computers & Chemical Engineering 34:154-162. http://www.sciencedirect.com/science/article/B6TFT-4XDCHNS-1/2/63a2b79a4cc89a3afb57ff83c4063242.
+P15	Serth, R W, and W A Heenan. 1986. “Gross error detection and data reconciliation in steam-metering systems.” AIChE Journal 32:733-747.
+
+P16	Zhang, Zhengjiang, Zhijiang Shao, Xi Chen, Kexin Wang, and Jixin Qian. 2010. “Quasi-weighted least squares estimator for data reconciliation.” Computers & Chemical Engineering 34:154-162. http://www.sciencedirect.com/science/article/B6TFT-4XDCHNS-1/2/63a2b79a4cc89a3afb57ff83c4063242.
