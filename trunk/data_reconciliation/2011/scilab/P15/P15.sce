@@ -21,6 +21,7 @@
 // 11 Equipments 
 // the measures
 clear xm var jac nc nv i1 i2 nnz sparse_dg sparse_dh lower upper var_lin_type constr_lin_type constr_lhs constr_rhs
+getd('../functions/wls');
 xm =[0.875
 0.989
 108.426

@@ -25,6 +25,7 @@
 //12 Streams 
 //3 Equipments
 clear xm var jac nc nv i1 i2 nnz sparse_dg sparse_dh lower upper var_lin_type constr_lin_type constr_lhs constr_rhs
+getd('../functions/wls');
 // the measures
 xm =[190.26000
 174.71000

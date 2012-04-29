@@ -27,6 +27,7 @@
 // 7 Equipments 
 
 clear xm var jac nc nv i1 i2 nnz sparse_dg sparse_dh lower upper var_lin_type constr_lin_type constr_lhs constr_rhs
+getd('../functions/wls');
 // In the original paper, all streams for this problem are unmeasures, 
 //theses values are estimates givem by the paper's original author.
 xm =[691.67
