@@ -1,4 +1,4 @@
-    // Data Reconciliation Benchmark Problems From Lietrature Review
+// Data Reconciliation Benchmark Problems From Lietrature Review
 // Author: Edson Cordeiro do Valle
 // Contact - edsoncv@{gmail.com}{vrtech.com.br}
 // Skype: edson.cv
@@ -24,6 +24,7 @@
 // 8 Equipments 
 
 clear xm var jac nc nv i1 i2 nnz sparse_dg sparse_dh lower upper var_lin_type constr_lin_type constr_lhs constr_rhs
+getd('../functions/wls');
 // the measures
 xm =[28.06
 3.06

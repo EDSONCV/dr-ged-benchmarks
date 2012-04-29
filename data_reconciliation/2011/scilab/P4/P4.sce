@@ -43,9 +43,11 @@ params = add_param(params,"derivative_test","second-order");
 params = add_param(params,"tol",1e-8);
 params = add_param(params,"acceptable_tol",1e-8);
 params = add_param(params,"mu_strategy","adaptive");
-params = add_param(params,"journal_level",5);
+params = add_param(params,"journal_level",6);
+params = add_param(params,"print_user_options","yes");
 
-[x_sol, f_sol, extra] = ipopt(xm, objfun, gradf, confun, dg, sparse_dg, dh, sparse_dh, var_lin_type, constr_lin_type, constr_rhs, constr_lhs, lower, upper, params);
+//[x_sol, f_sol, extra] = ipopt(xm, objfun, gradf, confun, dg, sparse_dg, dh, sparse_dh, var_lin_type, constr_lin_type, constr_rhs, constr_lhs, lower, upper, params);
+[x_sol, f_sol, extra] = ipopt(zeros(6,1), objfun, gradf, confun, dg, sparse_dg, dh, sparse_dh, var_lin_type, constr_lin_type, constr_rhs, constr_lhs, lower, upper, params);
 
 mprintf("\n\nSolution: , x\n");
 for i = 1 : nv
