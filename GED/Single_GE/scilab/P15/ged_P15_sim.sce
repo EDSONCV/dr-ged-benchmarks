@@ -21,8 +21,10 @@
 // 11 Equipments 
 // the measures
 getd('../functions/');
-getd('.');
-clear xr sd sds x_sol xfinal jac jac_col jac_col rj sigma sigam_inv res  V V_inv diag_diag_V Wbar gama zr_nt adj zadj   Wbar_alt  adjustability detect avt1_mt1 avt1_mt2 resi Qglr betaglr xchiglr ge_glr op_glr ;
+getd('../jacobians/');
+clear xr sd sds x_sol xfinal jac jac_col jac_col rj sigma sigam_inv res  V V_inv diag_diag_V Wbar gama zr_nt adj zadj   Wbar_alt  adjustability detect resi Qglr betaglr xchiglr ge_glr op_glr;
+clear avti_gt_mt op_gt_mt op_gt_nt_tmp avt1_mt1 avt1_mt2 op_mt1 op_mt2 avti_glr op_glr_mt aee_mt aee_nt_tmp op_glr_nt_tmp avti_glr_nt_tmp avti_gt_mt_tmp op_gt_mt_tmp op_gt_nt avt1_nt1 avt1_nt2 op_nt1 op_nt2 avti_glr_tmp op_glr_mt_tmp aee_mt_tmp aee_nt op_glr_nt avti_glr_nt; 
+
 stacksize(26840000);
 tic;
 xr =[0.86;1;111.82;109.96;53.27;112.27;2.32;164.05;0.83;52.41;14.86;67.27;111.27;91.86;60;23.64;32.73;16.23;7.85;10.5;87.32;5.45;2.59;46.63;85.46;81.32;70.79;72.23];
