@@ -7,8 +7,10 @@
 //6 Equipments
 
 getd('../functions/');
-clear rerror rerror1 xr xrs sd sds x_sol grerror grerrors mySign xfinal jac jac_col jac_col rj sigma sigam_inv res  V V_inv diag_diag_V Wbar gama zr_nt adj zadj d_adj zadj_alt Wbar_alt x_chi ge_gt nge_gt ge_nt1_i ge_nt1_j ge_nt2_i ge_nt2_j norm_nt1 norm_nt2 norm_mt norm_mt2 ge_mt_i ge_mt_j ge_mt_alt_i ge_mt1_alt_i ge_mt1_alt_j ge_mt2_alt_i ge_mt2_alt_j ge_mt_alt2_j ge_mt1_i ge_mt1_j ge_mt2_i ge_mt2_j Vinv_r zr_nt_alt ge_nt_alt_i ge_nt_alt_j op_nt1 op_nt2 op_mt1 op_mt2 op_mt1_alt op_mt2_alt op_nt_alt_1 op_nt_alt_2 adjustability detect ge_mt1_i_r ge_mt1_j_r ge_mt21_i_r ge_mt2_j_r  ge_mt1_i_ge ge_mt1_j_ge ge_mt1_alt_i_ge ge_mt1_alt_j_ge ge_mt2_j_ge ge_mt2_alt_i_ge ge_mt2_alt_j_ge e_mt1_ij_ge e_mt2_ij_ge ge_mt1_alt_ij_ge ge_mt2_alt_ij_ge avt1_mt1 avt1_mt2 avt1_mt1_alt avt1_mt2_alt;
-tic;
+getd('../jacobians/');
+clear xr sd sds x_sol xfinal jac jac_col jac_col rj sigma sigam_inv res  V V_inv diag_diag_V Wbar gama zr_nt adj zadj   Wbar_alt  adjustability detect resi Qglr betaglr xchiglr ge_glr op_glr;
+clear avti_gt_mt op_gt_mt op_gt_nt_tmp avt1_mt1 avt1_mt2 op_mt1 op_mt2 avti_glr op_glr_mt aee_mt aee_nt_tmp op_glr_nt_tmp avti_glr_nt_tmp avti_gt_mt_tmp op_gt_mt_tmp op_gt_nt avt1_nt1 avt1_nt2 op_nt1 op_nt2 avti_glr_tmp op_glr_mt_tmp aee_mt_tmp aee_nt op_glr_nt avti_glr_nt; 
+
 // the real values
 xr =[50;75;75;48;30;25;5;5;3;2];
 //the variance
