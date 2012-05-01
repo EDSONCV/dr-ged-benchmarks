@@ -55,12 +55,14 @@ op_gt_mt = zeros(1, mtsize);
 op_mt1 = zeros(jac_col, mtsize); op_mt2 = op_mt1;
 op_glr_mt = op_mt1; aee_mt = op_mt1;
 
+xrand=generate_data_random_err(xr, sd, jac, runsize);
+
 // we do the Overall Power Curve in two steps, first for the measurement bias, then for the leakings:
 // in order to avoid undesired overwriting , the variables with "_tmp" termination
 // is created
 for i = lb_delta:ub_delta
 
-    [xfinal, resRand, resGrossErrorNodalRand]=generate_data(xr, sd, jac, runsize, i, i, 0, 0);
+    [xfinal, resRand, resGrossErrorNodalRand]=generate_data_errors(xr, xrand, sd, jac, runsize, i, i, 0, 0);
 
     resGrossErrorNodalRandFi = [ resRand;resGrossErrorNodalRand];
 
@@ -87,7 +89,7 @@ op_nt1 = aee_nt; op_nt2 = aee_nt;
 
 for j = lb_leak:ub_leak
 
-    [xfinal, resRand, resGrossErrorNodalRand]=generate_data(xr, sd, jac, runsize, 0, 0, j/100, j/100);
+    [xfinal, resRand, resGrossErrorNodalRand]=generate_data_errors(xr, xrand, sd, jac, runsize, 0, 0, j/100, j/100);
 
     resGrossErrorNodalRandFi = [ resRand;resGrossErrorNodalRand];
 
