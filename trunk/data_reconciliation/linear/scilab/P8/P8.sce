@@ -59,6 +59,8 @@ params = init_param();
 // We use the given Hessian
 params = add_param(params,"hessian_approximation","exact");
 params = add_param(params,"derivative_test","second-order");
+params = add_param(params,"jac_c_constant","yes")
+params = add_param(params,"hessian_constant","yes");
 params = add_param(params,"tol",1e-8);
 params = add_param(params,"acceptable_tol",1e-8);
 params = add_param(params,"mu_strategy","adaptive");
