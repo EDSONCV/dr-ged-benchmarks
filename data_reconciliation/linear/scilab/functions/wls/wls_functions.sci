@@ -32,7 +32,7 @@ endfunction
 
 function y = dg1(x)
 
-for i = 1: nnz; 
+for i = 1: nnzeros; 
   y(i)=jac(i1(i),i2(i)); 
 end
 
@@ -51,7 +51,7 @@ function y=dg(x)
 	
 endfunction
 
-function [nc, nv, i1, i2, nnz, sparse_dg, sparse_dh, lower, upper, var_lin_type, constr_lin_type, constr_lhs, constr_rhs]  = wls_structure(jac)
+function [nc, nv, i1, i2, nnzeros, sparse_dg, sparse_dh, lower, upper, var_lin_type, constr_lin_type, constr_lhs, constr_rhs]  = wls_structure(jac)
     // From here on, the problem generation is automatic
 // No need to edit below
 //The problem size: nc = number of constraints and an number of variables
@@ -59,7 +59,7 @@ function [nc, nv, i1, i2, nnz, sparse_dg, sparse_dh, lower, upper, var_lin_type,
 // index of the non-zero elements of the Jacobian
 [i1,i2]=find(jac<>0);
 
-nnz = size(i1,2);
+nnzeros = size(i1,2);
 
 // The sparsity structure of the constraints
 

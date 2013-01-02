@@ -20,8 +20,8 @@
 // 28 Streams
 // 11 Equipments 
 // the measures
-clear xm var jac nc nv i1 i2 nnz sparse_dg sparse_dh lower upper var_lin_type constr_lin_type constr_lhs constr_rhs
-getd('../functions/wls');
+clear xm var jac nc nv i1 i2 nnzeros sparse_dg sparse_dh lower upper var_lin_type constr_lin_type constr_lhs constr_rhs
+
 xm =[0.875
 0.989
 108.426
@@ -96,7 +96,27 @@ jac = [ 1   1   -1  1   0   0   0   0    0   0   0   0   0     0     0      0   
         0   0   0   0   0   0   0   -1   0   0   0   0   0     0     0      0    0      0    0    1     0    0     0     0     0     1     0     1
         ];                                
 //      1   2   3   4   5   6   7   8    9   10  11  12  13    14    15    16    17    18   19   20    21   22    23    24    25    26    27    28
-[nc, nv, i1, i2, nnz, sparse_dg, sparse_dh, lower, upper, var_lin_type, constr_lin_type, constr_lhs, constr_rhs]  = wls_structure(jac);
+// to run robust reconciliation,, one must choose between the folowing objective functions to set up the functions path and function parameters:
+//WLS = 0
+// Absolute sum of squares = 1
+//Cauchy = 2
+//Contamined Normal = 3
+//Fair  = 4
+//Hampel = 5
+//Logistic = 6
+//Lorenztian = 7
+//Quasi Weighted = 8
+// run the configuration functions with the desired objective function type
+obj_function_type = 0;
+exec ../functions/setup_DR.sce
+// to run robust reconciliation, it is also necessary to choose the function to return the problem structure
+if obj_function_type > 0 then
+[nc_eq, n_non_lin_eq, nv, nnzjac_ineq, nnzjac_eq, nnz_hess, sparse_dg, sparse_dh, lower, upper, var_lin_type, constr_lin_type, constr_lhs, constr_rhs]  = robust_structure(jac, 0, xm, objfun, res_eq, res_ineq);
+else
+// for WLS, only the line bellow must be choosen and comment the 3 lines above
+[nc, nv, i1, i2, nnzeros, sparse_dg, sparse_dh, lower, upper, var_lin_type, constr_lin_type, constr_lhs, constr_rhs]  = wls_structure(jac);
+end
+
 
 params = init_param();
 // We use the given Hessian
