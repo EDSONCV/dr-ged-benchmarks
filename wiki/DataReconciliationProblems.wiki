@@ -15,11 +15,17 @@ When the dynamic system starts:
  * At time t3, the inlet valves of tank 1 and 2 are closed and by-pass valve is opened.
 
 We have four implementations of this version:
+
 1. The dynamic behaviour is *neglected* and *all streams are measured* (in folder ss_all_measured).
+
 2. 1. The dynamic behaviour is *neglected* and *some streams are unmeasured* (in folder ss_unmeasured).
+
 3. The dynamic behaviour is *neglected* and *all streams are measured* but a *gross error is added* at a given time, which can be setup by user (in folder gross_error).
+
 4. The dynamic behaviour *must be considered* and *all streams are measured* (in folder dynamic).
-5. The dynamic behaviour *must be considered* and *all streams are measured* and a *gross error* is added at a given time, which can be setup by user (in folder dynamic).
+
+5. The dynamic behaviour *must be considered* and *all streams are measured* and a *gross error* is added at a given time, which can be setup by user (in folder dynamic_gross_error).
+
 
     2 error_in_variables 
 
