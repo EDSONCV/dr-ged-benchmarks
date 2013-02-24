@@ -4,9 +4,22 @@ Data reconciliation are divided in 4 categories, which are the sub folders conta
 
     1 data_analysis 
 
-    The aim of this problems is to test data filter (filter on the variables before DR is applied), data filter window selection and influence on the dynamics on the DR results. These problems were built using the xcos (simulink version of scilab). 
+    The aim of this problems is to test data filter (filter on the variables before DR is applied), data filter window selection and influence on the dynamics on the DR results. These problems were built using the xcos (simulink version of scilab). The problem is a 2 tanks in parallel. Each tank has its own dynamic behaviour and a bypass valve to close the tanks feeding. The flowsheet is presented below:   
 
-http://code.google.com/p/dr-ged-benchmarks/source/browse/trunk/data_reconciliation/data_analysis/diagrams/png/2tanks.png
+http://dr-ged-benchmarks.googlecode.com/svn/trunk/data_reconciliation/data_analysis/diagrams/png/2tanks.png
+
+When the dynamic system starts:
+ * At time t0 where all flow is by-passed to streams 4 and 7.
+ * At time t1, the bypass valve is closed and the inlet valve of tank 1 is opened.
+ * At time t2, the valve to tank 1 is closed and inlet valve to tank 2 is opened. 
+ * At time t3, the inlet valves of tank 1 and 2 are closed and by-pass valve is opened.
+
+We have four implementations of this version:
+1. The dynamic behaviour is *neglected* and *all streams are measured* (in folder ss_all_measured).
+2. 1. The dynamic behaviour is *neglected* and *some streams are unmeasured* (in folder ss_unmeasured).
+3. The dynamic behaviour is *neglected* and *all streams are measured* but a *gross error is added* at a given time, which can be setup by user (in folder gross_error).
+4. The dynamic behaviour *must be considered* and *all streams are measured* (in folder dynamic).
+5. The dynamic behaviour *must be considered* and *all streams are measured* and a *gross error* is added at a given time, which can be setup by user (in folder dynamic).
 
     2 error_in_variables 
 
