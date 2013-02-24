@@ -2,19 +2,19 @@
 = Data Reconciliation Benchmark Problems =
 Data reconciliation are divided in 4 categories, which are the sub folders contained in /trunk/data_reconciliation folder:
 
-    # data_analysis 
+    1 data_analysis 
 
     The aim of this problems is to test data filter (filter on the variables before DR is applied), data filter window selection and influence on the dynamics on the DR results. These problems were built using the xcos (simulink version of scilab). 
 
-    # error_in_variables 
+    2 error_in_variables 
 
     Error in Variables (EVM) is a problem where a DR is carried out together with parameter estimation, the aim of this problem is to test algorithms for this problem class. 
 
-    # linear 
+    3 linear 
 
     Although linear problems are easy to solve in DR, since it have analytical solution, the aim of this problem is to test different objetctive function types, called robust functions. These robust functions can provide results with gross errors removed, however, to do this, some parameters must be tunned in these function. The aim of this class problems is to test these parameters set up. 
 
-    # non-linear 
+    4 non-linear 
 
     The aim of these problems is to test DR in more complex and non-linear problems. Some features are tested such as:
 
@@ -22,8 +22,8 @@ Data reconciliation are divided in 4 categories, which are the sub folders conta
         How DR behaves with non-observable non-measured variables.
         How DR behaves with models which are approximated by model simplifications. 
 
-== Each folder has 3 sobfolders: ==
+ Each folder has 3 sobfolders: 
 
-    diagrams: a diagram of the process in the .dia and .png format.
-    scilab: the scilab implementation.
-    spreadsheet: a Excel spreadsheet of the data, results or some data handling necessary to run the model. 
+    * diagrams: a diagram of the process in the .dia and .png format.
+    * scilab: the scilab implementation.
+    * spreadsheet: a Excel spreadsheet of the data, results or some data handling necessary to run the model. 
