@@ -6,6 +6,8 @@ Data reconciliation are divided in 4 categories, which are the sub folders conta
 
     The aim of this problems is to test data filter (filter on the variables before DR is applied), data filter window selection and influence on the dynamics on the DR results. These problems were built using the xcos (simulink version of scilab). 
 
+http://code.google.com/p/dr-ged-benchmarks/source/browse/trunk/data_reconciliation/data_analysis/diagrams/png/2tanks.png
+
     2 error_in_variables 
 
     Error in Variables (EVM) is a problem where a DR is carried out together with parameter estimation, the aim of this problem is to test algorithms for this problem class. 
