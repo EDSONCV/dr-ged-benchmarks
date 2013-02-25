@@ -17,6 +17,8 @@ When the dynamic system starts:
  * At time t3, the inlet valves of tank 1 and 2 are closed and by-pass valve is opened.
  * Depending on the case, the user can add gross error to the measurement. The time and location can be set by the user.
 
+There are 2 scripts in each folder. The first one is to test the influence of the size of the moving average window filter in the data reconciliation. The second one, uses a default windows size of 30 data points to filter data and perform reconciliation of all measured streams with and without filtering. The results are plotted in several windows (one for each stream).
+
 We have four implementations of this version:
 
 1. The dynamic behaviour is *neglected* and *all streams are measured* (in folder ss_all_measured). The block diagram can be checked below:
@@ -52,6 +54,27 @@ At the root folder of data_analysis folder we find the following files and folde
   * gross_error: Steady state with all streams measured and a gross error (position and time can be chosen).
   * dynamic: Different dynamic behaviour for each tank with all streams measured.
   * dynamic_gross_error: Different dynamic behaviour for each tank with all streams measured and a gross error (position and time can be chosen).
+
+ Files inside each folder
+
+Since the block diagrams were generated with Scilab 5.4 and Xcos (Simulink similar for Scilab), they ara not compatible with older Scilab versions, in this case, a ".sav" file is available and can be loaded instead of running Xcos simulation. If you want to load a previously saved simulation data, set _run_new_ flag to 0, in the respective ".sce" script, as in the code below:
+{{{
+clear xm var jac nc nv i1 i2 nnzeros sparse_dg sparse_dh lower upper var_lin_type constr_lin_type constr_lhs constr_rhs
+getd('../');
+getd('.');
+run_new = 0;
+}}  
+
+ ss_all_measured folder
+
+* tanks_ss_noerror.sce: script file to open Xcos diagram, simulate, filter, reconcile data and plot results.
+* tanks_tst_window.sce: script to test moving window size. 
+* ss_no_error_mat.sav: saved simulation file, in case the user have problems with Xcos.
+* steady_state_no_ge.zcos: Xcos diagram
+* wls_linear_functions.sce: unused by now (will be used in the future)
+* wls_linear_functions.sci:unused by now (will be used in the future)
+
+
   
   
     2 error_in_variables 
