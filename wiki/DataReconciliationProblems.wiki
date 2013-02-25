@@ -2,7 +2,7 @@
 = Data Reconciliation Benchmark Problems =
 Data reconciliation are divided in 4 categories, which are the sub folders contained in /trunk/data_reconciliation folder:
 
-    1 data_analysis 
+    == 1 data_analysis == 
 
     The aim of this problems is to test data filter (filter on the variables before DR is applied), data filter window selection and influence on the dynamics on the DR results. These problems were built using the xcos (simulink version of scilab, *compatible with scilab version 5.4*). 
 
@@ -94,7 +94,7 @@ In this case a simulation with all variables is carried out and a filter is used
     * scilab: the scilab implementation.
     * spreadsheet: a Excel spreadsheet of the data, results or some data handling necessary to run the model. 
   
-    2 error_in_variables 
+    == 2 error_in_variables ==
 
     Error in Variables (EVM) is a problem where a DR is carried out together with parameter estimation, the aim of this problem is to test algorithms for this problem class. Since all the residuals (constraints) are non-linear, we use automatic differentiation toolbox from Scilab (diffcode) to evaluate the Hessian and Jacobian structure. The Jacobian and Hessian evaluation are done by finite difference (Scilab function "derivative"), and for this reason, some problems takes long to converge.
 
@@ -175,7 +175,7 @@ Iterative Estimation of Model Parameters When Measurements of all Variables are 
 
 
 
-    3 linear 
+    == 3 linear ==
 
     In this type of problem, we deal with linear data reconciliation (total flow measurements), with all streams measured and known variance/standard deviation data.  Although linear problems are easy to solve in DR, since it have analytical solution, the aim of this problem is to test different objective function types, called robust functions. These robust functions can provide results with gross errors removed, however, to do this, some parameters must be tuned in these function. The aim of this class problems is to test these parameters set up. 
 
@@ -327,7 +327,7 @@ Quasi Weighted Robust function, according to Zhang et al. - Comp.  & Chem. Eng.
 
 
 
-    4 non-linear 
+    == 4 non-linear ==
 
     The aim of these problems is to test DR in more complex and non-linear problems. Some features are tested such as:
 
@@ -373,12 +373,19 @@ Inside "functions" folder there are the robust function implementation, constrai
     * functions_ammonia.sci: problem structure (Jacobian, Hessian, etc.)
     * jac_flowsheet_residuals.sci: Jacobian evaluation
 
+    Problem flowsheet:
+
+http://dr-ged-benchmarks.googlecode.com/svn/trunk/data_reconciliation/nonlinear/diagrams/png/flow_ammonia2.png
+
+
  * nonlin_pf88 folder
 
     * nonlin_pf88.sce: the running script
     * pf88_residuals.sci:constraints
     * pf_functions_nl.sci: problem structure (Jacobian, Hessian, etc.)
     * jac_pf88_residuals.sci: Jacobian evaluation
+
+   No flowsheet available. 
 
  * nonlin_rn96_1 folder
 
@@ -388,6 +395,10 @@ Inside "functions" folder there are the robust function implementation, constrai
     * jac_compound_residuals.sci: Jacobian evaluation
     * old: unused, old implementations
 
+    Problem flowsheet:
+
+http://dr-ged-benchmarks.googlecode.com/svn/trunk/data_reconciliation/nonlinear/diagrams/png/nonlin_rn96_1.png
+
  * nonlin_rn96_2 folder
 
     * nonlin_rn96_2: the running script
@@ -396,12 +407,18 @@ Inside "functions" folder there are the robust function implementation, constrai
     * jac_compound_residuals.sci: Jacobian evaluation
     * old: unused, old implementations
 
+http://dr-ged-benchmarks.googlecode.com/svn/trunk/data_reconciliation/nonlinear/diagrams/png/nonlin_rn96_2.png
+
  * nonlin_sw89
 
     * nonlin_sw89.sce: the running script
     * flowsheet_residuals.sci: mass and energy balance (constraints)
     * functions_energy_balance.sci: problem structure (Jacobian, Hessian, etc.)
     * jac_flowsheet_residuals.sci: Jacobian evaluation
+
+  Problem flowsheet
+
+http://dr-ged-benchmarks.googlecode.com/svn/trunk/data_reconciliation/nonlinear/diagrams/png/nonlin_sw89.png
 
 To select the appropriate objective function the user must select the problem folder (e.g. cd nonlin_ammonia) and edit the selected script file (edit nonlin_ammonia.sce). After it, the user may choose the objective function type by selection the right objective function number, e.g., to select WLS function:
 
