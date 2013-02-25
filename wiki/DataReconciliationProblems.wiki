@@ -92,6 +92,42 @@ In this case a simulation with all variables is carried out and a filter is used
 
     Error in Variables (EVM) is a problem where a DR is carried out together with parameter estimation, the aim of this problem is to test algorithms for this problem class. 
 
+   We have 4 cases, collected from literature review, to test algorithms and solve strategies.
+
+ * Heat exchanger network from Biegler and Tjoa, 1993. The idea is to reconcile data and estimate heat exchangers parameters (_U.A_)
+ * Kinetic constant estimation from a CSTR from Kim, Liebman and Edgar, 1990.
+ * Vapour-Liquid equilibria data estimation and reconciliation from Kim, Liebman and Edgar, 1990.
+ * Gas phase catalytic hydrogenation of phenol, kinetic constant estimation and DR from Rod and Hancil.
+
+
+
+
+
+
+
+
+
+References
+
+Heat Exchanger Network
+ 
+Biegler & Tjoa, 1993
+“A parallel implementation for parameter estimation with implicit models” 
+Annals of Operations Research, V42, Issue 1, pp 1-23 , 1993
+
+CSTR and VLE data
+
+Kim, I-W; Liebman, M J;Edgar, T F
+“Robust error- in-variables estimation using nonlinear programming techniques.” 
+AIChE J. 1990, 36 (7), 985-993.
+
+Gas phase catalytic hydrogenation of phenol
+
+Rod, Vladmir and Hancil, Vladislav
+Iterative Estimation of Model Parameters When Measurements of all Variables are Subject to Error. Computers & Chemical Engineering, 1980, v.4, 33-38.
+
+
+
     3 linear 
 
     Although linear problems are easy to solve in DR, since it have analytical solution, the aim of this problem is to test different objetctive function types, called robust functions. These robust functions can provide results with gross errors removed, however, to do this, some parameters must be tunned in these function. The aim of this class problems is to test these parameters set up. 
