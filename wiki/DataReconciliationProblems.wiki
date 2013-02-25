@@ -68,24 +68,25 @@ run_new = 0;
 
  ss_all_measured folder
 
-* tanks_ss_noerror.sce: script file to open Xcos diagram, simulate, filter, reconcile data and plot results.
-* tanks_tst_window.sce: script to test moving window size. 
-* ss_no_error_mat.sav: saved simulation file, in case the user have problems with Xcos.
-* steady_state_no_ge.zcos: Xcos diagram
-* wls_linear_functions.sce: unused by now (will be used in the future)
-* wls_linear_functions.sci:unused by now (will be used in the future)
+ * tanks_ss_noerror.sce: script file to open Xcos diagram, simulate, filter, reconcile data and plot results.
+ * tanks_tst_window.sce: script to test moving window size. 
+ * ss_no_error_mat.sav: saved simulation file, in case the user have problems with Xcos.
+ * steady_state_no_ge.zcos: Xcos diagram
+ * wls_linear_functions.sce: unused by now (will be used in the future)
+ * wls_linear_functions.sci:unused by now (will be used in the future)
 
  ss_all_measured folder
 
 In this case a simulation with all variables is carried out and a filter is used just like the case before. The difference is that in DR routine, the user can set tu unmeasured streams (in the base case 1, 2, 3 and 4). And a data reconciliation is performed (a little bit slow because we use an optimizer). The files are listed below: 
 
-* tanks_ss_umeas.sce: script file to open Xcos diagram, simulate, filter, reconcile data and plot results.
-* tanks_tst_window.sce: script to test moving window size. 
-* ss_no_error_mat.sav: saved simulation file, in case the user have problems with Xcos.
-* steady_state_no_ge.zcos: Xcos diagram
-* wls_linear_functions.sce: used by optimizer (weighted least squares formulation)
-* wls_linear_functions.sci:used by optimizer (weighted least squares formulation)
+ * tanks_ss_umeas.sce: script file to open Xcos diagram, simulate, filter, reconcile data and plot results.
+ * tanks_tst_window.sce: script to test moving window size. 
+ * ss_no_error_mat.sav: saved simulation file, in case the user have problems with Xcos.
+ * steady_state_no_ge.zcos: Xcos diagram
+ * wls_linear_functions.sce: used by optimizer (weighted least squares formulation)
+ * wls_linear_functions.sci:used by optimizer (weighted least squares formulation)
   
+  all the other folders have basically the same structure and will not be described.
   
     2 error_in_variables 
 
