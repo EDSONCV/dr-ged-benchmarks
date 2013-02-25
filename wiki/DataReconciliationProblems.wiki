@@ -16,15 +16,25 @@ When the dynamic system starts:
 
 We have four implementations of this version:
 
-1. The dynamic behaviour is *neglected* and *all streams are measured* (in folder ss_all_measured).
+1. The dynamic behaviour is *neglected* and *all streams are measured* (in folder ss_all_measured). The block diagram can be checked below:
 
-2. 1. The dynamic behaviour is *neglected* and *some streams are unmeasured* (in folder ss_unmeasured).
+http://dr-ged-benchmarks.googlecode.com/svn/trunk/data_reconciliation/data_analysis/diagrams/png/2_tanks_ss_all_measured_block_diagram.png
 
-3. The dynamic behaviour is *neglected* and *all streams are measured* but a *gross error is added* at a given time, which can be setup by user (in folder gross_error).
+2. 1. The dynamic behaviour is *neglected* and *some streams are unmeasured* (in folder ss_unmeasured). The block diagram can be checked below:
 
-4. The dynamic behaviour *must be considered* and *all streams are measured* (in folder dynamic).
+http://dr-ged-benchmarks.googlecode.com/svn/trunk/data_reconciliation/data_analysis/diagrams/png/2_tanks_ss_all_measured_block_diagram.png
 
-5. The dynamic behaviour *must be considered* and *all streams are measured* and a *gross error* is added at a given time, which can be setup by user (in folder dynamic_gross_error).
+3. The dynamic behaviour is *neglected* and *all streams are measured* but a *gross error is added* at a given time, which can be set-up by user (in folder gross_error). The user can select the time of gross error and the location by turning on-off the respective switch. The block diagram can be checked below:
+
+http://dr-ged-benchmarks.googlecode.com/svn/trunk/data_reconciliation/data_analysis/diagrams/png/2_tanks_ss_all_measured_block_diagram.png
+
+4. The dynamic behaviour *must be considered* and *all streams are measured* (in folder dynamic). The block diagram can be checked below:
+
+http://dr-ged-benchmarks.googlecode.com/svn/trunk/data_reconciliation/data_analysis/diagrams/png/2_tanks_dynamic_block_diagram.png
+
+5. The dynamic behaviour *must be considered* and *all streams are measured* and a *gross error* is added at a given time, which can be setup by user (in folder dynamic_gross_error).  The user can select the time of gross error and the location by turning on-off the respective switch. The block diagram can be checked below:
+
+http://dr-ged-benchmarks.googlecode.com/svn/trunk/data_reconciliation/data_analysis/diagrams/png/2_tanks_dynamic_gross_error_block_diagram.png
 
 
     2 error_in_variables 
