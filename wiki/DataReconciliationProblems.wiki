@@ -90,7 +90,7 @@ In this case a simulation with all variables is carried out and a filter is used
   
     2 error_in_variables 
 
-    Error in Variables (EVM) is a problem where a DR is carried out together with parameter estimation, the aim of this problem is to test algorithms for this problem class. 
+    Error in Variables (EVM) is a problem where a DR is carried out together with parameter estimation, the aim of this problem is to test algorithms for this problem class. Since all the residuals (constraints) are non-linear, we use automatic differentiation toolbox from Scilab (diffcode) to evaluate the Hessian and Jacobian structure. The Jacobian and Hessian evaluation are done by finite difference (Scilab function "derivative"), and for this reason, some problems takes long to converge.
 
    We have 4 cases, collected from literature review, to test algorithms and solve strategies.
 
@@ -99,12 +99,47 @@ In this case a simulation with all variables is carried out and a filter is used
  * Vapour-Liquid equilibria data estimation and reconciliation from Kim, Liebman and Edgar, 1990.
  * Gas phase catalytic hydrogenation of phenol, kinetic constant estimation and DR from Rod and Hancil.
 
+Folder structure
 
+ * ev_bt93: Heat exchanger network from Biegler and Tjoa.
+ * ev_kle90_cstr: Kinetic constant estimation from a CSTR from Kim, Liebman and Edgar, 1990.
+ * ev_kle90_vle: Vapour-Liquid equilibria data estimation and reconciliation from Kim, Liebman and Edgar, 1990
+ * ev_rh80: Gas phase catalytic hydrogenation of phenol, kinetic constant estimation and DR from Rod and Hancil
+ * functions:  auxiliary functions for the optimizer.
 
+Folder : ev_bt93
+ * bt93.sce: running script.
+ * flowsheet_residuals.sci: mass and energy balance evaluation (constraints)
+ * wls_functions_energy_balance.sci:  optimizer data (objective functions, residuals Jacobian and Hessian, structures, etc).
 
+Since some results take long to solve, we saved some results:
 
+ * x_sol_ok_new_var_objfun_12p_bfgs.sav
+ * x_sol_ok_new_var_objfun_20p_bfgs.sav
+ * x_sol_ok_new_var_objfun_20p_const_hess.sav
+ * x_sol_ok_new_var_objfun_20p_exact_Hess.sav
 
+Folder ev_kle90_cstr
 
+ * kle90_cstr.sce: running script.
+ * residuals_cstr.sci: mass and energy balance evaluation (constraints)
+ * wls_functions_energy_CSTR.sci: 
+optimizer data (objective functions, residuals Jacobian and Hessian, structures, etc).
+
+Folder ev_kle90_vle
+
+ * kle90_vle.sce: running script.
+ * residuals.sci: constraints evaluation.
+ * wls_functions_energy_ELV_VanL.sci: 
+optimizer data (objective functions, residuals Jacobian and Hessian, structures, etc).
+
+Folder ev_rh80
+
+ * rh80.sce: running script.
+ * residuals.sci: constraints evaluation.
+ * jac_residuals.sci: unused by now.
+ * wls_functions_reactor.sci:optimizer data (objective functions, residuals Jacobian and Hessian, structures, etc).
+ * x_sol_ok_new_var_objfun.sav: saved results.
 
 
 References
