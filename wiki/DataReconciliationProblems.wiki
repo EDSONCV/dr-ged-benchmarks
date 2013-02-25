@@ -4,7 +4,7 @@ Data reconciliation are divided in 4 categories, which are the sub folders conta
 
     1 data_analysis 
 
-    The aim of this problems is to test data filter (filter on the variables before DR is applied), data filter window selection and influence on the dynamics on the DR results. These problems were built using the xcos (simulink version of scilab). The problem is a 2 tanks in parallel. Each tank has its own dynamic behaviour and a bypass valve to close the tanks feeding. The flowsheet is presented below:   
+    The aim of this problems is to test data filter (filter on the variables before DR is applied), data filter window selection and influence on the dynamics on the DR results. These problems were built using the xcos (simulink version of scilab, *compatible with scilab version 5.4*). The problem is a 2 tanks in parallel. Each tank has its own dynamic behaviour and a bypass valve to close the tanks feeding. The flowsheet is presented below:   
 
 http://dr-ged-benchmarks.googlecode.com/svn/trunk/data_reconciliation/data_analysis/diagrams/png/2tanks.png
 
