@@ -44,6 +44,7 @@ http://dr-ged-benchmarks.googlecode.com/svn/trunk/data_reconciliation/data_analy
 File Structure
 
 At the root folder of data_analysis folder we find the following files and folders:
+
 * Files
    * dr_wls_simple.sci: Data reconciliation using weighted least squares (WLS) formulation. 
    * moving.sci: Moving average method for data filtering.
@@ -57,13 +58,13 @@ At the root folder of data_analysis folder we find the following files and folde
 
  Files inside each folder
 
-Since the block diagrams were generated with Scilab 5.4 and Xcos (Simulink similar for Scilab), they ara not compatible with older Scilab versions, in this case, a ".sav" file is available and can be loaded instead of running Xcos simulation. If you want to load a previously saved simulation data, set _run_new_ flag to 0, in the respective ".sce" script, as in the code below:
+Since the block diagrams were generated with Scilab 5.4 and Xcos (Simulink similar for Scilab), they are not compatible with older Scilab versions, in this case, a ".sav" file is available and can be loaded instead of running Xcos simulation. If you want to load a previously saved simulation data, set _run_new_ flag to 0, in the respective ".sce" script, as in the code below:
 {{{
 clear xm var jac nc nv i1 i2 nnzeros sparse_dg sparse_dh lower upper var_lin_type constr_lin_type constr_lhs constr_rhs
 getd('../');
 getd('.');
 run_new = 0;
-}}  
+}}}  
 
  ss_all_measured folder
 
@@ -74,7 +75,16 @@ run_new = 0;
 * wls_linear_functions.sce: unused by now (will be used in the future)
 * wls_linear_functions.sci:unused by now (will be used in the future)
 
+ ss_all_measured folder
 
+In this case a simulation with all variables is carried out and a filter is used just like the case before. The difference is that in DR routine, the user can set tu unmeasured streams (in the base case 1, 2, 3 and 4). And a data reconciliation is performed (a little bit slow because we use an optimizer). The files are listed below: 
+
+* tanks_ss_umeas.sce: script file to open Xcos diagram, simulate, filter, reconcile data and plot results.
+* tanks_tst_window.sce: script to test moving window size. 
+* ss_no_error_mat.sav: saved simulation file, in case the user have problems with Xcos.
+* steady_state_no_ge.zcos: Xcos diagram
+* wls_linear_functions.sce: used by optimizer (weighted least squares formulation)
+* wls_linear_functions.sci:used by optimizer (weighted least squares formulation)
   
   
     2 error_in_variables 
