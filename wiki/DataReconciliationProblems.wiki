@@ -368,40 +368,40 @@ Inside "functions" folder there are the robust function implementation, constrai
 
  * nonlin_amonia folder
 
- * ammonia_plant.sce: the running script
- * flowsheet_res_s.sci: mass and energy balance (constraints)
- * functions_ammonia.sci: problem structure (Jacobian, Hessian, etc.)
- * jac_flowsheet_residuals.sci: Jacobian evaluation
+    * ammonia_plant.sce: the running script
+    * flowsheet_res_s.sci: mass and energy balance (constraints)
+    * functions_ammonia.sci: problem structure (Jacobian, Hessian, etc.)
+    * jac_flowsheet_residuals.sci: Jacobian evaluation
 
  * nonlin_pf88 folder
 
- * nonlin_pf88.sce: the running script
- * pf88_residuals.sci:constraints
- * pf_functions_nl.sci: problem structure (Jacobian, Hessian, etc.)
- * jac_pf88_residuals.sci: Jacobian evaluation
+    * nonlin_pf88.sce: the running script
+    * pf88_residuals.sci:constraints
+    * pf_functions_nl.sci: problem structure (Jacobian, Hessian, etc.)
+    * jac_pf88_residuals.sci: Jacobian evaluation
 
  * nonlin_rn96_1 folder
 
- * nonlin_rn96_1.sce: the running script
- * compound_residuals.sci mass and compound balance (constraints)
- * functions_compound.sci: problem structure (Jacobian, Hessian, etc.)
- * jac_compound_residuals.sci: Jacobian evaluation
- * old: unused, old implementations
+    * nonlin_rn96_1.sce: the running script
+    * compound_residuals.sci mass and compound balance (constraints)
+    * functions_compound.sci: problem structure (Jacobian, Hessian, etc.)
+    * jac_compound_residuals.sci: Jacobian evaluation
+    * old: unused, old implementations
 
  * nonlin_rn96_2 folder
 
- * nonlin_rn96_2: the running script
- * compound_residuals.sci mass and compound balance (constraints)
- * functions_compound.sci: problem structure (Jacobian, Hessian, etc.)
- * jac_compound_residuals.sci: Jacobian evaluation
- * old: unused, old implementations
+    * nonlin_rn96_2: the running script
+    * compound_residuals.sci mass and compound balance (constraints)
+    * functions_compound.sci: problem structure (Jacobian, Hessian, etc.)
+    * jac_compound_residuals.sci: Jacobian evaluation
+    * old: unused, old implementations
 
  * nonlin_sw89
 
- * nonlin_sw89.sce: the running script
- * flowsheet_residuals.sci: mass and energy balance (constraints)
- * functions_energy_balance.sci: problem structure (Jacobian, Hessian, etc.)
- * jac_flowsheet_residuals.sci: Jacobian evaluation
+    * nonlin_sw89.sce: the running script
+    * flowsheet_residuals.sci: mass and energy balance (constraints)
+    * functions_energy_balance.sci: problem structure (Jacobian, Hessian, etc.)
+    * jac_flowsheet_residuals.sci: Jacobian evaluation
 
 To select the appropriate objective function the user must select the problem folder (e.g. cd nonlin_ammonia) and edit the selected script file (edit nonlin_ammonia.sce). After it, the user may choose the objective function type by selection the right objective function number, e.g., to select WLS function:
 
