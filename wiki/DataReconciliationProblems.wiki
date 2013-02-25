@@ -4,7 +4,9 @@ Data reconciliation are divided in 4 categories, which are the sub folders conta
 
     1 data_analysis 
 
-    The aim of this problems is to test data filter (filter on the variables before DR is applied), data filter window selection and influence on the dynamics on the DR results. These problems were built using the xcos (simulink version of scilab, *compatible with scilab version 5.4*). The problem is a 2 tanks in parallel. Each tank has its own dynamic behaviour and a bypass valve to close the tanks feeding. The flowsheet is presented below:   
+    The aim of this problems is to test data filter (filter on the variables before DR is applied), data filter window selection and influence on the dynamics on the DR results. These problems were built using the xcos (simulink version of scilab, *compatible with scilab version 5.4*). 
+
+Inside the data_analysis folder, we find an example called 2_tanks. The problem is a 2 tanks in parallel with measured (or unmeasured) total flows. Each tank has its own dynamic behaviour and a bypass valve to close the tanks feeding. The flowsheet is presented below:   
 
 http://dr-ged-benchmarks.googlecode.com/svn/trunk/data_reconciliation/data_analysis/diagrams/png/2tanks.png
 
@@ -13,6 +15,7 @@ When the dynamic system starts:
  * At time t1, the bypass valve is closed and the inlet valve of tank 1 is opened.
  * At time t2, the valve to tank 1 is closed and inlet valve to tank 2 is opened. 
  * At time t3, the inlet valves of tank 1 and 2 are closed and by-pass valve is opened.
+ * Depending on the case, the user can add gross error to the measurement. The time and location can be set by the user.
 
 We have four implementations of this version:
 
@@ -36,7 +39,21 @@ http://dr-ged-benchmarks.googlecode.com/svn/trunk/data_reconciliation/data_analy
 
 http://dr-ged-benchmarks.googlecode.com/svn/trunk/data_reconciliation/data_analysis/diagrams/png/2_tanks_dynamic_gross_error_block_diagram.png
 
+File Structure
 
+At the root folder of data_analysis folder we find the following files and folders:
+* Files
+   * dr_wls_simple.sci: Data reconciliation using weighted least squares (WLS) formulation. 
+   * moving.sci: Moving average method for data filtering.
+
+ * Folders
+  * ss_all_measured: Steady state with all streams measured.
+  * ss_unmeasured: Steady state with some streams measured and some unmeasured.
+  * gross_error: Steady state with all streams measured and a gross error (position and time can be chosen).
+  * dynamic: Different dynamic behaviour for each tank with all streams measured.
+  * dynamic_gross_error: Different dynamic behaviour for each tank with all streams measured and a gross error (position and time can be chosen).
+  
+  
     2 error_in_variables 
 
     Error in Variables (EVM) is a problem where a DR is carried out together with parameter estimation, the aim of this problem is to test algorithms for this problem class. 
