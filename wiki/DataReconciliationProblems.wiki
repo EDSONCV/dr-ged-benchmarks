@@ -87,6 +87,12 @@ In this case a simulation with all variables is carried out and a filter is used
  * wls_linear_functions.sci:used by optimizer (weighted least squares formulation)
   
   all the other folders have basically the same structure and will not be described.
+
+ Each folder has 3 sobfolders: 
+
+    * diagrams: a diagram of the process in the .dia and .png format.
+    * scilab: the scilab implementation.
+    * spreadsheet: a Excel spreadsheet of the data, results or some data handling necessary to run the model. 
   
     2 error_in_variables 
 
@@ -141,6 +147,12 @@ Folder ev_rh80
  * wls_functions_reactor.sci:optimizer data (objective functions, residuals Jacobian and Hessian, structures, etc).
  * x_sol_ok_new_var_objfun.sav: saved results.
 
+ Each folder has 3 sobfolders: 
+
+    * diagrams: a diagram of the process in the .dia and .png format.
+    * scilab: the scilab implementation.
+    * spreadsheet: a Excel spreadsheet of the data, results or some data handling necessary to run the model. 
+
 
 References
 
@@ -165,7 +177,135 @@ Iterative Estimation of Model Parameters When Measurements of all Variables are 
 
     3 linear 
 
-    Although linear problems are easy to solve in DR, since it have analytical solution, the aim of this problem is to test different objetctive function types, called robust functions. These robust functions can provide results with gross errors removed, however, to do this, some parameters must be tunned in these function. The aim of this class problems is to test these parameters set up. 
+    In this type of problem, we deal with linear data reconciliation (total flow measurements), with all streams measured and known variance/standard deviation data.  Although linear problems are easy to solve in DR, since it have analytical solution, the aim of this problem is to test different objective function types, called robust functions. These robust functions can provide results with gross errors removed, however, to do this, some parameters must be tuned in these function. The aim of this class problems is to test these parameters set up. 
+
+In this problem, since we use robust functions, and the derivatives are complicate to express, we use Ipopt optimizer to run the optimizations.  We also use automatic differentiation toolbox from Scilab (diffcode) to evaluate the Hessian and Jacobian structure of objective function. 
+
+inside "linear" folder, we have 3 sobfolders: 
+
+    * diagrams: a diagram of the process in the .dia and .png format.
+    * scilab: the scilab implementation.
+    * spreadsheet: a Excel spreadsheet of the data, results or some data handling necessary to run the model. 
+
+"scilab" folder
+
+ * functions
+ * P1
+ * P2
+ * P3
+ * P4
+ * P5
+ * P6
+ * P7
+ * P8
+ * P9
+ * P10
+ * P11
+ * P12
+ * P13
+ * P14
+ * P15
+ * P16
+
+"functions" folder
+
+This folder has implementation of robust and other type of objective functions, the explanation about them can be found the the references
+ 
+ * absolute
+ * cauchy
+ * contamined_normal
+ * fair
+ * hampel
+ * logistic
+ * lorenztian
+ * quasi_weighted
+ * wls
+
+There are also 2 files used to setup the functions, these files must not be edited by final users.
+
+ * robust_structure.sci: method setup
+ * setup_DR.sce: method selection
+
+Problems:
+
+P1:
+
+http://dr-ged-benchmarks.googlecode.com/svn/trunk/data_reconciliation/linear/diagrams/png/P1.png
+
+P2
+
+http://dr-ged-benchmarks.googlecode.com/svn/trunk/data_reconciliation/linear/diagrams/png/P2.png
+
+P3
+
+http://dr-ged-benchmarks.googlecode.com/svn/trunk/data_reconciliation/linear/diagrams/png/P3.png
+
+P4
+
+http://dr-ged-benchmarks.googlecode.com/svn/trunk/data_reconciliation/linear/diagrams/png/P4.png
+
+P5
+
+http://dr-ged-benchmarks.googlecode.com/svn/trunk/data_reconciliation/linear/diagrams/png/P5.png
+
+P6
+
+http://dr-ged-benchmarks.googlecode.com/svn/trunk/data_reconciliation/linear/diagrams/png/P6.png
+
+P7
+
+http://dr-ged-benchmarks.googlecode.com/svn/trunk/data_reconciliation/linear/diagrams/png/P7.png
+
+P8
+
+http://dr-ged-benchmarks.googlecode.com/svn/trunk/data_reconciliation/linear/diagrams/png/P8.png
+
+P9
+
+http://dr-ged-benchmarks.googlecode.com/svn/trunk/data_reconciliation/linear/diagrams/png/P9.png
+
+P10
+
+http://dr-ged-benchmarks.googlecode.com/svn/trunk/data_reconciliation/linear/diagrams/png/P10.png
+
+P11
+
+http://dr-ged-benchmarks.googlecode.com/svn/trunk/data_reconciliation/linear/diagrams/png/P11.png
+
+P12
+
+http://dr-ged-benchmarks.googlecode.com/svn/trunk/data_reconciliation/linear/diagrams/png/P12.png
+
+P13
+
+http://dr-ged-benchmarks.googlecode.com/svn/trunk/data_reconciliation/linear/diagrams/png/P13.png
+
+P14
+
+http://dr-ged-benchmarks.googlecode.com/svn/trunk/data_reconciliation/linear/diagrams/png/P14.png
+
+P15
+
+http://dr-ged-benchmarks.googlecode.com/svn/trunk/data_reconciliation/linear/diagrams/png/P15.png
+
+P16
+
+http://dr-ged-benchmarks.googlecode.com/svn/trunk/data_reconciliation/linear/diagrams/png/P16.png
+
+
+References:
+Robust functions: 
+
+Ozyurt and Pike - Comp.  & Chem. Eng.
+ 28, p. 381-402, (2004) 
+
+Smooth functions according to Gopal and Biegler
+ AICHE Journal 45(7) 1535-1547 - July 1999
+
+Quasi Weighted Robust function, according to Zhang et al. - Comp.  & Chem. Eng.
+34, p. 154-162-402, (2010) 
+
+
 
     4 non-linear 
 
