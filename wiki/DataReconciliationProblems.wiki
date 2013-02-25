@@ -229,7 +229,7 @@ There are also 2 files used to setup the functions, these files must not be edit
 To select the appropriate objective function the user must select the problem folder (e.g. cd P1) and edit the selected script file (edit P1.sce). After it, the user may choose the objective function type by selection the right objective function number, e.g., to select WLS function:
 
 {{{
-// to run robust reconciliation,, one must choose between the folowing objective functions to set up the functions path and function parameters:
+// to run robust reconciliation,, one must choose between the following objective functions to set up the functions path and function parameters:
 //WLS = 0
 // Absolute sum of squares = 1
 //Cauchy = 2
@@ -335,8 +335,88 @@ Quasi Weighted Robust function, according to Zhang et al. - Comp.  & Chem. Eng.
         How DR behaves with non-observable non-measured variables.
         How DR behaves with models which are approximated by model simplifications. 
 
- Each folder has 3 sobfolders: 
+    In this problem, since we use non-linear constraints and robust objective functions, and the derivatives are complicate to express, we use Ipopt optimizer to run the optimization.  We also use automatic differentiation toolbox from Scilab (diffcode) to evaluate the Hessian and Jacobian structure of objective function. The constraints Jacobian and Hessian are evaluated by finite differences method using "derivative" function form Scilab.
+
+ "non_linear" folder have 3 sub-folders: 
 
     * diagrams: a diagram of the process in the .dia and .png format.
-    * scilab: the scilab implementation.
-    * spreadsheet: a Excel spreadsheet of the data, results or some data handling necessary to run the model. 
+    * scilab: the Scilab implementation.
+    * spreadsheet: a Excel spreadsheet of the data, results or some data handling necessary to run the model.
+
+    The scilab folder have the following folders:
+
+ * functions: Objective functions and problems structure to communicate with Ipopt
+ * nonlin_ammonia: Ammonia plant
+ * nonlin_pf88:  Pai & Fisher non-linear example
+ * nonlin_rn96_1: Mineral processing unit
+ * nonlin_rn96_2: Juice extraction unit
+ * nonlin_sw89: Heat exchanger network
+
+Inside "functions" folder there are the robust function implementation, constraints, Jacobian and gradient evaluation.
+
+ * absolute
+ * cauchy
+ * contamined_normal
+ * fair
+ * hampel
+ * logistic
+ * lorenztian
+ * qrlinclass.sci
+ * quasi_weighted
+ * setup_DR.sce
+ * wls
+
+ * nonlin_amonia folder
+
+ * ammonia_plant.sce: the running script
+ * flowsheet_res_s.sci: mass and energy balance (constraints)
+ * functions_ammonia.sci: problem structure (Jacobian, Hessian, etc.)
+ * jac_flowsheet_residuals.sci: Jacobian evaluation
+
+ * nonlin_pf88 folder
+
+ * nonlin_pf88.sce: the running script
+ * pf88_residuals.sci:constraints
+ * pf_functions_nl.sci: problem structure (Jacobian, Hessian, etc.)
+ * jac_pf88_residuals.sci: Jacobian evaluation
+
+ * nonlin_rn96_1 folder
+
+ * nonlin_rn96_1.sce: the running script
+ * compound_residuals.sci mass and compound balance (constraints)
+ * functions_compound.sci: problem structure (Jacobian, Hessian, etc.)
+ * jac_compound_residuals.sci: Jacobian evaluation
+ * old: unused, old implementations
+
+ * nonlin_rn96_2 folder
+
+ * nonlin_rn96_2: the running script
+ * compound_residuals.sci mass and compound balance (constraints)
+ * functions_compound.sci: problem structure (Jacobian, Hessian, etc.)
+ * jac_compound_residuals.sci: Jacobian evaluation
+ * old: unused, old implementations
+
+ * nonlin_sw89
+
+ * nonlin_sw89.sce: the running script
+ * flowsheet_residuals.sci: mass and energy balance (constraints)
+ * functions_energy_balance.sci: problem structure (Jacobian, Hessian, etc.)
+ * jac_flowsheet_residuals.sci: Jacobian evaluation
+
+To select the appropriate objective function the user must select the problem folder (e.g. cd nonlin_ammonia) and edit the selected script file (edit nonlin_ammonia.sce). After it, the user may choose the objective function type by selection the right objective function number, e.g., to select WLS function:
+
+{{{
+// to run robust reconciliation,, one must choose between the following objective functions to set up the functions path and function parameters:
+//WLS = 0
+// Absolute sum of squares = 1
+//Cauchy = 2
+//Contamined Normal = 3
+//Fair  = 4
+//Hampel = 5
+//Logistic = 6
+//Lorenztian = 7
+//Quasi Weighted = 8
+// run the configuration functions with the desired objective function type
+obj_function_type = 0;
+
+}}}
