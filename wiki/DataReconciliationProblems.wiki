@@ -2,7 +2,7 @@
 = Data Reconciliation Benchmark Problems =
 Data reconciliation are divided in 4 categories, which are the sub folders contained in /trunk/data_reconciliation folder:
 
-    == 1 data_analysis == 
+    == 1. data_analysis == 
 
     The aim of this problems is to test data filter (filter on the variables before DR is applied), data filter window selection and influence on the dynamics on the DR results. These problems were built using the xcos (simulink version of scilab, *compatible with scilab version 5.4*). 
 
@@ -25,7 +25,7 @@ We have four implementations of this version:
 
 http://dr-ged-benchmarks.googlecode.com/svn/trunk/data_reconciliation/data_analysis/diagrams/png/2_tanks_ss_all_measured_block_diagram.png
 
-2. 1. The dynamic behaviour is *neglected* and *some streams are unmeasured* (in folder ss_unmeasured). The block diagram can be checked below:
+2. The dynamic behaviour is *neglected* and *some streams are unmeasured* (in folder ss_unmeasured). The block diagram can be checked below:
 
 http://dr-ged-benchmarks.googlecode.com/svn/trunk/data_reconciliation/data_analysis/diagrams/png/2_tanks_ss_all_measured_block_diagram.png
 
@@ -41,11 +41,15 @@ http://dr-ged-benchmarks.googlecode.com/svn/trunk/data_reconciliation/data_analy
 
 http://dr-ged-benchmarks.googlecode.com/svn/trunk/data_reconciliation/data_analysis/diagrams/png/2_tanks_dynamic_gross_error_block_diagram.png
 
-File Structure
+=== File Structure ===
 
 At the root folder of data_analysis folder we find the following files and folders:
 
-* Files
+    * diagrams: a diagram of the process in the .dia and .png format.
+    * scilab: the scilab implementation.
+    * spreadsheet: a Excel spreadsheet of the data, results or some data handling necessary to run the model. 
+
+* Files inside "scilab" folder
    * dr_wls_simple.sci: Data reconciliation using weighted least squares (WLS) formulation. 
    * moving.sci: Moving average method for data filtering.
 
@@ -66,7 +70,7 @@ getd('.');
 run_new = 0;
 }}}  
 
- ss_all_measured folder
+ ==== ss_all_measured folder ====
 
  * tanks_ss_noerror.sce: script file to open Xcos diagram, simulate, filter, reconcile data and plot results.
  * tanks_tst_window.sce: script to test moving window size. 
@@ -75,7 +79,7 @@ run_new = 0;
  * wls_linear_functions.sce: unused by now (will be used in the future)
  * wls_linear_functions.sci:unused by now (will be used in the future)
 
- ss_all_measured folder
+ ==== ss_unmasured folder ====
 
 In this case a simulation with all variables is carried out and a filter is used just like the case before. The difference is that in DR routine, the user can set tu unmeasured streams (in the base case 1, 2, 3 and 4). And a data reconciliation is performed (a little bit slow because we use an optimizer). The files are listed below: 
 
@@ -88,13 +92,9 @@ In this case a simulation with all variables is carried out and a filter is used
   
   all the other folders have basically the same structure and will not be described.
 
- Each folder has 3 sobfolders: 
-
-    * diagrams: a diagram of the process in the .dia and .png format.
-    * scilab: the scilab implementation.
-    * spreadsheet: a Excel spreadsheet of the data, results or some data handling necessary to run the model. 
+ 
   
-    == 2 error_in_variables ==
+    == 2. error_in_variables ==
 
     Error in Variables (EVM) is a problem where a DR is carried out together with parameter estimation, the aim of this problem is to test algorithms for this problem class. Since all the residuals (constraints) are non-linear, we use automatic differentiation toolbox from Scilab (diffcode) to evaluate the Hessian and Jacobian structure. The Jacobian and Hessian evaluation are done by finite difference (Scilab function "derivative"), and for this reason, some problems takes long to converge.
 
@@ -105,7 +105,16 @@ In this case a simulation with all variables is carried out and a filter is used
  * Vapour-Liquid equilibria data estimation and reconciliation from Kim, Liebman and Edgar, 1990.
  * Gas phase catalytic hydrogenation of phenol, kinetic constant estimation and DR from Rod and Hancil.
 
-Folder structure
+=== Folder structure ===
+
+
+ Each folder has 3 sobfolders: 
+
+    * diagrams: a diagram of the process in the .dia and .png format.
+    * scilab: the scilab implementation.
+    * spreadsheet: a Excel spreadsheet of the data, results or some data handling necessary to run the model. 
+
+Inside "scilab" folder we find:
 
  * ev_bt93: Heat exchanger network from Biegler and Tjoa.
  * ev_kle90_cstr: Kinetic constant estimation from a CSTR from Kim, Liebman and Edgar, 1990.
@@ -147,14 +156,9 @@ Folder ev_rh80
  * wls_functions_reactor.sci:optimizer data (objective functions, residuals Jacobian and Hessian, structures, etc).
  * x_sol_ok_new_var_objfun.sav: saved results.
 
- Each folder has 3 sobfolders: 
-
-    * diagrams: a diagram of the process in the .dia and .png format.
-    * scilab: the scilab implementation.
-    * spreadsheet: a Excel spreadsheet of the data, results or some data handling necessary to run the model. 
 
 
-References
+=== References ===
 
 Heat Exchanger Network
  
@@ -175,7 +179,7 @@ Iterative Estimation of Model Parameters When Measurements of all Variables are 
 
 
 
-    == 3 linear ==
+    == 3. linear ==
 
     In this type of problem, we deal with linear data reconciliation (total flow measurements), with all streams measured and known variance/standard deviation data.  Although linear problems are easy to solve in DR, since it have analytical solution, the aim of this problem is to test different objective function types, called robust functions. These robust functions can provide results with gross errors removed, however, to do this, some parameters must be tuned in these function. The aim of this class problems is to test these parameters set up. 
 
@@ -437,3 +441,17 @@ To select the appropriate objective function the user must select the problem fo
 obj_function_type = 0;
 
 }}}
+
+References:
+
+C.C. David Pai, Gary D. Fisher - Application of Broyden's Method to Reconciliation of Nonlinearly Constrained Data - AICHE Journal 1988, V 34 No. 5 -p 873-876
+
+Rao, R Ramesh, and Shankar Narasimhan. 1996.
+“Comparison of Techniques for Data Reconciliation of Multicomponent Processes.” 
+Industrial & Engineering Chemistry Research 35:1362-1368.
+
+Swartz, C. L. E, 1898
+“Data reconciliation for generalized flowsheet applications.” 
+197th National Meeting of the American Chemical Society, Dallas, TX. 
+
+Heyen, Marechál, Kalitventzeff - Sensitivity calculations and variance analysis in plant measurement reconciliation - Computers & Chemical Engineering - V. 20 I 96 - 1996 - S539-S544.
