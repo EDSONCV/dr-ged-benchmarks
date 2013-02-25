@@ -226,6 +226,26 @@ There are also 2 files used to setup the functions, these files must not be edit
  * robust_structure.sci: method setup
  * setup_DR.sce: method selection
 
+To select the appropriate objective function the user must select the problem folder (e.g. cd P1) and edit the selected script file (edit P1.sce). After it, the user may choose the objective function type by selection the right objective function number, e.g., to select WLS function:
+
+{{{
+// to run robust reconciliation,, one must choose between the folowing objective functions to set up the functions path and function parameters:
+//WLS = 0
+// Absolute sum of squares = 1
+//Cauchy = 2
+//Contamined Normal = 3
+//Fair  = 4
+//Hampel = 5
+//Logistic = 6
+//Lorenztian = 7
+//Quasi Weighted = 8
+// run the configuration functions with the desired objective function type
+obj_function_type = 0;
+
+}}}
+
+Then the file must be saved and executed (exec P1.sce)
+
 Problems:
 
 P1:
