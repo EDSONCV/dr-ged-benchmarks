@@ -68,7 +68,7 @@ jac = [ 1  -1  -1  -1   0   0   0   0    0   0   0   0
 //      1   2   3   4   5   6   7   8    9   10  11  12  
 // to run robust reconciliation,, one must choose between the folowing objective functions to set up the functions path and function parameters:
 //WLS = 0
-// Absolute sum of squares = 1
+// Absolute sum  = 1
 //Cauchy = 2
 //Contamined Normal = 3
 //Fair  = 4
@@ -77,7 +77,7 @@ jac = [ 1  -1  -1  -1   0   0   0   0    0   0   0   0
 //Lorenztian = 7
 //Quasi Weighted = 8
 // run the configuration functions with the desired objective function type
-obj_function_type = 0;
+obj_function_type = 5;
 exec ../functions/setup_DR.sce
 // to run robust reconciliation, it is also necessary to choose the function to return the problem structure
 if obj_function_type > 0 then
