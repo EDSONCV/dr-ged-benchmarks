@@ -2,13 +2,17 @@
 // Author: Edson Cordeiro do Valle
 // Contact - edsoncv@{gmail.com}{vrtech.com.br}
 // Skype: edson.cv
-function [xfinal, resRand, resGrossErrorNodalRand]=generate_data(xr, sd, jac, runsize, lbm, ubm, lbres, ubres)
+// we have 2 functions in this file:
+// -generate_data
+// -generate_data_random_err
+function [xfinal, resRand, resGrossErrorNodalRand, varargout]=generate_data(xr, sd, jac, runsize, lbm, ubm, lbres, ubres)
 jac_row = size(jac,1);
 xrs = zeros(szx,runsize);
 rerror1 = zeros(runsize,szx);
 grerror = zeros(szx*runsize,szx);
 grerrors = zeros(szx*runsize,szx);
 grerrornodal = zeros(runsize*jac_row, jac_row);
+//leaks = zeros(runsize*jac_row);
 resGrossErrorNodalRand = zeros(runsize*jac_row, jac_row);
 //rerror=grand(runsize,szx,'nor',0,1);
 // random number generators: rerror1 prefered as rerror
@@ -54,6 +58,7 @@ k = 0;
 for i=1:jac_row
     for j=1:runsize
         grerrornodal(j+k*runsize,i) = grand(1,1,'unf',totalNodeFlow(i)*lbres,totalNodeFlow(i)*ubres);
+//        leaks(j+k*runsize) = grerrornodal(j+k*runsize,i);
     end
     k=k+1;
 end
@@ -71,7 +76,9 @@ for i=0:(size(grerrornodal,1)-1)
 end
 
 resGrossErrorNodalRandFi = [ resRand;resGrossErrorNodalRand];
-
+varargout = list(grerrornodal);
+//disp('before leave generate data');
+//pause
 endfunction
 
 

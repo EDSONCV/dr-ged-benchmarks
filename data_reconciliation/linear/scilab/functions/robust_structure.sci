@@ -113,7 +113,7 @@ else
     hess_f = diffcode_hessian(objfun, x_init + 10*rand(nv,1 ));
 end
 
-//pause
+pause
 // sum both of the Hessians
 if length(size_hess_eq_constr) > 2  then
     hess_Sparse=sparse(hess_constr + hess_f);

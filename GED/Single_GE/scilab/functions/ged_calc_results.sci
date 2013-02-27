@@ -2,7 +2,8 @@
 // Author: Edson Cordeiro do Valle
 // Contact - edsoncv@{gmail.com}{vrtech.com.br}
 // Skype: edson.cv
-function [x_sol, res, gamaMeasuremts,gamaNodal,zr_nt_nodal, zr_nt_nodal_rand, zadj ]=calc_results(xfinal, jac, sigma, resGrossErrorNodalRandFi)
+function [x_sol, res, gamaMeasuremts,gamaNodal,zr_nt_nodal, zr_nt_nodal_rand, zadj, varargout ]=calc_results(xfinal, jac, sigma, resGrossErrorNodalRandFi, varargin)
+[lhs,rhs]=argn(0);
 V=jac*sigma*jac';
 V_inv = inv(V);
 // covariance matrix of adjustments: narasimham pg. 183 eq. 7-13
@@ -35,10 +36,19 @@ zr_nt_nodal = zeros(runsize, jac_row);
 zr_nt_nodal_rand = zeros(runsize, jac_row);
 adj = zeros(runsizefinal,szx);
 zadj = zeros(runsizefinal,szx);
+
 d_adj = zeros(szx,runsizefinal);
 runsizenodal = size(resGrossErrorNodalRandFi,1);
 //adjustments  narasimham pg. 183 eq. 7-11     
- adj = xfinal - x_sol;  
+ adj = xfinal - x_sol;
+
+if rhs > 4 then 
+    x_sol_leak= varargin(1);
+    adj_nodal = zeros(runsizefinal,szx);
+    zadj_nodal = zeros(runsizefinal,szx);
+    adj_leak = xfinal - x_sol_leak;
+
+end
 for i=1:runsizefinal
 // residuals when random noise and gross errors are
 // added to the measurements: narasimham pg. 178 eq. 7-2    
@@ -76,7 +86,14 @@ for i=1:runsizefinal
     for j=1:szx
 // measurements test statistics: narasimham pg. 183 eq. 7-14        
         zadj(i,j)=abs(adj(i,j))/sqrt(Wbar(j,j));
+        if rhs > 4 then
+            zadj_nodal(i,j)=abs(adj_nodal(i,j))/sqrt(Wbar(j,j));
+        end
     end
+end
+
+if lhs > 7 then
+    varargout = zadj_nodal;
 end
 
 endfunction

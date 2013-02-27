@@ -49,7 +49,7 @@ function f = objfun ( x )
     th6n = -(tanh(100*(-e1 - ones_c)) - ones_xm)/2;
 //pause
 
-    hap3 = ones_a.*ones_b - 0.5*ones_a + 0.5*(c-b)*(1-((c*ones_xm-abs(e1))/(c-b)).^2);
+    hap3 = ones_a.*ones_b - 0.5*ones_a.^2 + 0.5.*(ones_a.^2).*(c-b).*(1-((c*ones_xm-abs(e1))/(c-b)).^2);
     hap33 = hap3.*(th5 + th6 - ones_xm) + hap3.*(th5n + th6n - ones_xm);
 
     // from c < abs(e1) 
@@ -57,7 +57,7 @@ function f = objfun ( x )
     th7 = (tanh(100*(e1 - ones_c)) + ones_xm)/2;
     th7n = (tanh(100*(-e1 - ones_c)) + ones_xm)/2;
 
-    hap4 = ones_a.*ones_b - 0.5*ones_a + 0.5*(ones_c-ones_b); // > c
+    hap4 = ones_a.*ones_b - 0.5*ones_a.^2 + 0.5*(ones_a.^2).*(ones_c-ones_b); // > c
     hap44 = hap4.*th7 + hap4.*th7n;
 
     f = sum(hap11 + hap22+ hap33 + hap44);
