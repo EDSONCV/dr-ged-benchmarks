@@ -74,9 +74,9 @@ red = measured;
 //Hampel = 5
 //Logistic = 6
 //Lorenztian = 7
-//Quasi Weighted = 8
+//Quasi Weighted = 0
 // run the configuration functions with the desired objective function type
-obj_function_type = 4;
+obj_function_type = 0;
 exec ../functions/setup_DR.sce;
 
 

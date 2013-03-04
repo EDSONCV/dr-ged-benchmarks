@@ -94,7 +94,7 @@ red=measured;
 //Lorenztian = 7
 //Quasi Weighted = 8
 // run the configuration functions with the desired objective function type
-obj_function_type = 5;
+obj_function_type = 0;
 exec ../functions/setup_DR.sce;
 // to run robust reconciliation, it is also necessary to choose the function to return the problem structure
 
