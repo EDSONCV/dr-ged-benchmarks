@@ -5,8 +5,8 @@
 // aux functions to weighted least squares functions
 
 function f = objfun ( x )
-
-	f = sum(((xm-x).^2)./var);
+	f = sum(((xm(red)-x(red)).^2)./var(red));
+//	f = sum(((xm-x).^2)./var);
 
 endfunction
 
@@ -21,13 +21,20 @@ endfunction
 
 function gf = gradf ( x )
 
-gf=2*(x - xm)./var;
+gf = zeros (nv,1)
+gf(red,1) =2*(x(red) - xm(red))./var(red);
+
+//gf=2*(x - xm)./var;
 
 endfunction
 
 function H = hessf ( x )
 
-	H = (2*ones(nv,1)./var);
+//	H = (2*ones(nv,1)./var);
+    t1 = zeros (nv,1);
+	t1(red,1) = (2*ones(length(red),1)./var(red));
+    H=t1;
+
 endfunction
 
 function y = dg1(x)

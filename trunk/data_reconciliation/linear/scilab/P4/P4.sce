@@ -33,6 +33,17 @@ jac = [ 1  -1  -1    0  0   0
         0   1   0   -1  0   0
         0   0   1    0 -1   0
         0   0   0    1  1  -1];
+        
+//observability/redundancy tests                  
+umeas_P4 = [];
+[red_P4, just_measured_P4, observ_P4, non_obs_P4, spec_cand_P4] = qrlinclass(jac,umeas_P4)
+
+// reconcile with all measured. To reconcile with only redundant variables, uncomment the "red" assignments
+measured_P4 = setdiff([1:length(xm)], umeas_P4);
+red = measured_P4;//
+
+// to reconcile with all variables, comment the line above and uncomment bellow
+//red = [1:length(xm)];        
 
 // to run robust reconciliation,, one must choose between the folowing objective functions to set up the functions path and function parameters:
 //WLS = 0
@@ -63,7 +74,7 @@ params = add_param(params,"derivative_test","second-order");
 params = add_param(params,"tol",1e-8);
 params = add_param(params,"acceptable_tol",1e-8);
 params = add_param(params,"mu_strategy","adaptive");
-params = add_param(params,"journal_level",6);
+params = add_param(params,"journal_level",5);
 params = add_param(params,"print_user_options","yes");
 
 //[x_sol, f_sol, extra] = ipopt(xm, objfun, gradf, confun, dg, sparse_dg, dh, sparse_dh, var_lin_type, constr_lin_type, constr_rhs, constr_lhs, lower, upper, params);

@@ -4,11 +4,12 @@
 // Skype: edson.cv
 // aux functions to sum of absolute errors
 // it is necessary to install the "diffcode" package using ATOMS in Scilab
-// Contamined Normal Robust function, according to Ozyurt and Pike - Comp.  & Chem. Eng.
+// Contaminated Normal Robust function, according to Ozyurt and Pike - Comp.  & Chem. Eng.
 // 28, p. 381-402, (2004) 
 function f = objfun ( x )
 
-    e1 = (xm-x)./(var.^(0.5)); 
+    //e1 = (xm-x)./(var.^(0.5)); 
+    e1 = (xm(red)-x(red))./(var(red).^(0.5)); 
     f = sum( -(log( (1 - const1_cont_nor)*exp(-0.5*e1.^2)  + (const1_cont_nor/const2_cont_nor)*exp(-e1.^2/(2*const2_cont_nor^2)))));
 
 endfunction

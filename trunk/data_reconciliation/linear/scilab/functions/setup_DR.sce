@@ -50,10 +50,10 @@ select obj_function_type
 		//a=4;
 		//b=8;
 		//c=16;
-		ones_a = a*ones(length(xm),1);
-		ones_b = b*ones(length(xm),1);
-		ones_c = c*ones(length(xm),1);
-		ones_xm = ones(length(xm),1);
+		ones_a = a*ones(length(red),1);
+		ones_b = b*ones(length(red),1);
+		ones_c = c*ones(length(red),1);
+		ones_xm = ones(length(red),1);
 
 
 	case 6 then
