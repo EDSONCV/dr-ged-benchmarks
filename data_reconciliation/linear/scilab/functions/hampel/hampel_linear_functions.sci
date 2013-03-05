@@ -10,7 +10,8 @@
 // 28, p. 381-402, (2004) 
 function f = objfun ( x )
 
-    e1 = (xm-x)./(var.^(0.5));
+//    e1 = (xm-x)./(var.^(0.5));
+    e1 = (xm(red)-x(red))./(var(red).^(0.5));
     
 // smoothing functions
 // for sigmoidal function (Eq. 24 from paper)

@@ -66,6 +66,17 @@ jac = [ 1  -1  -1  -1   0   0   0   0    0   0   0   0
         0    0  0   0   0   0   0   0    0   1   1   -1
         ];                                
 //      1   2   3   4   5   6   7   8    9   10  11  12  
+
+//observability/redundancy tests                  
+umeas_P12 = [];
+[red_P12, just_measured_P12, observ_P12, non_obs_P12, spec_cand_P12] = qrlinclass(jac,umeas_P12)
+
+// reconcile with all measured. To reconcile with only redundant variables, uncomment the "red" assignments
+measured_P12 = setdiff([1:length(xm)], umeas_P12);
+red = measured_P12;//
+// to reconcile with all variables, comment the line above and uncomment bellow
+//red = [1:length(xm)];
+
 // to run robust reconciliation,, one must choose between the folowing objective functions to set up the functions path and function parameters:
 //WLS = 0
 // Absolute sum  = 1

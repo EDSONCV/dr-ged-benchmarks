@@ -9,7 +9,8 @@
 
 function f = objfun ( x )
 
-     e1 = (xm-x)./(var.^(0.5)); 
+//     e1 = (xm-x)./(var.^(0.5)); 
+     e1 = (xm(red)-x(red))./(var(red).^(0.5)); 
     // for sigmoidal function (Eq. 24)
 //    f = sum(sig1=1./alpha_smooth*log(2+exp(alpha_smooth*e1)+exp(-alpha_smooth*e1)));
     // for interior point function (Eq 25)

@@ -8,8 +8,11 @@
 // 28, p. 381-402, (2004) 
 function f = objfun ( x )
 
-    e1 = (xm-x)./(var.^(0.5));
-    f = sum( 2*(log( ones(nv,1) + exp(e1/const_logist))) -e1/const_logist);
+//    e1 = (xm-x)./(var.^(0.5));
+//    f = sum( 2*(log( ones(nv,1) + exp(e1/const_logist))) -e1/const_logist);
+    e1 = (xm(red)-x(red))./(var(red).^(0.5));
+    f = sum( 2*(log( ones(length(red),1) + exp(e1/const_logist))) -e1/const_logist);
+
 
 endfunction
 

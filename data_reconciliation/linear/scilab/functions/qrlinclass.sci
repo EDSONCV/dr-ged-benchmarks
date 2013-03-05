@@ -19,8 +19,7 @@
 function [redund, just_measured, observ, non_obs, varargout] =qrlinclass(A,umeas)
     [lhs ,rhs]=argn();
     [row_A, col_A] = size(A);
-    
-    // check for empty umeas vector    
+// check for empty umeas vector    
     if length(umeas) == 0 then
         redund = [1:col_A];
         just_measured = [];
@@ -31,7 +30,7 @@ function [redund, just_measured, observ, non_obs, varargout] =qrlinclass(A,umeas
         end          
     end
     return;
-    
+
     
     Au = A(:,umeas);
     // separate measured, Ax, and unmeasured, Au

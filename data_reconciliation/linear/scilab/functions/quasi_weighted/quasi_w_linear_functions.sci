@@ -10,7 +10,8 @@
 // 34, p. 154-162-402, (2010) 
 function f = objfun ( x )
 
-    e1 = (xm-x)./(var.^(0.5)); 
+    e1 = (xm(red)-x(red))./(var(red).^(0.5)); 
+//    e1 = (xm-x)./(var.^(0.5)); 
 // smoothing functions
 // for sigmoidal function (Eq. 24 from paper)
 //    abs_error = sum(sig1=1./alpha_smooth*log(2+exp(alpha_smooth*e1)+exp(-alpha_smooth*e1)));

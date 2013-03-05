@@ -8,8 +8,10 @@
 // 28, p. 381-402, (2004) 
 function f = objfun ( x )
 
-    e1 = (xm-x)./(var.^(0.5));
-    f = sum( -ones(nv,1)./(ones(nv,1) + (e1.^2/(2*const_lor^2)))  );
+//    e1 = (xm-x)./(var.^(0.5));
+//    f = sum( -ones(nv,1)./(ones(nv,1) + (e1.^2/(2*const_lor^2)))  );
+    e1 = (xm(red)-x(red))./(var(red).^(0.5));
+    f = sum( -ones(length(red),1)./(ones(length(red),1) + (e1.^2/(2*const_lor^2)))  );
 
 endfunction
 

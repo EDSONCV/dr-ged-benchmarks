@@ -4,7 +4,7 @@
 // Skype: edson.cv
 // aux functions to sum of absolute errors
 // it is necessary to install the "diffcode" package using ATOMS in Scilab
-// Contamined Normal Robust function, according to Ozyurt and Pike - Comp.  & Chem. Eng.
+// Contaminated Normal Robust function, according to Ozyurt and Pike - Comp.  & Chem. Eng.
 // 28, p. 381-402, (2004) 
 function f = objfun ( x )
 
