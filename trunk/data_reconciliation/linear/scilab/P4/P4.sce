@@ -28,6 +28,14 @@ clear xm var jac nc nv i1 i2 nnzeros sparse_dg sparse_dh lower upper var_lin_typ
 xm =[101.91;64.45;34.65;64.2;36.44;98.88];
 //the variance
 var = ones(6,1);
+
+// gross error
+gerror = zeros(length(xm),1);
+// to setup gross errors, select the stream and magnitude as the line bellow
+//gerror(2) = 9*sqrt(var(2));
+xm = xm + gerror;
+
+
 //The jacobian of the constraints
 jac = [ 1  -1  -1    0  0   0
         0   1   0   -1  0   0

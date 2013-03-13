@@ -42,6 +42,13 @@ var = [3.234
 1.623
 ];
 
+// gross error
+gerror = zeros(length(xm),1);
+// to setup gross errors, select the stream and magnitude as the line bellow
+//gerror(2) = 9*sqrt(var(2));
+xm = xm + gerror;
+
+
 //The jacobian of the constraints
 //      1    2  3    4    5   6   7    8  
 jac = [ 1   -1  0    0    0   0   -1   0

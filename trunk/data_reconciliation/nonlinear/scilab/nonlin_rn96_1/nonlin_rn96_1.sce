@@ -137,3 +137,4 @@ mprintf("f(x*) = %e\n", f_sol);
 xx=matrix(x_sol,Astreams,ncomp+1)
 TotalFlowMeasured = xx(:,1)'
 compoundMeasured  = 100*xx(:, 2:$)
+matrix([1:88],11,8)';

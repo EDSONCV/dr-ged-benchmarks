@@ -16,12 +16,14 @@ function f = objfun ( x )
 // for sigmoidal function (Eq. 24 from paper)
 //    abs_error = sum(sig1=1./alpha_smooth*log(2+exp(alpha_smooth*e1)+exp(-alpha_smooth*e1)));
     // for interior point function (Eq 25 from paper)
-    abs_error = sum((e1.^2 + beta_smooth.^2).^0.5);
+
+    abs_error = (e1.^2 + beta_smooth.^2).^0.5;
 	// sigmoidal, but based in max operator property (Eq 28 from paper)
     // this one leads to a small error when e1 = 0  
     
 //    abs_error = e1 + beta_smooth*log(1+exp(-2*alpha_smooth*e1));
     f = sum( ((e1.^(2))./(2 + const_qw*abs_error))  );
+
 
 endfunction
 

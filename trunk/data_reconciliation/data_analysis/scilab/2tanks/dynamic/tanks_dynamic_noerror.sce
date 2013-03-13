@@ -57,7 +57,8 @@ jac = [ 1  -1  -1  -1   0   0   0   0
 // to solve with analytic WLS
 [x_sol_unfiltered1]=dr_wls_simple(xm_full_unfiltered1, jac, sigma);
 [x_sol_filtered1]=dr_wls_simple(xm_full_filtered1, jac, sigma);
-use_subplot = 1;
+use_subplot = 0;
+pause
 if use_subplot == 1 then
 
     i=0;

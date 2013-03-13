@@ -116,7 +116,7 @@ for k = 1:4
     legend("meas_filtered", "reconc_filtered", "meas_unfiltered", "reconc_unfiltered",4);
     wsize = 2*wsize;
 end;
-pause
+
 scf();
 plot(ss_outlet_tanks.time,x_sol_filtered1(:,1,1)',ss_outlet_tanks.time,x_sol_filtered1(:,1,2),ss_outlet_tanks.time,x_sol_filtered1(:,1,3),ss_outlet_tanks.time,x_sol_filtered1(:,1,4));
 title('Filtered data - Reconciled - Stream 1');

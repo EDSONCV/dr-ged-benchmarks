@@ -133,6 +133,14 @@ var =[
 2.86
 2.74
 ].^2;
+
+// gross error
+gerror = zeros(length(xm),1);
+// to setup gross errors, select the stream and magnitude as the line bellow
+//gerror(2) = 9*sqrt(var(2));
+xm = xm + gerror;
+
+
 //The jacobian of the constraints
 
 //S319	S316	S312	S378	S336	S357	S346	S359P1	S347	S352	S356	S358	S357P	S359P2	S359	S338P	S338	S341P	S341	S414	S502	S411	S401	S415	S402	S404	S405	S407	S408	S453	S460	S456	S452	S511	S503	S384P	S52P	S592	S581	S525	S524	S536	S527	S549	S550	S537	S598	S599	S267	S538
@@ -163,6 +171,7 @@ jac = [1	1	1	1	-1	1	-1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
 0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	-1	-1	-1	0	0	0	0
 0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	-1	-1	0	0
 0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	1	-1];
+
 
 //observability/redundancy tests                  
 umeas_P16 = [];
