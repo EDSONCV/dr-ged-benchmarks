@@ -6,4 +6,4 @@ The aim of Data Reconciliation is to _correct_ process measurements based on pro
 
 DR is solved as an optimization problem, where the objective function is to minimize the difference between the measured/observed variables and the adjusted ones, weighted by reciprocal of the variance.
 
-http://www.sciweavers.org/download/Tex2Img_1361729611.jpg
+http://www.HostMath.com/Show.aspx?Code=%5Cbegin%7Bcases%7D%0A%5Cunderset%7B_%7B%5Ctextbf%7BX%7D%5Cin%5CRe%7D%7D%7B%5Cmin%7D%20%20%5Cleft(%5Ctextbf%7BY%7D-%5Ctextbf%7BX%7D%5Cright)%5E%7BT%7D%5CSigma%5E%7B-1%7D%5Cleft(%5Ctextbf%7BY%7D-%5Ctextbf%7BX%7D%5Cright)%20%20%20%5C%5C%0A%5Ctextbf%7BX%7D_%7Bmin%7D%20%5Cle%20%5Ctextbf%7BX%7D%20%5Cle%20%5Ctextbf%7BX%7D_%7Bmax%7D%5C%5C%0A%5Cmbox%7Bsubject%20to%7D%20%20%5C%5C%0AF%5Cleft(%5Ctextbf%7BX%7D%5Cright)%20%3D%200%20%20%20%20%5C%5C%0A%5Cend%7Bcases%7D%5C%5C%0A
