@@ -27,7 +27,7 @@
 // 7 Equipments 
 
 clear xm var jac nc nv i1 i2 nnzeros sparse_dg sparse_dh lower upper var_lin_type constr_lin_type constr_lhs constr_rhs
-
+getd('../functions');
 // In the original paper, all streams for this problem are unmeasures, 
 //theses values are estimates givem by the paper's original author.
 xm =[691.67
@@ -47,6 +47,13 @@ xm =[691.67
 //var = (0.0001*ones(12,1)).^2;
 //the variance proposed by this work 
 var = (0.03*xm).^2;
+
+// gross error
+gerror = zeros(length(xm),1);
+// to setup gross errors, select the stream and magnitude as the line bellow
+//gerror(2) = 9*sqrt(var(2));
+xm = xm + gerror;
+
 //The jacobian of the constraints
 //      1   2   3   4   5   6   7   8    9   10  11  12
 jac = [ 1   -1  0   0   1   0   0   0    0   0   0   0 
@@ -101,14 +108,14 @@ params = add_param(params,"journal_level",5);
 
 [x_sol, f_sol, extra] = ipopt(xm, objfun, gradf, confun, dg, sparse_dg, dh, sparse_dh, var_lin_type, constr_lin_type, constr_rhs, constr_lhs, lower, upper, params);
 
-Q = 2*hessf ( xm );
-p=-4*(xm./var)';
-C=jac;
-me=nc;
-b=zeros(nc,1);
-ci=lower;
-cs=upper;
-
+//Q = 2*hessf ( xm );
+//p=-4*(xm./var)';
+//C=jac;
+//me=nc;
+//b=zeros(nc,1);
+//ci=lower;
+//cs=upper;
+//
 //[x,iact,iter,f_sol]=qpsolve(Q,p,C,b,ci,cs,me)
 //[x_solqp,lagr,info]=qld(Q,p,C,b,ci,cs,me, 1.0e-8)
 //status = info;

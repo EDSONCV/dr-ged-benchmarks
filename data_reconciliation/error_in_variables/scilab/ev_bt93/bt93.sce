@@ -10,7 +10,8 @@
 
 clear xm var jac nc nv nnzjac nnz_hess sparse_dg sparse_dh lower upper var_lin_type constr_lin_type constr_lhs constr_rhs flow_full flow temp_full temp coef
 getd('.');
-
+getd('../functions');
+stacksize('max');
 FA6x=[5.56	5.61	5.51	5.56	5.56	5.56	5.56	5.56	5.56	5.56	5.51	5.61	5.56	5.56	5.56	5.56	5.56	5.56	5.56	5.56];
 TA2x=[4.826	4.826	4.826	4.826	4.826	4.822	4.824	4.848	4.826	4.826	4.827	4.826	4.826	4.826	4.829	4.828	4.804	4.826	4.826	4.835];
 TA4x=[5.655	5.656	5.65	5.655	5.655	5.608	5.542	5.788	5.655	5.655	5.653	5.66	5.655	5.655	5.696	5.768	5.522	5.655	5.655	5.655];
@@ -58,25 +59,26 @@ stdDevAllrow = stdDevAll(:);
 params = init_param();
 // We use the given Hessian
 //params = add_param(params,"hessian_constant","yes");
-params = add_param(params,"hessian_approximation","exact");
+//params = add_param(params,"hessian_approximation","exact");
 //params = add_param(params,"hessian_approximation","limited-memory");
 // uncheck bellow to test derivatives
-params = add_param(params,"derivative_test","second-order");
+//params = add_param(params,"derivative_test","second-order");
 //params = add_param(params,"derivative_test","first-order");
 params = add_param(params,"tol",1e-4);
 params = add_param(params,"acceptable_tol",1e-4);
-params = add_param(params,"mu_strategy","monotone");
-//params = add_param(params,"mu_strategy","adaptive");
+//params = add_param(params,"mu_strategy","monotone");
+//params = add_param(params,"limited_memory_max_history",20);
+params = add_param(params,"mu_strategy","adaptive");
 params = add_param(params,"journal_level",5);
 disp('begore start ipopt')
-tic
+tin = tic();
 // if the user want to use random initial guess, uncomment 2 lines bellow and comment the 3rd line
 //xrand = rand(30,1);
 //[x_sol, f_sol, extra] = ipopt(xrand, objfun, gradf, confun, dg1, sparse_dg, dh, sparse_dh, var_lin_type, constr_lin_type, constr_rhs, constr_lhs, lower, upper, params);
 
 [x_sol, f_sol, extra] = ipopt(xmfull*1.001, objfun, gradf, confun, dg1, sparse_dg, dh, sparse_dh, var_lin_type, constr_lin_type, constr_rhs, constr_lhs, lower, upper, params);
 
-toc
+tend = toc();
 
 mprintf("\n\nSolution: , x\n");
 for i = 1 : nv

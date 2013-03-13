@@ -10,6 +10,8 @@
 
 clear xm var jac nc nv nnzjac nnz_hess sparse_dg sparse_dh lower upper var_lin_type constr_lin_type constr_lhs constr_rhs flow_full flow temp_full temp coef
 getd('.');
+getd('../functions');
+stacksize('max');
 
 ndata=5;    
 T_ref = 323.15;

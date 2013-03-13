@@ -1,3 +1,4 @@
+mode(-1);
 select obj_function_type 
 	case 0 then
 	getd('../functions/wls');
@@ -62,7 +63,8 @@ select obj_function_type
 		beta_smooth = 0.25;
 		alpha_smooth = 1/beta_smooth;
 		// logistic parameter
-		const_logist = 0.602;
+//		const_logist = 0.602;
+		const_logist = 0.10;
 
 	case 7 then
 		getd('../functions/lorenztian');
@@ -78,6 +80,8 @@ select obj_function_type
 		beta_smooth = 0.25;
 		alpha_smooth = 1/beta_smooth;
 		// quasi-weighted parameter
-		const_qw = 1;
+//		const_qw = 0.15;
+        ones_xm = ones(length(red),1);
+		const_qw = 0.1;
 
 end

@@ -16,7 +16,8 @@ if run_new ==1 then
     scicos_simulate(scs_m);
     savematfile('-mat','ss_gerror_mat.sav', 'ss_ge_sum_inlet', 'ss_ge_outlet_tanks','ss_ge_inlet_tanks','-v6');
 else
-    loadmatfile('-mat','ss_gerror_mat.sav', 'ss_ge_sum_inlet', 'ss_ge_outlet_tanks','ss_ge_inlet_tanks','-v6');
+    loadmatfile('-mat','ss_gerror_mat2.sav', 'ss_ge_sum_inlet', 'ss_ge_outlet_tanks','ss_ge_inlet_tanks','-v6');
+//    loadmatfile('-mat','ss_gerror_mat.sav', 'ss_ge_sum_inlet', 'ss_ge_outlet_tanks','ss_ge_inlet_tanks','-v6');
     
 end
 
@@ -73,7 +74,8 @@ for k = 1:4
     vsize=800;
     hsize=900;
 
-    a1(k)=scf(2*k);
+//    a1(k)=scf(2*k);
+    a1(k)=scf();
     subplot(2,2,1);
     set(a1,"figure_size",[vsize,hsize]);
     set(a1,"figure_position",[i*dx,j*dy]);
@@ -115,8 +117,20 @@ for k = 1:4
     plot(ss_ge_outlet_tanks.time,xm_full_filtered1(:,8,k)','r', ss_ge_outlet_tanks.time,x_sol_filtered1(:,8,k)','blu',ss_ge_outlet_tanks.time,xm_full_unfiltered1(:,8,k)','g', ss_ge_outlet_tanks.time,x_sol_unfiltered1(:,8,k)','yel');
     legend("meas_filtered", "reconc_filtered", "meas_unfiltered", "reconc_unfiltered",4);
     wsize = 2*wsize;
+    //
+    a3(k) = scf();
+    subplot(1,1,1);
+    title('m =' + string(wsize) + ' - Tank 2 Output - Stream 6');
+    plot(ss_ge_outlet_tanks.time,xm_full_filtered1(:,6,k)','ro-', ss_ge_outlet_tanks.time,x_sol_filtered1(:,6,k)','k-',ss_ge_outlet_tanks.time,xm_full_unfiltered1(:,6,k)','bx:');
+    legend("Measurement Filtered", "Reconciled with Filtered Data", "Raw Measurement", ,1);
+//        a3(k) = scf();
+//    subplot(1,1,1);
+//    title('m =' + string(wsize) + ' - Tank 2 Output - Stream 6');
+//    plot(ss_ge_outlet_tanks.time,xm_full_filtered1(:,6,k)','ro-', ss_ge_outlet_tanks.time,x_sol_filtered1(:,6,k)','b-',ss_ge_outlet_tanks.time,xm_full_unfiltered1(:,6,k)','gd:', ss_ge_outlet_tanks.time,x_sol_unfiltered1(:,6,k)','kx');
+//    legend("Measurement Filtered", "Reconciled with Filtered Data", "Raw Measurement", "Reconciled with Raw Data",1);
+
 end;
-pause
+
 scf();
 plot(ss_ge_outlet_tanks.time,x_sol_filtered1(:,1,1)',ss_ge_outlet_tanks.time,x_sol_filtered1(:,1,2),ss_ge_outlet_tanks.time,x_sol_filtered1(:,1,3),ss_ge_outlet_tanks.time,x_sol_filtered1(:,1,4));
 title('Filtered data - Reconciled - Stream 1');
@@ -143,9 +157,9 @@ title('Filtered data - Reconciled - Stream 5');
 legend("w=5", "w=10", "w=20", "w=40",1);
 
 scf();
-plot(ss_ge_outlet_tanks.time,x_sol_filtered1(:,6,1)',ss_ge_outlet_tanks.time,x_sol_filtered1(:,6,2),ss_ge_outlet_tanks.time,x_sol_filtered1(:,6,3),ss_ge_outlet_tanks.time,x_sol_filtered1(:,6,4));
+plot(ss_ge_outlet_tanks.time,x_sol_filtered1(:,6,1)','ro-',ss_ge_outlet_tanks.time,x_sol_filtered1(:,6,2),'d:',ss_ge_outlet_tanks.time,x_sol_filtered1(:,6,3),'k-.',ss_ge_outlet_tanks.time,x_sol_filtered1(:,6,4));
 title('Filtered data - Reconciled - Stream 6');
-legend("w=5", "w=10", "w=20", "w=40",1);
+legend("window=5", "window=10", "window=20", "window=40",1);
 
 scf();
 plot(ss_ge_outlet_tanks.time,x_sol_filtered1(:,7,1)',ss_ge_outlet_tanks.time,x_sol_filtered1(:,7,2),ss_ge_outlet_tanks.time,x_sol_filtered1(:,7,3),ss_ge_outlet_tanks.time,x_sol_filtered1(:,7,4));

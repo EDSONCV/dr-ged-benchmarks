@@ -29,8 +29,9 @@ function [redund, just_measured, observ, non_obs, varargout] =qrlinclass(A,umeas
        if lhs > 4 then
             varargout(1) = [];
         end          
-    end
     return;
+    end
+
     
     
     Au = A(:,umeas);

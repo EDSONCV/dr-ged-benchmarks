@@ -6,7 +6,7 @@
 clear xm var jac nc nv i1 i2 nnzeros sparse_dg sparse_dh lower upper var_lin_type constr_lin_type constr_lhs constr_rhs
 getd('../');
 getd('.');
-run_new = 1;
+run_new = 0;
 // if you face problems with scilab 5.4, load a previoulsy saved result
 if run_new == 1 then
 

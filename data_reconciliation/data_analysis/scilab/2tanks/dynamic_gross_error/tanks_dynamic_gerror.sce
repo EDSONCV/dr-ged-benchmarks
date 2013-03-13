@@ -17,6 +17,7 @@ if run_new ==1 then
     savematfile('-mat','dyn_gerror_mat.sav', 'dyn_ge_sum_inlet', 'dyn_ge_outlet_tanks','dyn_ge_inlet_tanks','-v6');
 else
     loadmatfile('-mat','dyn_gerror_mat.sav', 'dyn_ge_sum_inlet', 'dyn_ge_outlet_tanks','dyn_ge_inlet_tanks','-v6');
+//    loadmatfile('-mat','dyn_gerror_mat2.sav', 'dyn_ge_sum_inlet', 'dyn_ge_outlet_tanks','dyn_ge_inlet_tanks','-v6');
     
 end
 
@@ -57,7 +58,7 @@ jac = [ 1  -1  -1  -1   0   0   0   0
 // to solve with analytic WLS
 [x_sol_unfiltered1]=dr_wls_simple(xm_full_unfiltered1, jac, sigma);
 [x_sol_filtered1]=dr_wls_simple(xm_full_filtered1, jac, sigma);
-use_subplot = 0;
+use_subplot = 1;
 if use_subplot == 1 then
 
     i=0;
@@ -133,8 +134,8 @@ else
     set(a4,"figure_position",[i*dx,j*dy]);
     i=i+1;
     title("m =" + string(wsize) + " - Input - Stream 2");
-    plot(dyn_ge_outlet_tanks.time,xm_full_filtered1(2,:)','r', dyn_ge_outlet_tanks.time,x_sol_filtered1(2,:)','blu',dyn_ge_outlet_tanks.time,xm_full_unfiltered1(2,:)','g', dyn_ge_outlet_tanks.time,x_sol_unfiltered1(2,:)','yel')
-    legend("meas_filtered", "reconc_filtered", "meas_unfiltered", "reconc_unfiltered",1);
+    plot(dyn_ge_outlet_tanks.time,xm_full_filtered1(2,:)','r', dyn_ge_outlet_tanks.time,x_sol_filtered1(2,:)','blu',dyn_ge_outlet_tanks.time,xm_full_unfiltered1(2,:)','g', dyn_ge_outlet_tanks.time,x_sol_unfiltered1(2,:)','c')
+    legend("Measurement Filtered", "Reconciled with Filtered Data", "Raw Measurement", "Reconciled with Raw Data",1);
 
     a5=scf(5);
     title("m =" + string(wsize) + " - Input - Stream 3");

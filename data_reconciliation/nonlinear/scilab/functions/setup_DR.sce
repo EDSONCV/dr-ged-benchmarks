@@ -1,3 +1,4 @@
+mode(-1);
 select obj_function_type 
 	case 0 then
 	getd('../functions/wls');
