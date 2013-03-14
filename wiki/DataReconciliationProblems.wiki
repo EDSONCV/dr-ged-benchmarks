@@ -264,9 +264,10 @@ Then the file must be saved and executed (exec P1.sce).
 
 It is also possible to classify and remove measurements from data reconciliation.
 To do this, for example, for problem P1:
--Edit the "umeas_P1 = [];" line and place the unmeasured streams inside the brackets . E.g. to make Stream 1 unmeasured:
 
-umeas_P1 = [1];
+-Edit the 'umeas_P1 = [];' line and place the unmeasured streams inside the brackets . E.g. to make Stream 1 unmeasured:
+
+'umeas_P1 = [1]';
 
 {{{
 //observability/redundancy tests                  
