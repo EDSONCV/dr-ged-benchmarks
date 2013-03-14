@@ -3,33 +3,16 @@ Author: Edson Cordeiro do Valle
 Contact - edsoncv@{gmail.com}{vrtech.com.br}
 Skype: edson.cv
 
-Information
-To be used with Scilab 5.3 and Sci_Ipopt version sci_ipopt_0.1
-to load the ipopt library inside Scilab:
 
-exec path to sci_ipopt/loader.sce
-it will be presented in the console:
-______________________
--->try
---> getversion("scilab");
--->catch
---> error("Scilab 5.0 or more is required.");
--->end;
- 
- 
--->exec(get_absolute_file_path("loader.sce")+"etc/"+"sci_ipopt.start");
-Start SciIPOpt
-	Load macros
-	Load gateways
-	Load help
-	Load demos
-______________________
-Sci_Ipopt is loaded.
-select an example folder and run:
-______________________
->>exec px.sce.
-______________________
+In this type of problem, we deal with linear data reconciliation (total flow measurements), with all streams measured and known variance/standard deviation data. Although linear problems are easy to solve in DR, since it have analytical solution, the aim of this problem is to test different objective function types, called robust functions. These robust functions can provide results with gross errors removed, however, to do this, some parameters must be tuned in these function. The aim of this class problems is to test these parameters set up. 
 
+In this problem, since we use robust functions, and the derivatives are complicate to express, we use Ipopt optimizer to run the optimizations. We also use automatic differentiation toolbox from Scilab (diffcode) to evaluate the Hessian and Jacobian structure of objective function.
+
+inside "linear" folder, we have 3 sobfolders:
+
+-diagrams: a diagram of the process in the .dia and .png format.
+-scilab: the scilab implementation.
+-spreadsheet: a Excel spreadsheet of the data, results or some data handling necessary to run the model. 
 
 
 Reference Index:
