@@ -268,6 +268,21 @@ jac = [ 1  -1  -1   0   0   0   0   0    0   0   0   0
         0   0  0   0   0   0   0   0    1   -1  -1  0
         ];    
 endfunction
+function [jac]=jacP9_u_s10()
+jac = [ 1  -1  -1   0   0   0   0   0    0   0   0   
+        0   0   1   -1  -1  0   0    0   0   0   0   
+        0   0   0   0   1   -1  -1  0    0   0   0 
+        0   0   0   0   0   0   1    1   -1  0   0
+        0   0   0   0   0   0   0   -1   1   -1  -1 ];    
+endfunction
+
+function [jac]=jacP9_u_s7()
+jac = [ 1  -1  -1   0   0   0   0    0    0   0   0   
+        0   0   1   -1  -1  0   0    0    0   0   0   
+        0   0   0   0   1   -1  1    -1   0   0   0 
+        0   0   0   0   0   0  -1    0    1   0   -1
+        0   0  0   0   0   0   0     1   -1  -1   0];    
+endfunction
 // Data Reconciliation Benchmark Problems From Lietrature Review
 // Author: Edson Cordeiro do Valle
 // Contact - edsoncv@{gmail.com}{vrtech.com.br}
