@@ -24,7 +24,7 @@ getd('../jacobians/');
 clear xr sd sds x_sol xfinal jac jac_col jac_col rj sigma sigam_inv res  V V_inv diag_diag_V Wbar gama zr_nt adj zadj   Wbar_alt  adjustability detect resi Qglr betaglr xchiglr ge_glr op_glr;
 clear avti_gt_mt op_gt_mt op_gt_nt_tmp avt1_mt1 avt1_mt2 op_mt1 op_mt2 avti_glr op_glr_mt aee_mt aee_nt_tmp op_glr_nt_tmp avti_glr_nt_tmp avti_gt_mt_tmp op_gt_mt_tmp op_gt_nt avt1_nt1 avt1_nt2 op_nt1 op_nt2 avti_glr_tmp op_glr_mt_tmp aee_mt_tmp aee_nt op_glr_nt avti_glr_nt; 
 
-stacksize(190000000);
+stacksize('max');
 tic;
 
 xr =[225.45;167.89;1332.00;1332.00;2276.90;137.50;917.89;532.38;385.51;385.51;385.51;100.32;285.19;147.69;680.07;683.07;683.07;1593.80;1593.80;582.60;582.60;1178.20;2872.50;3.84;2876.30;2870;2876.30;2876.30;3098.20;1400.00;1337.70;11.36;349.07;501.44;392.10;33.80;535.24;244.46;147.64;31.13;504.11;7.00;497.11;233.72;247.55;15.84;13.37;2.47;308.47;310.94];
@@ -53,13 +53,21 @@ xrand=generate_data_random_err(xr, sd, jac, runsize);
 // we do the Overall Power Curve in two steps, first for the measurement bias, then for the leakings:
 // in order to avoid undesired overwriting , the variables with "_tmp" termination
 // is created
+
+// to run robust reconciliation,, one must choose between the folowing objective functions to set up the functions path and function parameters:
+//WLS analytical = -1 WLS numerical = 0  ; Absolute sum of squares = 1 ; Cauchy = 2 ;Contamined Normal = 3 ; Fair  = 4
+//Hampel = 5 Logistic = 6 ; Lorenztian = 7 ; Quasi Weighted = 8
+obj_function_type = -1;
+
 for i = lb_delta:ub_delta
 
     [xfinal, resRand, resGrossErrorNodalRand]=generate_data_errors(xr, xrand, sd, jac, runsize, i, i, 0, 0);
 
     resGrossErrorNodalRandFi = [ resRand;resGrossErrorNodalRand];
 
-    [x_sol, res, gamaMeasuremts,gamaNodal,zr_nt_nodal, zr_nt_nodal_rand, zadj ]=calc_results(xfinal, jac, sigma, resGrossErrorNodalRandFi);
+    [x_sol] = calc_results_DR(xfinal, jac, sigma, resGrossErrorNodalRandFi, obj_function_type);
+    
+    [res, gamaMeasuremts,gamaNodal,zr_nt_nodal, zr_nt_nodal_rand, zadj ] = calc_results_index(x_sol, jac, sigma, resGrossErrorNodalRandFi);
 
     [avti_gt_mt, op_gt_mt(1:jac_col,i), op_gt_nt_tmp] = global_test(0.095, 0.095, gamaMeasuremts, runsize, rj, jac_col, jac_row);
 
@@ -86,7 +94,9 @@ for j = lb_leak:ub_leak
 
     resGrossErrorNodalRandFi = [ resRand;resGrossErrorNodalRand];
 
-    [x_sol, res, gamaMeasuremts,gamaNodal,zr_nt_nodal, zr_nt_nodal_rand, zadj ]=calc_results(xfinal, jac, sigma, resGrossErrorNodalRandFi);
+    [x_sol] = calc_results_DR(xfinal, jac, sigma, resGrossErrorNodalRandFi, obj_function_type);
+    
+    [res, gamaMeasuremts,gamaNodal,zr_nt_nodal, zr_nt_nodal_rand, zadj ] = calc_results_index(x_sol, jac, sigma, resGrossErrorNodalRandFi);
 
     [avti_gt_mt_tmp, op_gt_mt_tmp, op_gt_nt(1:jac_row,j)] = global_test(0.095, 0.095, gamaMeasuremts, runsize, rj, jac_col, jac_row);
 
@@ -113,3 +123,14 @@ aa = clock();
 nowtime = '_' + string(aa(4)) + '-'+ string(aa(5)) + '-'+ string(round(aa(6)));
 save ('P_resumed_OP_curve' + date() + nowtime +'.sav', runtime,  adj, detect, op_nt1, op_nt2, avt1_nt1, avt1_nt2, op_mt1, op_mt2, avt1_mt1, avt1_mt2, op_gt_mt, op_gt_nt, avti_gt_mt, op_glr_mt, op_glr_nt, avti_glr, avti_glr_nt, aee_nt, aee_mt);
 //
+// plot the op curves
+sdx=[1:ub_delta];
+scf();
+for i = 1:szx
+    plot( sdx, op_mt1(i,:));
+    p=get("hdl")
+    p.children.foreground = i;
+end
+streamNames =generateStreamName(szx,1);
+legend(streamNames,2);
+

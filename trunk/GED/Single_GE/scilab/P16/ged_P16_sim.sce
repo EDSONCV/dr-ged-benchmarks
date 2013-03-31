@@ -24,7 +24,7 @@ getd('../jacobians/');
 clear xr sd sds x_sol xfinal jac jac_col jac_col rj sigma sigam_inv res  V V_inv diag_diag_V Wbar gama zr_nt adj zadj   Wbar_alt  adjustability detect resi Qglr betaglr xchiglr ge_glr op_glr;
 clear avti_gt_mt op_gt_mt op_gt_nt_tmp avt1_mt1 avt1_mt2 op_mt1 op_mt2 avti_glr op_glr_mt aee_mt aee_nt_tmp op_glr_nt_tmp avti_glr_nt_tmp avti_gt_mt_tmp op_gt_mt_tmp op_gt_nt avt1_nt1 avt1_nt2 op_nt1 op_nt2 avti_glr_tmp op_glr_mt_tmp aee_mt_tmp aee_nt op_glr_nt avti_glr_nt; 
 
-stacksize(190000000);
+stacksize('max');
 tic;
 
 xr =[225.45;167.89;1332.00;1332.00;2276.90;137.50;917.89;532.38;385.51;385.51;385.51;100.32;285.19;147.69;680.07;683.07;683.07;1593.80;1593.80;582.60;582.60;1178.20;2872.50;3.84;2876.30;2870;2876.30;2876.30;3098.20;1400.00;1337.70;11.36;349.07;501.44;392.10;33.80;535.24;244.46;147.64;31.13;504.11;7.00;497.11;233.72;247.55;15.84;13.37;2.47;308.47;310.94];
@@ -45,7 +45,23 @@ sigma=diag(sds.^2);
 
 resGrossErrorNodalRandFi = [ resRand;resGrossErrorNodalRand];
 
-[x_sol, res, gamaMeasuremts,gamaNodal,zr_nt_nodal, zr_nt_nodal_rand, zadj ]=calc_results(xfinal, jac, sigma, resGrossErrorNodalRandFi);
+//observability/redundancy tests
+//user can set unmeasured streams here, if this vector is empty, all streams are measured                  
+umeas_P16 = [];
+[red_P16, just_measured_P16, observ_P16, non_obs_P16, spec_cand_P16] = qrlinclass(jac,umeas_P16);
+measured_P16 = setdiff([1:length(xr)], umeas_P16);
+red = measured_P16;//
+        
+// to run robust reconciliation,, one must choose between the folowing objective functions to set up the functions path and function parameters:
+//WLS analytical = -1 WLS numerical = 0  ; Absolute sum of squares = 1 ; Cauchy = 2 ;Contamined Normal = 3 ; Fair  = 4
+//Hampel = 5 Logistic = 6 ; Lorenztian = 7 ; Quasi Weighted = 8
+// run the configuration functions with the desired objective function type
+obj_function_type = -1;
+
+[x_sol] = calc_results_DR(xfinal, jac, sigma, resGrossErrorNodalRandFi, obj_function_type);
+
+[res, gamaMeasuremts,gamaNodal,zr_nt_nodal, zr_nt_nodal_rand, zadj ] = calc_results_index(x_sol, jac, sigma, resGrossErrorNodalRandFi);
+
 
 [avti_gt_mt, op_gt_mt, op_gt_nt] = global_test(0.1, 0.1, gamaMeasuremts, runsize, rj, jac_col, jac_row);
 

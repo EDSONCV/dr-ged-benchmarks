@@ -3,7 +3,7 @@ function [avti_gt_mt, op_gt_mt, op_gt_nt] = global_test(Q_mt, Q_nt, gamaMeasurem
     //Q=0.1;
     P=1-Q_mt;
     xchi=cdfchi("X",rj,P,Q_mt);
-    printf('xchi MT: %d \n', xchi);
+//    printf('xchi MT: %d \n', xchi);
     ge_gt_mt=find(gamaMeasuremts(runsize+1:$)>xchi);
     ge_gt_low_mt=length(find(gamaMeasuremts(1:runsize)>xchi));
     avti_gt_mt = ge_gt_low_mt/runsize;
@@ -15,7 +15,7 @@ function [avti_gt_mt, op_gt_mt, op_gt_nt] = global_test(Q_mt, Q_nt, gamaMeasurem
     //Q=0.1;
     P=1-Q_nt;
     xchi=cdfchi("X",rj,P,Q_nt);
-    printf('xchi NT: %d \n', xchi);
+//    printf('xchi NT: %d \n', xchi);
     ge_gt_nt=find(gamaNodal(runsize+1:$)> xchi);
     ge_gt_low_nt=length(find(gamaNodal(1:runsize)>xchi))    ;
     avti_gt_nt = ge_gt_low_nt/runsize;

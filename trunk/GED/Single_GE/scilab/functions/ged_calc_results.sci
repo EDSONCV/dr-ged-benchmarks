@@ -2,7 +2,35 @@
 // Author: Edson Cordeiro do Valle
 // Contact - edsoncv@{gmail.com}{vrtech.com.br}
 // Skype: edson.cv
-function [x_sol, res, gamaMeasuremts,gamaNodal,zr_nt_nodal, zr_nt_nodal_rand, zadj, varargout ]=calc_results(xfinal, jac, sigma, resGrossErrorNodalRandFi, varargin)
+
+function [x_sol] = calc_results_DR(xfinal, jac, sigma, resGrossErrorNodalRandFi, opt_type)
+obj_function_type = opt_type;
+exec ../functions/setup_DR.sce
+
+// to run robust reconciliation, it is also necessary to choose the function to return the problem structure
+if obj_function_type > 0 then
+    xm = xr;
+    [nc_eq, n_non_lin_eq, nv, nnzjac_ineq, nnzjac_eq, nnz_hess, sparse_dg, sparse_dh, lower, upper, var_lin_type, constr_lin_type, constr_lhs, constr_rhs]  = robust_structure(jac, 0, xr, objfun, res_eq, res_ineq);
+    //opt_type = 1; // linear
+    opt_type = 2; // nonlinear : robust functions or nonlinear constraits
+    x_sol = calc_results_opt(xfinal, jac, sigma, resGrossErrorNodalRandFi, opt_type);
+
+else // WLS
+    if obj_function_type < 0 then // WLS analytical
+        x_sol = calc_results_analytical(xfinal, jac, sigma, resGrossErrorNodalRandFi);
+    else // WLS numeric
+        [nc, nv, i1, i2, nnzeros, sparse_dg, sparse_dh, lower, upper, var_lin_type, constr_lin_type, constr_lhs, constr_rhs]  = wls_structure(jac);
+        opt_type = 1; // linear
+        //opt_type = 2; // nonlinear : robust functions or nonlinear constraits
+        x_sol = calc_results_opt(xfinal, jac, sigma, resGrossErrorNodalRandFi, opt_type);
+    end
+end
+
+    
+endfunction    
+    
+
+function [x_sol]=calc_results_analytical(xfinal, jac, sigma, resGrossErrorNodalRandFi, varargin)
 [lhs,rhs]=argn(0);
 V=jac*sigma*jac';
 V_inv = inv(V);
@@ -27,6 +55,60 @@ for i=1:runsizefinal
 end
 
 x_sol = x_sol';
+endfunction
+
+
+function [x_sol]=calc_results_opt(xfinal, jac, sigma, resGrossErrorNodalRandFi, opt_type)
+[lhs,rhs]=argn(0);
+rj=rank(jac);
+jac_col = size(jac,2);
+jac_row = size(jac,1);
+
+runsizefinal = size(xfinal,1);
+x_sol= zeros(szx,runsizefinal);
+f_sol=zeros(runsizefinal);
+params = init_param();
+// We use the given Hessian
+params = add_param(params,"hessian_approximation","exact");
+if  opt_type == 1 then
+    params = add_param(params,"hessian_constant","yes");
+end
+params = add_param(params,"tol",1e-8);
+params = add_param(params,"acceptable_tol",1e-8);
+params = add_param(params,"mu_strategy","adaptive");
+params = add_param(params,"journal_level",2);
+
+
+
+for i=1:runsizefinal
+//    xrs(:,i) = xr + sd.*rerror(i,:)';
+//    x_sol(:,i) = BB*xfinal(i,:)';
+    xm = xfinal(i,:)';
+    [x_sol(:,i), f_sol(i), extra] = ipopt(xfinal(i,:)', objfun, gradf, confun, dg, sparse_dg, dh, sparse_dh, var_lin_type, constr_lin_type, constr_rhs, constr_lhs, lower, upper, params);
+    
+//    [x_sol(i,:), f_sol(i), status(i)] = P5(xfinal(i,:)',sds.^2,xr');
+//disp(i);
+end
+x_sol = x_sol';
+
+endfunction
+
+function [res, gamaMeasuremts,gamaNodal,zr_nt_nodal, zr_nt_nodal_rand, zadj, varargout ]=calc_results_index(x_sol, jac, sigma, resGrossErrorNodalRandFi, varargin)
+[lhs,rhs]=argn(0);
+V=jac*sigma*jac';
+V_inv = inv(V);
+// covariance matrix of adjustments: narasimham pg. 183 eq. 7-13
+Wbar=sigma*jac'*inv(V)*jac*sigma;
+// variance-covariance matrix: narasimham pg. 178 eq. 7-3
+diag_diag_V = diag(diag(V));
+diag_diag_inv_V = diag(diag(V_inv));
+
+sigma_inv=inv(sigma);
+rj=rank(jac);
+jac_col = size(jac,2);
+jac_row = size(jac,1);
+
+runsizefinal = size(xfinal,1);
 
 res = zeros(runsizefinal, jac_row);
 gamaMeasuremts = zeros(runsizefinal);

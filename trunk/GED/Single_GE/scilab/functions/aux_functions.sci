@@ -62,13 +62,20 @@ for i = 1:a
 end
 return;
 endfunction
-function a = generateStreamName(sizex)
-    // generate a string with the stream names
-    a = string('');
-    for i = 1: sizex
-        a = a + string(' ') + string(i);
+function a = generateStreamName(sizex, varargin)
+    [lhs,rhs]=argn(0);
+  // generate a string with the stream names
+    a=string('');
+    for i = 1:sizex,
+        if  rhs >=2 then // vector form
+            a(i) = string(i);
+        else // names are concatenated in 1 string
+            a = a + string(' ') + string(i);               
+        end
     end
+
 endfunction
+
 function a = generateEqpName(sufix, sizex)
     // generate a string with the equipment names
     // Do not separate sufix with spaces
