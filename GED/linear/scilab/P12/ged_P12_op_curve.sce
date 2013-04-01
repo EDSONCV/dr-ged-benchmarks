@@ -48,6 +48,7 @@ sd = [1
 0.8
 1];
 sds=sd;
+var=sd.^2;
 jac=jacP12();
 jac_col = size(jac,2);
 jac_row = size(jac,1);

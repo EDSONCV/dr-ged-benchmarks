@@ -31,7 +31,8 @@ clear avti_gt_mt op_gt_mt op_gt_nt_tmp avt1_mt1 avt1_mt2 op_mt1 op_mt2 avti_glr 
 stacksize('max');
 tic;
 
-xr =[230;21;209;35;174;15;159;50;209;94;115;44];
+// Stream 7 unmeasured
+xr =[230;21;209;35;174;15;50;209;94;115;44];
 //the variance proposed by the original author
 sd = [37.575
 1.08
@@ -39,7 +40,6 @@ sd = [37.575
 1.825
 2
 0.88
-7.245
 1
 5
 2
@@ -47,9 +47,11 @@ sd = [37.575
 2.385
 ];
 szx = size(xr,1);
-runsize = 1000;
+runsize = 2500;
 sds = sd;
-jac=jacP9();
+var=sd.^2;
+// Stream 7 unmeasured
+jac=jacP9_u_s7();
 jac_col = size(jac,2);
 jac_row = size(jac,1);
 rj=rank(jac);
