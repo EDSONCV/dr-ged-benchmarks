@@ -39,6 +39,7 @@ sd = [0.2766
 0.1449
 0.0966];
 sds = sd;
+var=sd.^2;
 jac=jacP1();
 rj=rank(jac);
 jac_col = size(jac,2);

@@ -34,6 +34,7 @@ szx = size(xr,1);
 runsize = 2500;
 sd = ones(6,1);
 sds = ones(6,1);
+var=sd.^2;
 jac=jacP4();
 jac_col = size(jac,2);
 jac_row = size(jac,1);

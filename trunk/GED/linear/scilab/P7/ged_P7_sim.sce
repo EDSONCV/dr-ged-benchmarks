@@ -30,6 +30,7 @@ sd=[1
 0.1
 ].^0.5;
 sds = sd;
+var=sd.^2;
 jac=jacP7();
 jac_col = size(jac,2);
 jac_row = size(jac,1);

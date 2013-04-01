@@ -57,6 +57,7 @@ sd = [2.14120
 0.64530
 ];
 sds = sd;
+var=sd.^2;
 jac=jacP3();
 jac_col = size(jac,2);
 jac_row = size(jac,1);
