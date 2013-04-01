@@ -25,13 +25,15 @@ Inside "linear" folder, we have 2 subfolders:
  * P3
  * P4
  * P5
- * P5_robust
+ * P5_robust - Problem 5 with robust estimator
  * P6
  * P7
  * P8
- * P9_u_s7
- * P9_u_s10
+ * P7_test_sample_size
+ * P8_test_sample_size - Test the influence of the number of simulation runs.
  * P9
+ * P9_u_s7 - Stream 7 unmeasured
+ * P9_u_s10 - Stream 10 unmeasured
  * P10
  * P11
  * P12
@@ -115,9 +117,11 @@ Detectability, ajustability, etc.
 Generate random and gross error data.
 2 and 7 seven are the limits of measurement bias gross error (2 and 7 times the standard deviation).
 0.02, 0.07 are lower and upper bound for gross error calculation for the leakings gross error, it is calculated according to:
-totalNodeFlow(i)*lowerbound,totalNodeFlow(i)*upperbound (ged_generate_data.sci line 88)
+totalNodeFlow(i).lowerbound < leaking(i) < totalNodeFlow(i).upperbound (ged_generate_data.sci line 88)
+
 and 
-totalNodeFlow = abs(jac)*xr (ged_generate_data.sci line 80)
+
+totalNodeFlow = abs(jac).xr (ged_generate_data.sci line 80)
 
 {{{
 [xfinal, resRand, resGrossErrorNodalRand]=generate_data(xr, sd, jac, runsize, 2, 7, 0.02, 0.07);
