@@ -1,0 +1,447 @@
+#summary GED Problems description
+#labels GED_Problems
+
+== Linear Problems ==
+
+ In this type of problem, we deal with linear data reconciliation/GED (total flow measurements), with all streams measured/unmeasured and known variance/standard deviation data.
+
+ In this GED benchmark (with the same linear problems included in data reconciliation) we used literature problems with exact mass balance for all streams. When this data was not available, we propose an exact mass balance using process simulators. The aim of this GED benchmark is:
+
+ * Test GED challenge problems where the issues of each problem is presented.
+ * Test GED with measured and unmeasured streams.
+ * Test Robus functions in GED and the appropriate test parameters.
+ * Test/presente the Overall Power of each problem.
+
+Inside "linear" folder, we have 2 subfolders: 
+
+    * scilab: the scilab implementation.
+    * spreadsheet: a Excel spreadsheet of the data, results or some data handling necessary to run the model. 
+
+"scilab" folder
+ * jacobians
+ * functions
+ * P1
+ * P2
+ * P3
+ * P4
+ * P5
+ * P5_robust
+ * P6
+ * P7
+ * P8
+ * P9_u_s7
+ * P9_u_s10
+ * P9
+ * P10
+ * P11
+ * P12
+ * P13
+ * P14
+ * P15
+ * P16
+
+"functions" folder
+
+This folder has implementation of robust and other type of objective functions, the explanation about them can be found the the references
+ 
+ * absolute
+ * cauchy
+ * contamined_normal
+ * fair
+ * hampel
+ * logistic
+ * lorenztian
+ * quasi_weighted
+ * wls
+
+There are also 2 files used to setup the functions, these files must not be edited by final users.
+
+ * robust_structure.sci: method setup
+ * setup_DR.sce: method selection
+
+Other functions used for GED:
+
+ * aux_functions.sci: functions to calculate some intermediate or fixed parameters (such as adjustability, detectability, etc) and some printing functions.
+ * ged_calc_results.sci: calculate DR and statstical indicators that will be used in GED tests.
+ * ged_generate_data.sci:  generate random data, single or gross erros for bias or leakings.
+ * ged_GLR.sci, ged_GT.sci, ged_MT.sci. ged_NT.sci: GED tests
+ * prettyprinttable.sci: print table in latex format.
+ * qrlinclass.sci: variable classification
+
+Inside each problem folder, e.g. Pxx, we find 2 files:
+
+ * ged_Pxx_sim.sce: execute the simulation
+ * ged_Pxx_op_curve.sce: execute the simulation recursivelly to get the Overall Power curve.
+
+==Step by step file description==
+
+Initial setup: no need to modify.
+{{{
+getd('../functions/');
+getd('../jacobians/');
+clear xr sd sds x_sol xfinal jac jac_col jac_col rj sigma sigam_inv res  V V_inv diag_diag_V Wbar gama zr_nt adj zadj   Wbar_alt  adjustability detect resi Qglr betaglr xchiglr ge_glr op_glr;
+clear avti_gt_mt op_gt_mt op_gt_nt_tmp avt1_mt1 avt1_mt2 op_mt1 op_mt2 avti_glr op_glr_mt aee_mt aee_nt_tmp op_glr_nt_tmp avti_glr_nt_tmp avti_gt_mt_tmp op_gt_mt_tmp op_gt_nt avt1_nt1 avt1_nt2 op_nt1 op_nt2 avti_glr_tmp op_glr_mt_tmp aee_mt_tmp aee_nt op_glr_nt avti_glr_nt; 
+stacksize('max');
+tic;
+}}}
+
+
+Problem setup, with exact flow rates, the simulation size (runsize) and standard deviation
+{{{
+xr=[8.5;4.5;4];
+szx = size(xr,1);
+runsize = 2500;
+sd = [0.2766
+0.1449
+0.0966];
+}}}
+
+Auxiliary variables, modify, when needed, only the Jacobian (jac = jacPXX) in file jacobians.sci in 'functions/jacobians' folder (don't forget to save your jacobian with another name, see jacP9_u_s10() function inside this file).
+
+{{{
+sds = sd;
+jac=jacP1();
+rj=rank(jac);
+jac_col = size(jac,2);
+jac_row = size(jac,1);
+sigma=diag(sds.^2);
+}}}
+
+Detectability, ajustability, etc.
+{{{
+[adj, detect, V, V_inv, sigma_inv, diag_diag_V, Wbar] = adjust(sigma, jac);
+}}}
+
+Generate random and gross error data.
+2 and 7 seven are the limits of measurement bias gross error (2 and 7 times the standard deviation).
+0.02, 0.07 are lower and upper bound for gross error calculation for the leakings gross error, it is calculated according to:
+totalNodeFlow(i)*lowerbound,totalNodeFlow(i)*upperbound (ged_generate_data.sci line 88)
+and 
+totalNodeFlow = abs(jac)*xr (ged_generate_data.sci line 80)
+
+{{{
+[xfinal, resRand, resGrossErrorNodalRand]=generate_data(xr, sd, jac, runsize, 2, 7, 0.02, 0.07);
+}}}
+
+Vectors concatenation (do not edit).
+{{{
+resGrossErrorNodalRandFi = [ resRand;resGrossErrorNodalRand];
+}}}
+
+The user can also perform variable classification. For example, to add Stream 2 of problem P1 to the unmeasured set, edit P1.sce edit the followin line, as below:
+
+{{{
+//observability/redundancy tests
+//user can set unmeasured streams here, if this vector is empty, all streams are measured                  
+umeas_P1 = [2];
+[red_P1, just_measured_P1, observ_P1, non_obs_P1, spec_cand_P1] = qrlinclass(jac,umeas_P1);
+measured_P1 = setdiff([1:length(xr)], umeas_P1);
+red = measured_P1;//
+}}}
+
+The vector : red_P1, just_measured_P1, observ_P1, non_obs_P1, spec_cand_P1, will have the appropriate information.
+
+If the user want to remove a stream from the measurement set, it can be done in 2 ways:
+
+ * Modify the jacobians.sci in functions/jacobians folder (don't forget to save your jacobian with another name, see jacP9_u_s10() funtion inside this file).
+   * remove the stream and the respective standard deviation.
+   * use analytical DR (option -1).
+   * don't forget to set alfa and beta to keep AVT1 aroud 0.1. 
+ * Or, add the stream(s) to unmeasured set.
+   * use another estimator (objetive function)
+   * don't forget to set alfa and beta to keep AVT1 aroud 0.1. 
+
+Then the file must be saved and executed (exec P1.sce). Example:
+
+{{{
+
+umeas_P1 = [3];
+[red_P1, just_measured_P1, observ_P1, non_obs_P1, spec_cand_P1] = qrlinclass(jac,umeas_P1);
+measured_P1 = setdiff([1:length(xr)], umeas_P1);
+red = measured_P1;//
+        
+// to run robust reconciliation,, one must choose between the folowing objective functions to set up the functions path and function parameters:
+//WLS analytical = -1 WLS numerical = 0  ; Absolute sum of squares = 1 ; Cauchy = 2 ;Contamined Normal = 3 ; Fair  = 4
+//Hampel = 5 Logistic = 6 ; Lorenztian = 7 ; Quasi Weighted = 8
+// run the configuration functions with the desired objective function type
+obj_function_type = 0;
+// alpha and betha must be set to keep AVT1 around 0.1 for all tests:
+[avti_gt_mt, op_gt_mt, op_gt_nt] = global_test(0.1, 0.1, gamaMeasuremts, runsize, rj, jac_col, jac_row);
+
+
+}}}
+
+To select the appropriate objective function the user must select the problem folder (e.g. cd P1) and edit the selected script file (edit P1.sce). After it, the user may choose the objective function type by selection the right objective function number, e.g., to select WLS function:
+
+{{{
+// to run robust reconciliation,, one must choose between the following objective functions to set up the functions path and function parameters:
+// to run robust reconciliation,, one must choose between the folowing objective functions to set up the functions path and function parameters:
+//WLS analytical = -1 WLS numerical = 0  ; Absolute sum of squares = 1 ; Cauchy = 2 ;Contamined Normal = 3 ; Fair  = 4
+//Hampel = 5 Logistic = 6 ; Lorenztian = 7 ; Quasi Weighted = 8
+// run the configuration functions with the desired objective function type
+obj_function_type = -1;
+
+}}}
+
+Then the file must be saved and executed (exec P1.sce).
+
+Generate the DR solution and calculate statistical indicators for single GEDI, no need to modify.
+{{{
+[x_sol] = calc_results_DR(xfinal, jac, sigma, resGrossErrorNodalRandFi, obj_function_type);
+[res, gamaMeasuremts,gamaNodal,zr_nt_nodal, zr_nt_nodal_rand, zadj ] = calc_results_index(x_sol, jac, sigma, resGrossErrorNodalRandFi);
+}}}
+
+Single GEDI functions. User must modify the statistical significances until avti_xx is aproximatelly equal to 0.1, this must be done by trial and error. There is no need to run the Scilab script again, just select the line and type Ctrl+e or copy and paste to the command line. 
+
+{{{
+[avti_gt_mt, op_gt_mt, op_gt_nt] = global_test(0.1, 0.1, gamaMeasuremts, runsize, rj, jac_col, jac_row);
+
+[avt1_mt1, avt1_mt2, op_mt1, op_mt2] = measurement_test(0.105, 0.28, zadj, runsize, jac_col);
+
+[avt1_nt1, avt1_nt2, op_nt1, op_nt2] = nodal_test(0.1, 0.1, jac_row, runsize, zr_nt_nodal);
+
+[avti_glr, op_glr_mt, aee_mt, aee_nt, op_glr_nt, avti_glr_nt ]=calc_GLR(res, V_inv, xfinal, jac, sigma, resGrossErrorNodalRandFi, 0.28, 0.28, runsize);
+
+
+}}}
+
+Calculate the run time and print results in a latex table format.
+
+
+{{{
+runtime=toc();
+streamNames =generateStreamName(szx);
+prettyprinttable([tokens(streamNames), string([xr, rrn(4,sd), rrn(3,adj), rrn(3,detect), rrn(3,op_mt1), rrn(3,op_mt2), rrn(3,op_glr_mt), rrn(7,aee_mt)])],"latex")
+eqpNames = generateEqpName('', jac_row);
+prettyprinttable([tokens(eqpNames), string([rrn(3,op_nt1), rrn(3,op_nt2), rrn(3,op_glr_nt), rrn(7,aee_nt)])],"latex")
+[ op_gt_mt avti_gt_mt avt1_mt1 avt1_mt2 avti_glr avt1_nt1 avt1_nt2  avti_glr_nt runtime ]
+prettyprinttable(string([rrn(3,avt1_mt1),  rrn(3,avt1_mt2),  rrn(3,avti_glr),  rrn(3,avt1_nt1),  rrn(3,avt1_nt2),  rrn(7,avti_glr_nt)]))
+[rrn(3,op_mt1), rrn(3,op_mt2), rrn(3,op_glr_mt), rrn(7,aee_mt)]
+[rrn(3,op_nt1), rrn(3,op_nt2), rrn(3,op_glr_nt), rrn(7,aee_nt)]
+
+
+}}}
+
+User can uncomment the following lines and save some results
+
+{{{
+
+//saving results
+//aa = clock();
+//nowtime = '_' + string(aa(4)) + '-'+ string(aa(5));
+//save ('P_resumed_' + date() + nowtime +'.sav', runtime,  adj, detect, op_nt1, op_nt2, avt1_nt1, avt1_nt2, op_mt1, op_mt2, avt1_mt1, avt1_mt2, op_gt_mt, op_gt_nt, avti_gt_mt, op_glr_mt, op_glr_nt, avti_glr, avti_glr_nt, aee_nt, aee_mt);
+
+
+}}}
+
+Then the file must be saved and executed (exec P1.sce).
+
+
+Running Overall Power curves:
+
+To run the Overall Power curves for each problem: run ged_PXX_op_curve.sce.
+
+User must configure some parameters, such as:
+
+ * Number of runs and lower and upper bound for measurement bias gross error generation (2 and 7 times the standard deviation).
+{{{
+...
+// number or runs
+runsize = 2500;
+....
+lb_delta = 2;
+ub_delta = 7;
+
+}}}
+
+Statistical test significance for measurement bias (set it first using a single simulation)
+{{{
+for i = lb_delta:ub_delta
+
+    [xfinal, resRand, resGrossErrorNodalRand]=generate_data_errors(xr, xrand, sd, jac, runsize, i, i, 0, 0);
+
+    resGrossErrorNodalRandFi = [ resRand;resGrossErrorNodalRand];
+
+    [x_sol] = calc_results_DR(xfinal, jac, sigma, resGrossErrorNodalRandFi, obj_function_type);
+    
+    [res, gamaMeasuremts,gamaNodal,zr_nt_nodal, zr_nt_nodal_rand, zadj ] = calc_results_index(x_sol, jac, sigma, resGrossErrorNodalRandFi);
+// change these 3 lines
+    [avti_gt_mt, op_gt_mt(1:jac_col,i), op_gt_nt_tmp] = global_test(0.095, 0.095, gamaMeasuremts, runsize, rj, jac_col, jac_row);
+    [avt1_mt1, avt1_mt2, op_mt1(1:jac_col,i), op_mt2(1:jac_col,i)] = measurement_test(0.0166, 0.11, zadj, runsize, jac_col);
+    [avti_glr, op_glr_mt(1:jac_col,i), aee_mt(1:jac_col,i), aee_nt_tmp, op_glr_nt_tmp, avti_glr_nt_tmp ]=calc_GLR(res, V_inv, xfinal, jac, sigma, resGrossErrorNodalRandFi, 0.11, 0.21, runsize);
+
+
+    clear xfinal  resRand resGrossErrorNodalRand resGrossErrorNodalRandFi;
+end
+}}}
+
+ * Lower and upper bound for leakings gross error generation, see the simulation file for information. lb_leak and ub_leak must be divided by 100 in gererate_data function.
+
+{{{
+
+lb_leak = 2;
+ub_leak = 7;
+ntsize = (ub_leak - lb_leak) + 1
+// notice that the lb_leak and ub_leak must be divided by 100 in gererate_data function
+
+}}}
+
+Statistical test significance for leakings (set it first using a single simulation)
+
+{{{
+
+for j = lb_leak:ub_leak
+
+    [xfinal, resRand, resGrossErrorNodalRand]=generate_data_errors(xr, xrand, sd, jac, runsize, 0, 0, j/100, j/100);
+
+    resGrossErrorNodalRandFi = [ resRand;resGrossErrorNodalRand];
+
+    [x_sol] = calc_results_DR(xfinal, jac, sigma, resGrossErrorNodalRandFi, obj_function_type);
+    
+    [res, gamaMeasuremts,gamaNodal,zr_nt_nodal, zr_nt_nodal_rand, zadj ] = calc_results_index(x_sol, jac, sigma, resGrossErrorNodalRandFi);
+
+    [avti_gt_mt_tmp, op_gt_mt_tmp, op_gt_nt(1:jac_row,j)] = global_test(0.095, 0.095, gamaMeasuremts, runsize, rj, jac_col, jac_row);
+
+    [avt1_nt1, avt1_nt2, op_nt1(1:jac_row,j), op_nt2(1:jac_row,j)] = nodal_test(0.0243, 0.0935, jac_row, runsize, zr_nt_nodal);
+
+    [avti_glr_tmp, op_glr_mt_tmp, aee_mt_tmp, aee_nt(1:jac_row,j), op_glr_nt(1:jac_row,j), avti_glr_nt ]=calc_GLR(res, V_inv, xfinal, jac, sigma, resGrossErrorNodalRandFi, 0.11, 0.21, runsize);
+    clear xfinal  resRand resGrossErrorNodalRand resGrossErrorNodalRandFi;
+end
+
+
+}}}
+
+Printing and saving results
+
+{{{
+
+//saving results
+aa = clock();
+nowtime = '_' + string(aa(4)) + '-'+ string(aa(5)) + '-'+ string(round(aa(6)));
+save ('P_resumed_OP_curve' + date() + nowtime +'.sav', runtime,  adj, detect, op_nt1, op_nt2, avt1_nt1, avt1_nt2, op_mt1, op_mt2, avt1_mt1, avt1_mt2, op_gt_mt, op_gt_nt, avti_gt_mt, op_glr_mt, op_glr_nt, avti_glr, avti_glr_nt, aee_nt, aee_mt);
+// plot the op curves
+sdx=[1:ub_delta];
+scf();
+for i = 1:szx
+    plot( sdx, op_mt1(i,:));
+    p=get("hdl")
+    p.children.foreground = i;
+end
+streamNames =generateStreamName(szx,1);
+legend(streamNames,2);
+
+}}}
+
+==The problems itself==
+
+P1:
+
+http://dr-ged-benchmarks.googlecode.com/svn/trunk/data_reconciliation/linear/diagrams/png/P1.png
+
+P2
+
+http://dr-ged-benchmarks.googlecode.com/svn/trunk/data_reconciliation/linear/diagrams/png/P2.png
+
+P3
+
+http://dr-ged-benchmarks.googlecode.com/svn/trunk/data_reconciliation/linear/diagrams/png/P3.png
+
+P4
+
+http://dr-ged-benchmarks.googlecode.com/svn/trunk/data_reconciliation/linear/diagrams/png/P4.png
+
+P5
+
+http://dr-ged-benchmarks.googlecode.com/svn/trunk/data_reconciliation/linear/diagrams/png/P5.png
+
+P6
+
+http://dr-ged-benchmarks.googlecode.com/svn/trunk/data_reconciliation/linear/diagrams/png/P6.png
+
+P7
+
+http://dr-ged-benchmarks.googlecode.com/svn/trunk/data_reconciliation/linear/diagrams/png/P7.png
+
+P8
+
+http://dr-ged-benchmarks.googlecode.com/svn/trunk/data_reconciliation/linear/diagrams/png/P8.png
+
+P9
+
+http://dr-ged-benchmarks.googlecode.com/svn/trunk/data_reconciliation/linear/diagrams/png/P9.png
+
+P10
+
+http://dr-ged-benchmarks.googlecode.com/svn/trunk/data_reconciliation/linear/diagrams/png/P10.png
+
+P11
+
+http://dr-ged-benchmarks.googlecode.com/svn/trunk/data_reconciliation/linear/diagrams/png/P11.png
+
+P12
+
+http://dr-ged-benchmarks.googlecode.com/svn/trunk/data_reconciliation/linear/diagrams/png/P12.png
+
+P13
+
+http://dr-ged-benchmarks.googlecode.com/svn/trunk/data_reconciliation/linear/diagrams/png/P13.png
+
+P14
+
+http://dr-ged-benchmarks.googlecode.com/svn/trunk/data_reconciliation/linear/diagrams/png/P14.png
+
+P15
+
+http://dr-ged-benchmarks.googlecode.com/svn/trunk/data_reconciliation/linear/diagrams/png/P15.png
+
+P16
+
+http://dr-ged-benchmarks.googlecode.com/svn/trunk/data_reconciliation/linear/diagrams/png/P16.png
+
+
+References:
+Reference Index:
+
+P1	Rao, R Ramesh, and Shankar Narasimhan. 1996. “Comparison of Techniques for Data Reconciliation of Multicomponent Processes.” Industrial & Engineering Chemistry Research 35:1362-1368. http://dx.doi.org/10.1021/ie940538b.
+
+P2	Dovì, V G, and C Solisio. 2001. “Reconciliation of censored measurements in chemical processes: an alternative approach.” Chemical Engineering Journal 84:309-314. http://www.sciencedirect.com/science/article/B6TFJ-45KNHB1-F/2/199f358469628f600f10b394d2b55a8b.
+
+P3	Zhang, Zhengjiang, Zhijiang Shao, Xi Chen, Kexin Wang, and Jixin Qian. 2010. “Quasi-weighted least squares estimator for data reconciliation.” Computers & Chemical Engineering 34:154-162. http://www.sciencedirect.com/science/article/B6TFT-4XDCHNS-1/2/63a2b79a4cc89a3afb57ff83c4063242.
+
+P4	Narasimhan, S, and C Jordache. 2000. Data Reconciliation and Gross Error Detection: An Intelligent Use of Process Data. 1st ed. Houston: Gulf Publishing.
+
+P5	Yang, Youqi, Rongbo Ten, and Luiqun Jao. 1995. “A study of gross error detection and data reconciliation in process industries.” Comp. & Chem. Eng 19S:S217-S222.
+
+P6	﻿Rosenberg, J, R S H Mah, and C Iordache. 1987. “Evaluation of Schemes for Detecting and Identifying Gross Errors in Process Data.” Ind. & Eng. Chem. Proc. Des. Dev, Vol. 26: 555-564.
+
+P7	Proposed
+
+P8	Rao, R Ramesh, and Shankar Narasimhan. 1996. “Comparison of Techniques for Data Reconciliation of Multicomponent Processes.” Industrial & Engineering Chemistry Research 35:1362-1368. http://dx.doi.org/10.1021/ie940538b.
+
+P9	Mandel, Denis, Ali Abdollahzadeh, Didier Maquin, and José Ragot. 1998. “Data reconciliation by inequality balance equilibration: a LMI approach.” International Journal of Mineral Processing 53:157-169. http://www.sciencedirect.com/science/article/B6VBN-3VM1X8N-3/2/8bffe94a1153eea8647eed5af0031d36.
+
+P10	Martins, Márcio A.F., Carolina A. Amaro, Leonardo S. Souza, Ricardo A. Kalid, and Asher Kiperstok. 2010. “New objective function for data reconciliation in water balance from industrial processes.” Journal of Cleaner Production 1-6. http://linkinghub.elsevier.com/retrieve/pii/S0959652610001149.
+
+P11	Rao, R Ramesh, and Shankar Narasimhan. 1996. “Comparison of Techniques for Data Reconciliation of Multicomponent Processes.” Industrial & Engineering Chemistry Research 35:1362-1368. http://dx.doi.org/10.1021/ie940538b.
+
+P12	Mitsas, Christos L. 2010. “Data reconciliation and variable classification by null space methods.” Measurement 43:702-707. http://apps.isiknowledge.com/full_record.do?product=UA&search_mode=GeneralSearch&qid=2&SID=2A@bF9dN34I72L1Am9M&page=2&doc=17&colname=WOS (Accessed July 22, 2010).
+
+P13	Alhaj-Dibo, Moustapha, Didier Maquin, and José Ragot. 2008. “Data reconciliation: A robust approach using a contaminated distribution.” Control Engineering Practice 16:159-170. http://www.sciencedirect.com/science/article/B6V2H-4N4406D-1/2/50cac92b050f160a20a795faec990dc7.
+
+P14	Proposed
+
+P15	Serth, R W, and W A Heenan. 1986. “Gross error detection and data reconciliation in steam-metering systems.” AIChE Journal 32:733-747.
+
+P16	Zhang, Zhengjiang, Zhijiang Shao, Xi Chen, Kexin Wang, and Jixin Qian. 2010. “Quasi-weighted least squares estimator for data reconciliation.” Computers & Chemical Engineering 34:154-162. http://www.sciencedirect.com/science/article/B6TFT-4XDCHNS-1/2/63a2b79a4cc89a3afb57ff83c4063242.
+
+
+Robust functions: 
+
+Ozyurt and Pike - Comp.  & Chem. Eng.
+ 28, p. 381-402, (2004) 
+
+Smooth functions according to Gopal and Biegler
+ AICHE Journal 45(7) 1535-1547 - July 1999
+
+Quasi Weighted Robust function, according to Zhang et al. - Comp.  & Chem. Eng.
+34, p. 154-162-402, (2010) 
