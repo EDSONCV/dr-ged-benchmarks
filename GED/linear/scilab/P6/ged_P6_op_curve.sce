@@ -64,6 +64,13 @@ op_mt1 = zeros(jac_col, mtsize); op_mt2 = op_mt1;
 op_glr_mt = op_mt1; aee_mt = op_mt1;
 
 xrand=generate_data_random_err(xr, sd, jac, runsize);
+//observability/redundancy tests
+//user can set unmeasured streams here, if this vector is empty, all streams are measured                  
+umeas_P6 = [];
+[red_P6, just_measured_P6, observ_P6, non_obs_P6, spec_cand_P6] = qrlinclass(jac,umeas_P6);
+measured_P6 = setdiff([1:length(xr)], umeas_P6);
+red = measured_P6;//
+
 
 // we do the Overall Power Curve in two steps, first for the measurement bias, then for the leakings:
 // in order to avoid undesired overwriting , the variables with "_tmp" termination

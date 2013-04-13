@@ -66,7 +66,7 @@ resGrossErrorNodalRandFi = [ resRand;resGrossErrorNodalRand];
 
 //observability/redundancy tests
 //user can set unmeasured streams here, if this vector is empty, all streams are measured                  
-umeas_P9 = [];
+umeas_P9 = [7];
 [red_P9, just_measured_P9, observ_P9, non_obs_P9, spec_cand_P9] = qrlinclass(jac,umeas_P9)
 measured_P9 = setdiff([1:length(xr)], umeas_P9);
 red = measured_P9;//
