@@ -57,6 +57,12 @@ op_mt1 = zeros(jac_col, mtsize); op_mt2 = op_mt1;
 op_glr_mt = op_mt1; aee_mt = op_mt1;
 
 xrand=generate_data_random_err(xr, sd, jac, runsize);
+//Observability test (necessary to run results based on optimization)
+umeas_P1 = [];
+[red_P1, just_measured_P1, observ_P1, non_obs_P1, spec_cand_P1] = qrlinclass(jac,umeas_P1);
+measured_P1 = setdiff([1:length(xr)], umeas_P1);
+red = measured_P1;//
+
 
 // we do the Overall Power Curve in two steps, first for the measurement bias, then for the leakings:
 // in order to avoid undesired overwriting , the variables with "_tmp" termination

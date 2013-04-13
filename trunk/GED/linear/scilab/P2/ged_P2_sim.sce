@@ -33,7 +33,7 @@ tic;
 xr =[11;10;21;11;5.5;5.5];
 
 szx = size(xr,1);
-runsize = 1000;
+runsize = 2500;
 //the variance proposed by this work
 sd =[0.032
 0.026

@@ -15,16 +15,17 @@ endfunction
 
 // gradient of the objetive function
 function gf = gradf ( x )
-// in the future we can express this function analytically
-    gf = diffcode_jacobian(objfun,x)';
+//    gf = diffcode_jacobian(objfun,x)';
+// analytical
+    gf = zeros (nv,1)
+    gf(red,1)  = -2*(xm(red) - x(red))./(var(red).*(1 + ((xm(red)-x(red)).^2)./(var(red).*const_cauchy^2)));
 
 endfunction
 
 function H = hessf ( x )
-// For the robust functions, the lagrangean of the objective function is not constant
-// as in weigthed least squares.
-
-// in the future we can express this function analytically
-    H = diffcode_hessian(objfun,x);
+//    H = diffcode_hessian(objfun,x);
+  t1 = zeros (nv,1);
+	t1(red,1) = 2 ./(var(red).*(1 +  ((xm(red)-x(red)).^2)./((const_cauchy.^2).*var(red)) ))  -  (4*(xm(red)-x(red)).^2)./((const_cauchy.^2).*(var(red).^2).*(1 + ((xm(red)-x(red)).^2)./((const_cauchy.^2).*var(red))).^2);
+    H=diag(t1);
 
 endfunction

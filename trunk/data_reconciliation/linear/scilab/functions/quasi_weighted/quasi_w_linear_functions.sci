@@ -30,8 +30,11 @@ endfunction
 // gradient of the objetive function
 function gf = gradf ( x )
 // in the future we can express this function analytically
-    gf = diffcode_jacobian(objfun,x)';
-
+//    gf = diffcode_jacobian(objfun,x)';
+    gf = zeros(nv,1);
+    sqrarg = const_qw.*sqrt(((xm(red)-x(red)).^2)./(var(red)) + beta_smooth.^2);
+    sqrargdiv = sqrarg + 2;
+    gf(red,1) = (sqrarg.*(xm(red)-x(red)))./(var(red).*sqrargdiv.^2)  - (2*(xm(red)-x(red)))./(var(red).*sqrargdiv);
 endfunction
 
 function H = hessf ( x )
@@ -39,7 +42,15 @@ function H = hessf ( x )
 // as in weigthed least squares.
 
 // in the future we can express this function analytically
-    H = diffcode_hessian(objfun,x);
+//    H = diffcode_hessian(objfun,x);
+
+    onesqw = ones(length(red),1);
+    sqrarg = const_qw.*sqrt(((xm(red)-x(red)).^2)./(var(red)) + beta_smooth.^2);
+    sqrarg2 =  sqrarg./const_qw;
+    sqrargdiv = sqrarg + 2;
+    t1 = zeros (nv,1);
+	t1(red,1) = -3.*const_qw.*((xm(red) - x(red)).^2)./((var(red).^2).*(sqrargdiv.^2).*sqrarg2) + 2*(const_qw.^2).*((xm(red) - x(red)).^2)./(var(red).*sqrargdiv.^3) - (sqrarg)./(var(red).*sqrargdiv.^2) + (2*onesqw)./(var(red).*sqrargdiv);
+    H=diag(t1);
 
 endfunction
 
