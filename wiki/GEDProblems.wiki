@@ -11,6 +11,7 @@
  * Test GED with measured and unmeasured streams.
  * Test Robus functions in GED and the appropriate test parameters.
  * Test/presente the Overall Power of each problem.
+ * Test multiple gross errors detection algorithms.
 
 Inside "linear" folder, we have 2 subfolders: 
 
@@ -22,6 +23,7 @@ Inside "linear" folder, we have 2 subfolders:
  * functions
  * P1
  * P2
+ * P2_multi_GE
  * P3
  * P4
  * P5
