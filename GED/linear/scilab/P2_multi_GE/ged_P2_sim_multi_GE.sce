@@ -28,7 +28,7 @@ getd('../jacobians/');
 clear xr sd sds x_sol xfinal jac jac_col jac_col rj sigma sigam_inv res  V V_inv diag_diag_V Wbar gama zr_nt adj zadj   Wbar_alt  adjustability detect resi Qglr betaglr xchiglr ge_glr op_glr;
 clear avti_gt_mt op_gt_mt op_gt_nt_tmp avt1_mt1 avt1_mt2 op_mt1 op_mt2 avti_glr op_glr_mt aee_mt aee_nt_tmp op_glr_nt_tmp avti_glr_nt_tmp avti_gt_mt_tmp op_gt_mt_tmp op_gt_nt avt1_nt1 avt1_nt2 op_nt1 op_nt2 avti_glr_tmp op_glr_mt_tmp aee_mt_tmp aee_nt op_glr_nt avti_glr_nt; 
 
-stacksize('max');
+//stacksize('max');
 tic;
 xr =[11;10;21;11;5.5;5.5];
 
@@ -51,8 +51,20 @@ sigma=diag(sds.^2);
 
 
 [adj, detect, V, V_inv, sigma_inv, diag_diag_V, Wbar] = adjust(sigma, jac);
-[xfinal, resRand, resGrossErrorNodalRand]=generate_data(xr, sd, jac, runsize, 2, 7, 0.02, 0.07);
-[xfinal2, resRand2, resGrossErrorNodalRand2]=generate_data_multiple(xfinal(1:runsize,:), sd, jac, 2, 10, 0.5, 0.9,[0 0 1 1 0 0 ],[0 1 1],0);
+
+bias_min = 2;
+bias_max = 7;
+
+leak_min = 0.02;
+leak_max = 0.07;
+
+bias_multi_error = [0 0 1 1 0 0 ];
+leak_multi_error = [ 0 1 1];
+
+sum_bias_and_leak = 0;
+
+[xfinal, resRand, resGrossErrorNodalRand]=generate_data(xr, sd, jac, runsize, bias_min, bias_max, leak_min, leak_max);
+[xfinal2, resRand2, resGrossErrorNodalRand2]=generate_data_multiple(xfinal(1:runsize,:), sd, jac, 2, 10, 0.5, 0.9,bias_multi_error,leak_multi_error, sum_bias_and_leak);
 xfinal = xfinal2;
 resGrossErrorNodalRandFi2 = [ resRand2;resGrossErrorNodalRand2];
 
