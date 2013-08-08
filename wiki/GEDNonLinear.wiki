@@ -3,14 +3,16 @@
 
 == Non-Linear Problems ==
 
- In this type of problem, we deal with non-linear data reconciliation/GED (with compound balance, enthalpy balance and other generic non-linearities), with all variables measured/unmeasured and known variance/standard deviation data.
+ In this type of problem, we deal with non-linear data reconciliation/GED (with compound balance, enthalpy balance and other generic non-linearity), with all variables measured/unmeasured and known variance/standard deviation data.
  The aim of this GED benchmark is:
 
  * Non-linear method for DR/GED solving.
  * Test GED challenge problems where the issues of each problem is presented.
  * Test GED with measured and unmeasured streams.
- * Test Robus functions in GED and the appropriate test parameters.
- * Test/presente the Overall Power of each problem.
+ * Test Robust functions in GED and the appropriate test parameters.
+ * Test/present the Overall Power of each problem.
+
+    In this problem, since we use non-linear constraints and robust objective functions, and the derivatives are complicate to express, we use Ipopt optimizer to run the optimization.  We also use automatic differentiation toolbox from Scilab (diffcode) to evaluate the Hessian and Jacobian structure of objective function. The constraints Jacobian and Hessian are evaluated by finite differences method using "derivative" function form Scilab. 
 
 Inside "non_linear" folder, we have 2 subfolders: 
 
@@ -56,7 +58,9 @@ Inside each problem folder, we find 4 files:
  * compound_residuals.sci : evaluate the residuals of the constraints
  * functions_compound.sci : evaluate the objective function and problem structure
  * jac_compound_residuals.sci : evaluate the jacobians of the residuals
- * nonlin_alhaj08.sce :  the problem itself
+ * nonlin_XXXXX.sce :  the problem itself
+
+
 
 
 ==Step by step file description==
@@ -153,7 +157,7 @@ red = measured_al;//
 //red = [1:length(xmfull)];
 }}}
 
-To run robust reconciliation,, one must choose between the folowing objective functions to set up the functions path and function parameters:
+To select the appropriate objective function the user must select the problem folder (e.g. cd nonlin_ammonia) and edit the selected script file (edit nonlin_ammonia.sce). After it, the user may choose the objective function type by selection the right objective function number, e.g., to select WLS function:
 
 {{{
 //WLS = 0
@@ -199,57 +203,96 @@ An now, the optimization itself
 Notice that in linear problems, only the measurements, standard deviations and Jacobians must be given, but here, since we can be dealing with generic nonlinear problems, the problem creation must be implemented individually .
 
 
-==The problems itself==
+==The Problems==
 
- * nonlin_alhaj08
- * nonlin_ammonia
- * nonlin_mandel98 
- * nonlin_pf88 
- * nonlin_rn96_1
- * nonlin_rn96_2 
- * nonlin_rn96_3 
+ * nonlin_alhaj08 folder  
+    * nonlin_alhaj08.sce: the running script
+    * compound_residuals.sci mass and compound balance (constraints)
+    * functions_compound.sci: problem structure (Jacobian, Hessian, etc.)
+    * jac_compound_residuals.sci: Jacobian evaluation
+
+    Problem flowsheet:
+
+http://dr-ged-benchmarks.googlecode.com/svn/trunk/GED/nonlinear/diagrams/png/nonlin_alhaj08.png
+
+
+ * nonlin_amonia folder
+    * ammonia_plant.sce: the running script
+    * flowsheet_res_s.sci: mass and energy balance (constraints)
+    * functions_ammonia.sci: problem structure (Jacobian, Hessian, etc.)
+    * jac_flowsheet_residuals.sci: Jacobian evaluation
+
+    Problem flowsheet:
+
+http://dr-ged-benchmarks.googlecode.com/svn/trunk/data_reconciliation/nonlinear/diagrams/png/flow_ammonia2.png
+
+
+ * nonlin_mandel98 folder  
+    * nonlin_mandel98.sce: the running script
+    * compound_residuals.sci mass and compound balance (constraints)
+    * functions_compound.sci: problem structure (Jacobian, Hessian, etc.)
+    * jac_compound_residuals.sci: Jacobian evaluation
+
+    Problem flowsheet:
+
+http://dr-ged-benchmarks.googlecode.com/svn/trunk/GED/nonlinear/diagrams/png/nonlin_mandel98_.png
+
+
+ * nonlin_pf88 folder
+    * nonlin_pf88.sce: the running script
+    * pf88_residuals.sci:constraints
+    * pf_functions_nl.sci: problem structure (Jacobian, Hessian, etc.)
+    * jac_pf88_residuals.sci: Jacobian evaluation
+
+   No flowsheet available. 
+
+ * nonlin_rn96_1 folder
+    * nonlin_rn96_1.sce: the running script
+    * compound_residuals.sci mass and compound balance (constraints)
+    * functions_compound.sci: problem structure (Jacobian, Hessian, etc.)
+    * jac_compound_residuals.sci: Jacobian evaluation
+    * old: unused, old implementations
+
+    Problem flowsheet:
+
+http://dr-ged-benchmarks.googlecode.com/svn/trunk/data_reconciliation/nonlinear/diagrams/png/nonlin_rn96_1.png
+
+ * nonlin_rn96_2 folder
+    * nonlin_rn96_2: the running script
+    * compound_residuals.sci mass and compound balance (constraints)
+    * functions_compound.sci: problem structure (Jacobian, Hessian, etc.)
+    * jac_compound_residuals.sci: Jacobian evaluation
+    * old: unused, old implementations
+
+http://dr-ged-benchmarks.googlecode.com/svn/trunk/data_reconciliation/nonlinear/diagrams/png/nonlin_rn96_2.png
+
  * nonlin_sw89
+    * nonlin_sw89.sce: the running script
+    * flowsheet_residuals.sci: mass and energy balance (constraints)
+    * functions_energy_balance.sci: problem structure (Jacobian, Hessian, etc.)
+    * jac_flowsheet_residuals.sci: Jacobian evaluation
+
+  Problem flowsheet
+
+http://dr-ged-benchmarks.googlecode.com/svn/trunk/data_reconciliation/nonlinear/diagrams/png/nonlin_sw89.png
 
 
-Problems
+References
 
+ * Alhaj-Dibo, Moustapha, Didier Maquin, and José Ragot. 2008. Data reconciliation: A robust approach using a contaminated distribution. Control Engineering Practice 16, no. 2 (February): 159-170.
 
-Alhaj-Dibo, Moustapha, Didier Maquin, and José Ragot. 2008.
-Data reconciliation: A robust approach using a contaminated distribution.
-Control Engineering Practice 16, no. 2 (February): 159-170.
-http://www.sciencedirect.com/science/article/B6V2H-4N4406D-1/2/50cac92b050f160a20a795faec990dc7.
+ * Mandel, Denis, Ali Abdollahzadeh, Didier Maquin, and José Ragot. 1998. Data reconciliation by inequality balance equilibration: a LMI approach. International Journal of Mineral Processing 53, no. 3 (April): 157-169. 
 
-Mandel, Denis, Ali Abdollahzadeh, Didier Maquin, and Jos� Ragot. 1998. 
-Data reconciliation by inequality balance equilibration: a LMI approach. 
-International Journal of Mineral Processing 53, no. 3 (April): 157-169. 
-http://www.sciencedirect.com/science/article/B6VBN-3VM1X8N-3/2/8bffe94a1153eea8647eed5af0031d36.
+ * C.C. David Pai, Gary D. Fisher.Application of Broyden's Method to Reconciliation of Nonlinearly Constrained Data. AICHE Journal 1988, V 34 No. 5 -p 873-876
 
-C.C. David Pai, Gary D. Fisher
-Application of Broyden's Method to Reconciliation of Nonlinearly Constrained Data
-AICHE Journal 1988, V 34 No. 5 -p 873-876
+ * Rao, R Ramesh, and Shankar Narasimhan. 1996.“Comparison of Techniques for Data Reconciliation of Multicomponent Processes.” Industrial & Engineering Chemistry Research 35:1362-1368. 
 
-Rao, R Ramesh, and Shankar Narasimhan. 1996.
-“Comparison of Techniques for Data Reconciliation of Multicomponent Processes.” 
-Industrial & Engineering Chemistry Research 35:1362-1368. 
-http://dx.doi.org/10.1021/ie940538b.
+ * Swartz, C. L. E, 1898. “Data reconciliation for generalized flowsheet applications.” 197th National Meeting of the American Chemical Society, Dallas, TX.  Data extracted from example 5.4 from: Romagnoli, José, and Mabel C. Sánchez. 1999. Process Systems Engineering - Volume 2 - Data Processing and Reconciliation for Chemical Process Operations. Edited by Elsevier. 
 
-Swartz, C. L. E, 1898
-“Data reconciliation for generalized flowsheet applications.” 
-197th National Meeting of the American Chemical Society, Dallas, TX. 
- Data extracted from example 5.4 from:
- Romagnoli, José, and Mabel C. Sánchez. 1999. Process Systems Engineering - Volume 2 -
- Data Processing and Reconciliation for Chemical Process Operations. Edited by Elsevier. 
+ * Rao, R Ramesh, and Shankar Narasimhan. 1996.“Comparison of Techniques for Data Reconciliation of Multicomponent Processes.” Industrial & Engineering Chemistry Research 35:1362-1368. 
 
-
-
-
-Robust functions: 
-
-Ozyurt and Pike - Comp.  & Chem. Eng.
- 28, p. 381-402, (2004) 
-
-Smooth functions according to Gopal and Biegler
- AICHE Journal 45(7) 1535-1547 - July 1999
-
-Quasi Weighted Robust function, according to Zhang et al. - Comp.  & Chem. Eng.
+ * Robust functions: 
+    * Ozyurt and Pike - Comp.  & Chem. Eng. 28, p. 381-402, (2004) 
+    * Smooth functions according to Gopal and Biegler. AICHE Journal 45(7) 1535-1547 - July 1999
+    * Quasi Weighted Robust function, according to Zhang et al. - Comp.  & Chem. Eng.
 34, p. 154-162-402, (2010) 
