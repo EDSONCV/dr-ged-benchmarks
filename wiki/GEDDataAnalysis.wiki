@@ -1,0 +1,24 @@
+#labels GED_Problems,Data_analysis
+= Gross Error Detection Benchmark Problems =
+== Gross Error Detection (GED) in time varying systems== 
+
+    The aim of this problems is to test:
+ * Different types of gross errors: constant bias, drifting bias, leakings and a combination of them.
+ * Misscalibration: The effect of incorrect calibration in DR and GED.
+ * Data filter: filter on the variables before DR is applied and its influence in GED.
+ * Data filter window selection and influence on the dynamics on the DR results. 
+
+GED in time varying systems are dividing in the following sub-folders:
+ * diagrams
+ * scilab
+
+The "diagrams" folders contains the diagrams in "dia" format or in "png" formats while the "scilab" folders contains the problems itself. 
+
+The "scilab" folder have 2 examples/folders: 
+
+ * 2tanks: a 2 tanks with by-pass considering total mass balance.
+ * reactor_separator: a reactor separator with recycle system considering total mass balance.
+
+In each problem it was developed a steady-state problem and a dynamic version. These problems were built using the xcos (simulink version of scilab, *compatible with scilab version 5.4*). 
+
+UNDER CONSTRUCTION!!!!!!!
