@@ -103,6 +103,72 @@ The 2 tanks steady-state diagram is the same as the dynamic, but with a very "fa
 
 
 
+The 'reactor_separator/steady_state and reactor_separator/dynamic' folder have the following folders:
+
+  * ss_constant_bias: steady_state with constant bias.
+  * ss_drifting_bias: steady_state with drifting bias.
+  * ss_leakings: steady_state with equipment leakings.
+  * ss_miscalibration: steady_state with sensor miscalibration.
+  * ss_multiple_ge: steady_state with multiple gross errors (leakings and measurement bias)
+
+The diagram of the reactor separator problem is the following:
+
+http://dr-ged-benchmarks.googlecode.com/svn/trunk/GED/data_analysis/diagrams/png/reactor_separator.png
+
+and the Xcos/Scilab diagram is the following:
+
+http://dr-ged-benchmarks.googlecode.com/svn/trunk/GED/data_analysis/diagrams/png/reactor_separator_scheme.png
+
+where the reactor has a "slow" dynamic behaviour, the recycle tank a faster behaviour and the separator the slowest dynamic.
 
 
-UNDER CONSTRUCTION!!!!!!!
+The steady-state diagram parameters differs between the dynamic diagrams.
+
+In the steady-state with constant bias, the diagrams have the following bias magnitude (each diagram have only one stream with bias):
+
+  * Stream 1 - Bias = 5
+  * Stream 2 - Bias = 3
+  * Stream 3 - Bias = 10
+  * Stream 4 - Bias = 3
+  * Stream 5 - Bias = 3
+  * Stream 6 - Bias = 3
+
+Beyond, the reactor changes it operating point from 11 to 13 units at time = 150s in all diagrams.
+
+
+In the drifting bias steady-state diagrams, the reactor changes it operating point from 11 to 13 units at time = 150s in all diagrams. At each diagram a drifting bias is introduced individually at each stream. At time = 200s there is a constant bias rate of 0.01 units/second is introduced until time = 300s where this bias is suppressed.
+
+In the leakings diagrams, a leak is introduced individually in the equipments:
+
+  * Reactor: Leaking magnitude = 4 
+  * Recycle: Leaking magnitude = 4 
+  * Separator: Leaking magnitude = 2.2
+
+Beyond, the reactor changes it operating point from 11 to 13 units at time = 150s in all diagrams.
+
+In the "ss_miscalibration" folder, we have 6 diagrams, each one with sensors wit miscalibration according to a second order polynomial to represent the output behaviour of the sensor according to the table :
+
+||           || S1 || S2   || S3   || S4   || S5 || S6   || 
+|| constant  || -2 || 5    || -0.3 || 1   || -1  || 0.5  || 
+|| linear    || 5 ||  -0.2 || -3   || 3   || 0.8 || 1.2  || 
+|| quadratic ||-0.3|| 0    || 0.2  ||-0.2 || 0.1 || -0.1 || 
+
+
+Beyond, the reactor starts with initial flow of 11 units, at time = 150s it changes its operating point to 13 units and at time = 300s it changes again its operating point to 9 units in all diagrams.
+
+
+In the "ss_multiple_ge" folder, the multiple gross errors are added at the start of the simulation according to the following table:
+
+|| Scenario || Leaking (magnitude) || Bias (magnitude) ||
+|| 1        || - || S1 (5); S5 (-3) ||  
+|| 2        || - || S3(-4); S6 (3)   || 
+|| 3        ||Recycle (4) || S1 (4)  ||
+|| 4        || Reactor(3) || S4(-3) ||
+
+
+In the dynamic folder we have some different configurations. In all sub-folders in the dynamic cases, the reactor operating point change start as 250s instead of 150s (as in steady state).
+
+In the drifting bias folder the drifting bias starts at 300s and it is not suppresed (as in steady-state case).
+
+All the other configurations keeps the same.
+
