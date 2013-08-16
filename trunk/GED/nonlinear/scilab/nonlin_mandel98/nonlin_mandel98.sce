@@ -113,8 +113,10 @@ params = add_param(params,"journal_level",5);
 params = add_param(params,"fixed_variable_treatment", "relax_bounds");
 disp('begore start ipopt')
 //according to the original paper, we fix some variables
-lower_mandel(fixed_mandel) = xmfull(fixed_mandel);
-upper_mandel(fixed_mandel) = xmfull(fixed_mandel);
+if length(fixed_mandel) > 0 then
+    lower_mandel(fixed_mandel) = xmfull(fixed_mandel);
+    upper_mandel(fixed_mandel) = xmfull(fixed_mandel);
+end    
 xm_init = xmfull./var;
 tic
 [x_sol, f_sol, extra] = ipopt(xmfull, objfun, gradf, confun, dg1, sparse_dg, dh, sparse_dh, var_lin_type_mandel, constr_lin_type_mandel, constr_rhs_mandel, constr_lhs_mandel, lower_mandel, upper_mandel, params);

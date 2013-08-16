@@ -123,8 +123,10 @@ params = add_param(params,"journal_level",5);
 params = add_param(params,"fixed_variable_treatment", "relax_bounds");
 disp('begore start ipopt')
 //according to the original paper, we fix some variables
-lower_al(fixed_al) = xmfull(fixed_al);
-upper_al(fixed_al) = xmfull(fixed_al);
+if length(fixed_al) > 0 then
+    lower_al(fixed_al) = xmfull(fixed_al);
+    upper_al(fixed_al) = xmfull(fixed_al);
+end
 xm_init = xmfull./var;
 tic
 [x_sol, f_sol, extra] = ipopt(xmfull, objfun, gradf, confun, dg1, sparse_dg, dh, sparse_dh, var_lin_type_al, constr_lin_type_al, constr_rhs_al, constr_lhs_al, lower_al, upper_al, params);
