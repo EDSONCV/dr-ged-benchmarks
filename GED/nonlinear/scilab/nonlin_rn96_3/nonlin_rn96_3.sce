@@ -28,18 +28,19 @@
 // 8 compounds
 
 clear xm var jac nc nv i1 i2 nnz sparse_dg sparse_dh lower upper var_lin_type constr_lin_type constr_lhs constr_rhs
-
+getd('.');
+getd('../functions');
 //                   1     2      3    
 flow_full_rn96_3 =[8.50	4.50	4.00];
 flow_rn96_3 =     [8.50	4.50	4.00];
 //                    1        2       3     
-comp_full_rn96_3 = [0.024	0.000	0.050
-                    0.024	0.000	0.050
+comp_full_rn96_3 = [0.024	0.0001	0.050
+                    0.024	0.0001	0.050
                    60.987	99.889	17.221
                    17.997	0.019	38.221
                    12.998	0.001	27.620
-                   4.998	0.000	10.620
-                   2.104	0.000	4.472
+                   4.998	0.0001	10.620
+                   2.104	0.0001	4.472
                    0.869	0.090	1.745]/100;
 //               1       2        3    
 comp_rn96_3 =  [0.02   -1        -5; 
@@ -51,17 +52,19 @@ comp_rn96_3 =  [0.02   -1        -5;
                 2.01   -5        6.55;
                 0.37   -5        3.14 ]
 
-xmfull_rn96_3 = [flow_full_rn96_3(:);matrix(comp_rn96_3',-1)];
+xmfull_rn96_3 = [flow_full_rn96_3(:);matrix(comp_full_rn96_3',-1)];
 xm = xmfull_rn96_3;
 
 //the variance proposed by the original author
-sd = (0.01*ones(12,1));
+sd = (0.01*xmfull_rn96_3);
 //recalc variance
-for i=1: length(var)
+
+for i=1: length(sd)
    if sd(i) >= 0.0001 
        sd(i) = 0.0001;
    end       
 end
+
 // to run with equaly weighted standard deviation, uncomment the line below
 //sd = ones(size(xmfull_rn96_3,1),size(xmfull_rn96_3,2));
 
@@ -96,7 +99,6 @@ obj_function_type = 0;
 exec ../functions/setup_DR.sce;
 // to run robust reconciliation, it is also necessary to choose the function to return the problem structure
 
-pause
 [nc, nv, nnzjac, nnz_hess, sparse_dg, sparse_dh, lower, upper, var_lin_type, constr_lin_type, constr_lhs, constr_rhs]  = structure_compound(jac,ncomp, flow_full_rn96_3,comp_full_rn96_3);
 
 params = init_param();
@@ -112,8 +114,8 @@ params = add_param(params,"fixed_variable_treatment", "relax_bounds");
 disp('begore start ipopt')
 //according to the original paper, we fix the measured total flow
 if length(fixed_rn96_3) > 0 then
-    lower(fixed_rn96_3) = xmfull(fixed_rn96_3);
-    upper(fixed_rn96_3) = xmfull(fixed_rn96_3);
+    lower(fixed_rn96_3) = xmfull_rn96_3(fixed_rn96_3);
+    upper(fixed_rn96_3) = xmfull_rn96_3(fixed_rn96_3);
 end
 tic
 [x_sol, f_sol, extra] = ipopt(xmfull_rn96_3, objfun, gradf, confun, dg1, sparse_dg, dh, sparse_dh, var_lin_type, constr_lin_type, constr_rhs, constr_lhs, lower, upper, params);
