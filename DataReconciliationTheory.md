@@ -1,0 +1,8 @@
+# Data Reconciliation (DR) Theory #
+
+## Introduction ##
+The aim of Data Reconciliation is to _correct_ process measurements based on process models and measurement equipments errors.
+
+DR is solved as an optimization problem, where the objective function is to minimize the difference between the measured/observed variables and the adjusted ones, weighted by reciprocal of the variance.
+
+![http://rogercortesi.com/eqn/tempimagedir/eqn2161.png](http://rogercortesi.com/eqn/tempimagedir/eqn2161.png)

@@ -1,0 +1,176 @@
+# Gross Error Detection Benchmark Problems #
+## Gross Error Detection (GED) in time varying systems ##
+
+> The aim of this problems is to test:
+  * Different types of gross errors: constant bias, drifting bias, leakings and a combination of them.
+  * Misscalibration: The effect of incorrect calibration in DR and GED.
+  * Data filter: filter on the variables before DR is applied and its influence in GED.
+  * Data filter window selection and influence on the dynamics on the DR results.
+
+GED in time varying systems are dividing in the following sub-folders:
+  * diagrams
+  * scilab
+
+The "diagrams" folders contains the diagrams in "dia" format or in "png" formats while the "scilab" folders contains the problems itself.
+
+The "scilab" folder have 2 examples/folders:
+
+  * 2tanks: a 2 tanks with by-pass considering total mass balance.
+  * reactor\_separator: a reactor separator with recycle system considering total mass balance.
+
+In each problem it was developed a steady-state problem and a dynamic version. These problems were built using the xcos (simulink version of scilab, **compatible with scilab version 5.4**).
+
+Inside each folder, one find the following folders:
+
+  * dynamic  : dynamic version of the diagram
+  * steady\_state : steady state version of the diagram.
+
+In these implementations, the equipments are represented as a transfer function (a tank) and the difference between them is that in steady-state diagrams, the system dynamic is very fast.
+
+There are also 2 files in the same folder level:
+  * moving.sci: a moving average implementation.
+  * dr\_wls\_simple.sci: a weighted least squares data reconciliation implementation.
+
+The '2tanks/steady\_state and 2tanks/dynamic' folder have the following folders:
+
+  * ss\_constant\_bias: steady\_state with constant bias.
+  * ss\_drifting\_bias: steady\_state with drifting bias.
+  * ss\_leakings: steady\_state with equipment leakings.
+  * ss\_miscalibration: steady\_state with sensor miscalibration.
+  * ss\_multiple\_ge: steady\_state with multiple gross errors (leakings and measurement bias)
+
+The diagram of the 2 tanks problem is the following:
+
+![http://dr-ged-benchmarks.googlecode.com/svn/trunk/data_reconciliation/data_analysis/diagrams/png/2tanks.png](http://dr-ged-benchmarks.googlecode.com/svn/trunk/data_reconciliation/data_analysis/diagrams/png/2tanks.png)
+
+and the Xcos/Scilab diagram is the following:
+
+![http://dr-ged-benchmarks.googlecode.com/svn/trunk/GED/data_analysis/diagrams/png/2tanks_scheme.png](http://dr-ged-benchmarks.googlecode.com/svn/trunk/GED/data_analysis/diagrams/png/2tanks_scheme.png)
+
+where the first tank has a "slow" dynamic behaviour, the second tank a faster behaviour and the by-pass dynamic can be relatively neglected.
+
+The sensor is represented as the following:
+
+![http://dr-ged-benchmarks.googlecode.com/svn/trunk/GED/data_analysis/diagrams/png/sensor.png](http://dr-ged-benchmarks.googlecode.com/svn/trunk/GED/data_analysis/diagrams/png/sensor.png)
+
+where we have a random effect based on a normal distribution with zero mean and specific standard deviation; a gross error block and calibration functions that can be activated and configured by the user.
+
+The gross error block is represented as
+
+![http://dr-ged-benchmarks.googlecode.com/svn/trunk/GED/data_analysis/diagrams/png/gross_error.png](http://dr-ged-benchmarks.googlecode.com/svn/trunk/GED/data_analysis/diagrams/png/gross_error.png)
+
+where it is possible to simulate a constant bias, sinusoidal, square or drifting bias or even a combination of them.
+
+The leaking block is basically a subtraction and a check to avoid negative flows as
+![http://dr-ged-benchmarks.googlecode.com/svn/trunk/GED/data_analysis/diagrams/png/leaking.png](http://dr-ged-benchmarks.googlecode.com/svn/trunk/GED/data_analysis/diagrams/png/leaking.png)
+
+The dynamic system behaves as the following:
+
+> At time t0 where all flow is by-passed to streams 4 and 7.
+> At time t1, the bypass valve is closed and the inlet valve of tank 1 is opened.
+> At time t2, the valve to tank 1 is closed and inlet valve to tank 2 is opened.
+> At time t3, the inlet valves of tank 1 and 2 are closed and by-pass valve is opened.
+
+
+> ### 2 Tanks Problem Parameters ###
+
+In the "ss\_constant\_bias" folder, individual gross errors in measurement (bias) are set to +5 units (constant along all the simulation).
+
+In the "ss\_drifting\_bias" folder, the individual gross errors in measurement (bias) starts at time = 200 s (to stream 1 to 7) and at 300s to stream 8. The rate of increase is 0.01 units/s along the simulation.
+
+In the "ss\_leaking" folder, the individual leakings starts at time = 0 s have a magnitude of 4 units along the simulation.
+
+In the "ss\_multiple\_ge" folder, the multiple gross errors are added at the start of the simulation according to the following table:
+
+| Scenario | Leaking (magnitude) | Bias (magnitude) |
+|:---------|:--------------------|:-----------------|
+| 1        | -                   | S1 (-3); S6 (5)  |
+| 2        | Mixer (4)           | S2(5)            |
+| 3        |Tank 1 (4)           | S8 (5)           |
+| 4        | By-pass(3)          | S5(-3); S3(5)    |
+
+  * ss\_miscalibration: steady\_state with sensor miscalibration.
+
+In the "ss\_miscalibration" folder, we have a second order polynomial to represent the output behaviour of the sensor according to the table :
+
+|           | S1 | S2   | S3    | S4   | S5  | S6    | S7    | S8    |
+|:----------|:---|:-----|:------|:-----|:----|:------|:------|:------|
+| constant  | 0.5| -0.5 |3      |-0.5  | 0   | -1    | -2    | 3.5   |
+| linear    |1.3 | 0.8  | -0.2  |0.1   | 0.8 | 1.2   |  0    | -1.3  |
+| quadratic |-0.06|0.05  | 0.05  |0.15  | 0.06| -0.03 |  0.1  | 0.11  |
+
+
+The 2 tanks steady-state diagram is the same as the dynamic, but with a very "fast" dynamic behaviour in the tanks and by-pass.
+
+
+
+The 'reactor\_separator/steady\_state and reactor\_separator/dynamic' folder have the following folders:
+
+  * ss\_constant\_bias: steady\_state with constant bias.
+  * ss\_drifting\_bias: steady\_state with drifting bias.
+  * ss\_leakings: steady\_state with equipment leakings.
+  * ss\_miscalibration: steady\_state with sensor miscalibration.
+  * ss\_multiple\_ge: steady\_state with multiple gross errors (leakings and measurement bias)
+
+The diagram of the reactor separator problem is the following:
+
+![http://dr-ged-benchmarks.googlecode.com/svn/trunk/GED/data_analysis/diagrams/png/reactor_separator.png](http://dr-ged-benchmarks.googlecode.com/svn/trunk/GED/data_analysis/diagrams/png/reactor_separator.png)
+
+and the Xcos/Scilab diagram is the following:
+
+![http://dr-ged-benchmarks.googlecode.com/svn/trunk/GED/data_analysis/diagrams/png/reactor_separator_scheme.png](http://dr-ged-benchmarks.googlecode.com/svn/trunk/GED/data_analysis/diagrams/png/reactor_separator_scheme.png)
+
+where the reactor has a "slow" dynamic behaviour, the recycle tank a faster behaviour and the separator the slowest dynamic.
+
+
+The steady-state diagram parameters differs between the dynamic diagrams.
+
+In the steady-state with constant bias, the diagrams have the following bias magnitude (each diagram have only one stream with bias):
+
+  * Stream 1 - Bias = 5
+  * Stream 2 - Bias = 3
+  * Stream 3 - Bias = 10
+  * Stream 4 - Bias = 3
+  * Stream 5 - Bias = 3
+  * Stream 6 - Bias = 3
+
+Beyond, the reactor changes it operating point from 11 to 13 units at time = 150s in all diagrams.
+
+
+In the drifting bias steady-state diagrams, the reactor changes it operating point from 11 to 13 units at time = 150s in all diagrams. At each diagram a drifting bias is introduced individually at each stream. At time = 200s there is a constant bias rate of 0.01 units/second is introduced until time = 300s where this bias is suppressed.
+
+In the leakings diagrams, a leak is introduced individually in the equipments:
+
+  * Reactor: Leaking magnitude = 4
+  * Recycle: Leaking magnitude = 4
+  * Separator: Leaking magnitude = 2.2
+
+Beyond, the reactor changes it operating point from 11 to 13 units at time = 150s in all diagrams.
+
+In the "ss\_miscalibration" folder, we have 6 diagrams, each one with sensors wit miscalibration according to a second order polynomial to represent the output behaviour of the sensor according to the table :
+
+|           | S1 | S2   | S3   | S4   | S5 | S6   |
+|:----------|:---|:-----|:-----|:-----|:---|:-----|
+| constant  | -2 | 5    | -0.3 | 1    | -1  | 0.5  |
+| linear    | 5  |  -0.2 | -3   | 3    | 0.8 | 1.2  |
+| quadratic |-0.3| 0    | 0.2  |-0.2  | 0.1 | -0.1 |
+
+
+Beyond, the reactor starts with initial flow of 11 units, at time = 150s it changes its operating point to 13 units and at time = 300s it changes again its operating point to 9 units in all diagrams.
+
+
+In the "ss\_multiple\_ge" folder, the multiple gross errors are added at the start of the simulation according to the following table:
+
+| Scenario | Leaking (magnitude) | Bias (magnitude) |
+|:---------|:--------------------|:-----------------|
+| 1        | -                   | S1 (5); S5 (-3)  |
+| 2        | -                   | S3(-4); S6 (3)   |
+| 3        |Recycle (4)          | S1 (4)           |
+| 4        | Reactor(3)          | S4(-3)           |
+
+
+In the dynamic folder we have some different configurations. In all sub-folders in the dynamic cases, the reactor operating point change start as 250s instead of 150s (as in steady state).
+
+In the drifting bias folder the drifting bias starts at 300s and it is not suppresed (as in steady-state case).
+
+All the other configurations keeps the same.
