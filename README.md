@@ -1,13 +1,10 @@
-# dr-ged-benchmarks
-
-Data Reconciliation and Gross Error Detection Benchmark Problems
+## Data Reconciliation and Gross Error Detection Benchmark Problems
 
 Data Reconciliation (DR) and Gross Error Detection (GED) is a topic of Chemical Engineering, Process Instrumentation and Metrology. 
 
 The main idea behind these techniques is adjust uncorrected measurement from process instruments as well as detect problems and failures in measurement equipments.
 
-
-Project Goals
+## Project Goals
 
 The aim of this project is to provide a collection of benchmark problems for Data Reconciliation and Gross Error Detection from literature review.
 
