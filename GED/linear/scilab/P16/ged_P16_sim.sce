@@ -64,13 +64,13 @@ obj_function_type = -1;
 [res, gamaMeasuremts,gamaNodal,zr_nt_nodal, zr_nt_nodal_rand, zadj ] = calc_results_index(x_sol, jac, sigma, resGrossErrorNodalRandFi);
 
 
-[avti_gt_mt, op_gt_mt, op_gt_nt] = global_test(0.1, 0.1, gamaMeasuremts, runsize, rj, jac_col, jac_row);
+[avti_gt_mt, op_gt_mt, op_gt_nt] = global_test(0.1, 0.1, gamaMeasuremts, runsize, rj, jac_col, jac_row)
 
 //[avt1_mt1, avt1_mt2, op_mt1, op_mt2] = measurement_test(0.05, 0.13, zadj, runsize, jac_col);
 [avt1_mt1, avt1_mt2, op_mt1, op_mt2] = measurement_test(0.003, 0.13, zadj, runsize, jac_col)
-[avt1_nt1, avt1_nt2, op_nt1, op_nt2] = nodal_test(0.0042, 0.105, jac_row, runsize, zr_nt_nodal);
+[avt1_nt1, avt1_nt2, op_nt1, op_nt2] = nodal_test(0.005, 0.123, jac_row, runsize, zr_nt_nodal)
 
-[avti_glr, op_glr_mt, aee_mt, aee_nt, op_glr_nt, avti_glr_nt ]=calc_GLR(res, V_inv, xfinal, jac, sigma, resGrossErrorNodalRandFi, 0.135, 0.21, runsize);
+[avti_glr, op_glr_mt, aee_mt, aee_nt, op_glr_nt, avti_glr_nt ]=calc_GLR(res, V_inv, xfinal, jac, sigma, resGrossErrorNodalRandFi, 0.135, 0.21, runsize)
 
 runtime=toc();
 //streamNames = 'S319 S316 S312 S378 S336 S357 S346 S359P1 S347 S352 S356 S358 S357P S359P2 S359 S338P S338 S341P S341 S414 S502 S411 S401 S415 S402 S404 S405 S407 S408 S453 S460 S456 S452 S511 S503 S384P S52P S592 S581 S525 S524 S536 S527 S549 S550 S537 S598 S599 S267 S538';
