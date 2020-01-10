@@ -2,23 +2,27 @@
 // Author: Edson Cordeiro do Valle
 // Contact - edsoncv@{gmail.com}{vrtech.com.br}
 // Skype: edson.cv
-//Yang, Youqi, Rongbo Ten, and Luiqun Jao. 1995. 
-//“A study of gross error detection and data reconciliation in process industries.” Comp. & Chem. 
-//Eng 19S:S217-S222.
+// Authors
+//Dovì, V G, and C Solisio. 2001. Reconciliation of censored measurements in chemical processes: an alternative approach. Chemical Engineering Journal 84, no. 3 (December): 309-314. http://www.sciencedirect.com/science/article/B6TFJ-45KNHB1-F/2/199f358469628f600f10b394d2b55a8b.
 
 //Bibtex Citation
 
-//@article{Yang1995,
-//author = {Yang, Youqi and Ten, Rongbo and Jao, Luiqun},
-//journal = {Comp. \& Chem. Eng},
-//keywords = {combinatory approach,data reconciliation,gross error detection},
-//pages = {S217--S222},
-//title = {{A study of gross error detection and data reconciliation in process industries}},
-//volume = {19S},
-//year = {1995}
+//@article{Dovi2001,
+//annote = { The importance of considering the censoring of measured data in the reconciliation of process flow rates has been shown in a previous paper [Chem. Eng. Sci. 52 (17) (1997) 3047]. The purpose of the present paper is to introduce a new technique for carrying out the actual reconciliation procedure and compare its significance and performance with those of previous methods. A numerical example shows how nontrivial differences are to be expected.},
+//author = {Dov\`{\i}, V G and Solisio, C},
+//isbn = {1385-8947},
+//journal = {Chemical Engineering Journal},
+//keywords = {Censored data,Data reconciliation,Detection limits},
+//month = dec,
+//number = {3},
+//pages = {309--314},
+//title = {{Reconciliation of censored measurements in chemical processes: an alternative approach}},
+//url = {http://www.sciencedirect.com/science/article/B6TFJ-45KNHB1-F/2/199f358469628f600f10b394d2b55a8b},
+//volume = {84},
+//year = {2001}
 //}
-// 8 Streams
-// 4 Equipments 
+// 6 Streams
+// 3 Equipments 
 getd('../functions/');
 getd('../jacobians/');
 clear xr sd sds x_sol xfinal jac jac_col jac_col rj sigma sigam_inv res  V V_inv diag_diag_V Wbar gama zr_nt adj zadj   Wbar_alt  adjustability detect resi Qglr betaglr xchiglr ge_glr op_glr;
@@ -26,41 +30,37 @@ clear avti_gt_mt op_gt_mt op_gt_nt_tmp avt1_mt1 avt1_mt2 op_mt1 op_mt2 avti_glr 
 
 stacksize('max');
 tic;
-xr =[98.7;41.1;78.9;30.2;109.1;19.8;57.6;37.8];
+xr =[11;10;21;11;5.5;5.5];
 
 szx = size(xr,1);
 runsize = 2500;
-sd = [0.9870
-0.4110
-0.7890
-0.3020
-1.0910
-0.1980
-0.5760
-0.3780].^(0.5);
+//the variance proposed by this work
+sd =[0.032
+0.026
+0.120
+0.033
+0.052
+0.015].^(0.5);
 sds = sd;
 var=sd.^2;
-jac=jacP5();
+jac=jacP2();
+rj=rank(jac);
 jac_col = size(jac,2);
 jac_row = size(jac,1);
-rj=rank(jac);
 sigma=diag(sds.^2);
-sigma_inv=inv(sigma);
-
-
 
 [adj, detect, V, V_inv, sigma_inv, diag_diag_V, Wbar] = adjust(sigma, jac);
-[xfinal, resRand, resGrossErrorNodalRand]=generate_data(xr, sd, jac, runsize, 5, 9, 0.07, 0.15);
 //[xfinal, resRand, resGrossErrorNodalRand]=generate_data(xr, sd, jac, runsize, 2, 7, 0.02, 0.07);
+[xfinal, resRand, resGrossErrorNodalRand]=generate_data(xr, sd, jac, runsize, 5, 9, 0.07, 0.15);
 
 resGrossErrorNodalRandFi = [ resRand;resGrossErrorNodalRand];
 
 //observability/redundancy tests
 //user can set unmeasured streams here, if this vector is empty, all streams are measured                  
-umeas_P5 = [];
-[red_P5, just_measured_P5, observ_P5, non_obs_P5, spec_cand_P5] = qrlinclass(jac,umeas_P5);
-measured_P5 = setdiff([1:length(xr)], umeas_P5);
-red = measured_P5;//
+umeas_P2 = [];
+[red_P2, just_measured_P2, observ_P2, non_obs_P2, spec_cand_P2] = qrlinclass(jac,umeas_P2);
+measured_P2 = setdiff([1:length(xr)], umeas_P2);
+red = measured_P2;//
         
 // to run robust reconciliation,, one must choose between the folowing objective functions to set up the functions path and function parameters:
 //WLS analytical = -1 WLS numerical = 0  ; Absolute sum of squares = 1 ; Cauchy = 2 ;Contamined Normal = 3 ; Fair  = 4
@@ -72,16 +72,15 @@ obj_function_type = -1;
 
 [res, gamaMeasuremts,gamaNodal,zr_nt_nodal, zr_nt_nodal_rand, zadj ] = calc_results_index(x_sol, jac, sigma, resGrossErrorNodalRandFi);
 
-[avti_gt_mt, op_gt_mt, op_gt_nt] = global_test(0.11, 0.11, gamaMeasuremts, runsize, rj, jac_col, jac_row);
+[avti_gt_mt, op_gt_mt, op_gt_nt] = global_test(0.1, 0.1, gamaMeasuremts, runsize, rj, jac_col, jac_row);
 
-[avt1_mt1, avt1_mt2, op_mt1, op_mt2] = measurement_test(0.020, 0.15, zadj, runsize, jac_col);
+[avt1_mt1, avt1_mt2, op_mt1, op_mt2] = measurement_test(0.028, 0.16, zadj, runsize, jac_col);
+
+[avt1_nt1, avt1_nt2, op_nt1, op_nt2] = nodal_test(0.037, 0.107, jac_row, runsize, zr_nt_nodal);
+
+[avti_glr, op_glr_mt, aee_mt, aee_nt, op_glr_nt, avti_glr_nt ]=calc_GLR(res, V_inv, xfinal, jac, sigma, resGrossErrorNodalRandFi, 0.16, 0.238, runsize);
 
 
-[avt1_nt1, avt1_nt2, op_nt1, op_nt2] = nodal_test(0.028, 0.107, jac_row, runsize, zr_nt_nodal);
-
-[avti_glr, op_glr_mt, aee_mt, aee_nt, op_glr_nt, avti_glr_nt ]=calc_GLR(res, V_inv, xfinal, jac, sigma, resGrossErrorNodalRandFi, 0.15, 0.22, runsize);
-
-//[ avt1_mt1 avt1_mt2 avt1_nt1 avt1_nt2   avti_glr avti_glr_nt  avti_gt_mt avti_gt_nt]
 runtime=toc();
 streamNames =generateStreamName(szx);
 prettyprinttable([tokens(streamNames), string([xr, rrn(4,sd), rrn(3,adj), rrn(3,detect), rrn(3,op_mt1), rrn(3,op_mt2), rrn(3,op_glr_mt), rrn(7,aee_mt)])],"latex")
@@ -91,9 +90,9 @@ prettyprinttable([tokens(eqpNames), string([rrn(3,op_nt1), rrn(3,op_nt2), rrn(3,
 prettyprinttable(string([rrn(3,avt1_mt1),  rrn(3,avt1_mt2),  rrn(3,avti_glr),  rrn(3,avt1_nt1),  rrn(3,avt1_nt2),  rrn(7,avti_glr_nt)]))
 [rrn(3,op_mt1), rrn(3,op_mt2), rrn(3,op_glr_mt), rrn(7,aee_mt)]
 [rrn(3,op_nt1), rrn(3,op_nt2), rrn(3,op_glr_nt), rrn(7,aee_nt)]
-
-//saving results
+//
+////saving results
 //aa = clock();
 //nowtime = '_' + string(aa(4)) + '-'+ string(aa(5));
-//save ('P_resumed_Logistic' + date() + nowtime +'.sav', runtime,  adj, detect, op_nt1, op_nt2, avt1_nt1, avt1_nt2, op_mt1, op_mt2, avt1_mt1, avt1_mt2, op_gt_mt, op_gt_nt, avti_gt_mt, op_glr_mt, op_glr_nt, avti_glr, avti_glr_nt, aee_nt, aee_mt);
-
+//save ('P_resumed_' + date() + nowtime +'.sav', runtime,  adj, detect, op_nt1, op_nt2, avt1_nt1, avt1_nt2, op_mt1, op_mt2, avt1_mt1, avt1_mt2, op_gt_mt, op_gt_nt, avti_gt_mt, op_glr_mt, op_glr_nt, avti_glr, avti_glr_nt, aee_nt, aee_mt);
+//

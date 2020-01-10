@@ -3,7 +3,7 @@
 // Contact - edsoncv@{gmail.com}{vrtech.com.br}
 // Skype: edson.cv
 // adjustability and detectability
-function [adj, detect, V, V_inv, sigma_inv, diag_diag_V, Wbar] = adjust(sigma, jac)
+function [adj, detect, V, V_inv, sigma_inv, diag_diag_V, Wbar,varargout] = adjust(sigma, jac)
     sigma_inv=inv(sigma);
 // variance-covariance matrix: narasimham pg. 178 eq. 7-3
     V=jac*sigma*jac';
@@ -25,6 +25,7 @@ function [adj, detect, V, V_inv, sigma_inv, diag_diag_V, Wbar] = adjust(sigma, j
         adj(i)= 1-sqrt(a(i))/sqrt(varx(i))
 //Narasimhan pg 211 eq. 7.73
         detect(i)=sqrt(1-a(i)/varx(i))
+        varargout(1) = M;
     end
 
 endfunction

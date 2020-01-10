@@ -76,7 +76,8 @@ end
 params = add_param(params,"tol",1e-8);
 params = add_param(params,"acceptable_tol",1e-8);
 params = add_param(params,"mu_strategy","adaptive");
-params = add_param(params,"journal_level",2);
+params = add_param(params,"journal_level",0);
+params = add_param(params,"print_level",0);
 
 
 

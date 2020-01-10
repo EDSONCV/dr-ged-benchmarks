@@ -104,8 +104,8 @@ for i=0:(size(grerrornodal,1)-1)
 end
 
 resGrossErrorNodalRandFi = [ resRand;resGrossErrorNodalRand];
-varargout(1) = list(grerrornodal);
-
+varargout(1) = grerrornodal;
+varargout(2) = mySign;
 //disp('before leave generate data');
 //pause
 
@@ -152,8 +152,8 @@ function [xfinal, resRand, varargout]=generate_data_multiple(xrs, sd, jac, lbm, 
 
 runsize = size(xrs,1);
 // finding the sizes
-length_merrorbias = length(find(vec_bias_error > 0));
-ind_merrorbias = find(vec_bias_error > 0);
+length_merrorbias = length(find(vec_bias_error <> 0));
+ind_merrorbias = find(vec_bias_error <> 0);
 length_merrornode = length(find(vec_nodal_error > 0));
 ind_merrornode = find(vec_nodal_error > 0);
 
@@ -177,8 +177,11 @@ for i=1:length_merrorbias
     mySign=sign(grand(runsize,1,'unf',-1,1));
     for j=1:runsize
 //            disp([i,j]);
-            grerror(j,ind_merrorbias(i)) = grand(1,1,'unf',lbm*sd(ind_merrorbias(i)),ubm*sd(ind_merrorbias(i)))*mySign(j,1);
-    end
+//            grerror(j,ind_merrorbias(i)) = grand(1,1,'unf',lbm*sd(ind_merrorbias(i)),ubm*sd(ind_merrorbias(i)))*mySign(j,1);
+
+            grerror(j,ind_merrorbias(i)) = grand(1,1,'unf',mult_bias_low*sd(ind_merrorbias(i)),mult_bias_up*sd(ind_merrorbias(i))).*vec_bias_error(ind_merrorbias(i)).*mySign(j,ind_merrorbias(i));
+//            grerror(j,ind_merrorbias(i)) = grand(1,1,'unf',lbm*sd(ind_merrorbias(i)),ubm*sd(ind_merrorbias(i))).*vec_bias_error(ind_merrorbias(i));
+end
 end
 
 //Adding gross error plus random error
@@ -198,18 +201,26 @@ meanNodeFlow = totalNodeFlow./sum(abs(jac),2);
 k = 0;
 for i=1:length_merrornode
     for j=1:runsize
-        grerrornodal(j,ind_merrornode(i)) = grand(1,1,'unf',totalNodeFlow(ind_merrornode(i))*lbres,totalNodeFlow(ind_merrornode(i))*ubres);
+        grerrornodal(j,ind_merrornode(i)) = grand(1,1,'unf',totalNodeFlow(ind_merrornode(i))*mult_leak_low ,totalNodeFlow(ind_merrornode(i))*mult_leak_up);
 //        leaks(j+k*runsize) = grerrornodal(j+k*runsize,i);
     end
 end
 
 // residuals when pure random noise is added to measurements
 resRand = zeros(runsize,jac_row);
+
+//sum of leaking plus randon error residuals
+//Adding gross error plus random error
+
 for i = 1: runsize
     resRand(i,:) = (jac*(xrs(i,:)'))';
 end
 if length_merrornode == 0 
-    return
+    varargout(1) = (resGrossErrorNodalRand);
+    varargout(2) = grerror;
+    varargout(3) = mySign;
+    varargout(4) = grerrornodal;
+    [xfinal, resRand,resGrossErrorNodalRand,grerror,mySign,grerrornodal] = return(xfinal, resRand,resGrossErrorNodalRand,grerror,mySign,grerrornodal);
 end
 
 //sum of leaking plus randon error residuals
@@ -219,15 +230,18 @@ resGrossErrorNodalRand = resRand - grerrornodal;
 
 resGrossErrorNodalRandFi = [ resRand;resGrossErrorNodalRand];
 varargout(1) = (resGrossErrorNodalRand);
-varargout(2) = (grerrornodal);
+varargout(2) = (grerror);
 // sum the residuals
-if flag_sum == 1 & lhs > 4 then
+varargout(3) = mySign;
+varargout(4) = grerrornodal;
+
+if flag_sum == 1 & lhs > 5 then
   sumres = zeros(runsize,jac_row); 
   
   for i = 1: runsize
     sumres(i,:) = (jac*(grerrors(i,:)'))' - grerrornodal(i,:) ;
   end  
-    varargout(3) = sumres;    
+    varargout(5) = sumres;    
 end
 
 //disp('before leave generate data');
@@ -259,7 +273,7 @@ for i=1:runsize
     xrs(:,i) = xr + rerror1(i,:)';
 end
 endfunction
-function [xfinal, resRand, resGrossErrorNodalRand]=generate_data_errors(xr, xrandom, sd, jac, runsize, lbm, ubm, lbres, ubres)
+function [xfinal, resRand, resGrossErrorNodalRand,varargout]=generate_data_errors(xr, xrandom, sd, jac, runsize, lbm, ubm, lbres, ubres)
 
 jac_row = size(jac,1);
 
@@ -317,6 +331,8 @@ for i=0:(size(grerrornodal,1)-1)
 end
 
 resGrossErrorNodalRandFi = [ resRand;resGrossErrorNodalRand];
+varargout(1) = grerrornodal;
+varargout(2) = mySign;
 
 endfunction
 

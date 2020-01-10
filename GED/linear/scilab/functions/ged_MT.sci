@@ -5,9 +5,16 @@ function[avt1_mt1, avt1_mt2, op_mt1, op_mt2] = measurement_test(Q1mt, Q1mtbeta, 
 
 //Q1mt = 0.05;
 //P1 = 1 - Q1mt;
-P1 = (1 - Q1mt/2);
+Q1 = Q1mt/2;
+P1 = (1 - Q1);
+    if Q1 == 0 then
+        Q1 = %eps/1000;
+        P1 = 1 - Q1;
+end
+    
+norm_mt=cdfnor("X",0,1,P1,Q1);
 
-norm_mt=cdfnor("X",0,1,P1,Q1mt/2);
+
 
 //Q1mtbeta = 0.52;
 beta_m = (1-((1-Q1mtbeta).^(1/jac_col)));
@@ -15,6 +22,11 @@ Q2=beta_m/2;
 // The choice of Q2/P2 must be choosen to guarantee that all methods has the same AVTI in order to compare the 
 // methods with the same overall power basis.
 P2=1-Q2;
+
+if Q2 == 0 then
+       Q2 = %eps;
+       P2 = 1 - Q2;
+end
 
 norm_mt2=cdfnor("X",0,1,P2,Q2);
 

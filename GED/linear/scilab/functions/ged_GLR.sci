@@ -2,7 +2,7 @@
 // Author: Edson Cordeiro do Valle
 // Contact - edsoncv@{gmail.com}{vrtech.com.br}
 // Skype: edson.cv
-function [avti_glr, op_glr_mt, aee_mt, aee_nt, op_glr_nt, avti_glr_nt ] = calc_GLR(res, V_inv, xfinal, jac, sigma, resGrossErrorNodalRandFi, Qglr_mt, Qglr_nt, runsize)
+function [avti_glr, op_glr_mt, aee_mt, aee_nt, op_glr_nt, avti_glr_nt,varargout ] = calc_GLR(res, V_inv, xfinal, jac, sigma, resGrossErrorNodalRandFi, Qglr_mt, Qglr_nt, runsize)
     jac_row = size(jac,1);
     jac_col= size(jac,2); 
     runsizefinal = size(res,1);
@@ -64,6 +64,7 @@ function [avti_glr, op_glr_mt, aee_mt, aee_nt, op_glr_nt, avti_glr_nt ] = calc_G
     op_glr = zeros(jac_col);
     xfinalT = xfinal';
     aee_mt = zeros(jac_col,1);
+    estimate_ge_mt = zeros(jac_col,1);
     ge_avg_glr_abs_mt = zeros(jac_col);
     ge_avg_glr_abs_mt2 = zeros(jac_col);
     ge_avg_glr_mt = zeros(jac_col);
@@ -84,6 +85,7 @@ function [avti_glr, op_glr_mt, aee_mt, aee_nt, op_glr_nt, avti_glr_nt ] = calc_G
                 ge_avg_glr_abs_mt2(i) = mean(abs(xfinalT(i,correct_index_mt + runsize*i) - xr(i)));          
 
                 // Average error of estimation
+                estimate_ge_mt(i) = mean(abs(bi(i,correct_index_mt + runsize*i) ));
                 aee_mt(i) = 100*mean(abs((bi(i,correct_index_mt + runsize*i) - (xfinalT(i,correct_index_mt + runsize*i) - xr(i)))./(xfinalT(i,correct_index_mt + runsize*i) - xr(i))));
                 // calculate the standrd deviation of gross errors correctly identified
                 ge_stdv_glr_mt(i) = stdev(bi(i,correct_index_mt + runsize*i));
@@ -160,6 +162,7 @@ function [avti_glr, op_glr_mt, aee_mt, aee_nt, op_glr_nt, avti_glr_nt ] = calc_G
     op_glr_nt = zeros(jac_row);
     resGrossErrorNodalRandFT = resGrossErrorNodalRandFi';
     correct_index_nt = [];
+    estimate_leak = zeros(jac_row,1);
     aee_nt = zeros(jac_row,1);
     ge_avg_glr_abs_nt = zeros(jac_row,1);
     ge_avg_glr_abs_nt_2 = zeros(jac_row,1);
@@ -173,7 +176,7 @@ function [avti_glr, op_glr_mt, aee_mt, aee_nt, op_glr_nt, avti_glr_nt ] = calc_G
             if  length(correct_index_nt) <> 0 then
                 ge_avg_glr_abs_nt(i) = mean(abs(bi_nt(i,correct_index_nt + i* runsize)));
                 ge_avg_glr_abs_nt_2(i) = mean(abs(resGrossErrorNodalRandFT(i,correct_index_nt + i*runsize)));        
-
+                estimate_leak(i) = mean(abs((bi_nt(i,correct_index_nt + runsize*i))))
                 aee_nt(i) = 100*mean(abs((bi_nt(i,correct_index_nt + runsize*i) - (resGrossErrorNodalRandFT(i,correct_index_nt + runsize*i)))./(resGrossErrorNodalRandFT(i,correct_index_nt + runsize*i))));
 
                 // calculate the standrd deviation of gross errors correctly identified
@@ -196,4 +199,6 @@ function [avti_glr, op_glr_mt, aee_mt, aee_nt, op_glr_nt, avti_glr_nt ] = calc_G
     // Average of Type I error
     avti_glr_nt = length(find(Tsup_nt_low >=  xchiglr_nt))/runsize;
     //GLR ENDS HERE
+    varargout(1) = estimate_ge_mt;
+    varargout(2) = estimate_leak;
 endfunction

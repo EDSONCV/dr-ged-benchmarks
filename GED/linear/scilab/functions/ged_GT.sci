@@ -1,4 +1,4 @@
-function [avti_gt_mt, op_gt_mt, op_gt_nt] = global_test(Q_mt, Q_nt, gamaMeasuremts, runsize, rj, jac_col, jac_row)
+function [avti_gt_mt, op_gt_mt, op_gt_nt, varargout] = global_test(Q_mt, Q_nt, gamaMeasuremts, runsize, rj, jac_col, jac_row)
     // GLOBAL TEST MEASUREMENT ERRORS
     //Q=0.1;
     P=1-Q_mt;
@@ -22,6 +22,7 @@ function [avti_gt_mt, op_gt_mt, op_gt_nt] = global_test(Q_mt, Q_nt, gamaMeasurem
     nge_gt_nt=length(ge_gt_nt)
     // Overall Power
     op_gt_nt = nge_gt_nt./(runsize*jac_row);
+    varargout(1)= avti_gt_nt;
 
 
     // GLOBAL TEST ENDS HERE

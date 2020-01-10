@@ -14,7 +14,10 @@ select obj_function_type
 		beta_smooth = 0.25;
 		alpha_smooth = 1/beta_smooth;
 		// cauchy parameter
-		const_cauchy = 2.3849;
+// higher const_cauchy -> cauchy -> wls
+//		const_cauchy = 2.3849;
+		const_cauchy = 1.3849;
+//		const_cauchy = 0.3849;
 	case 3 then
 		getd('../functions/contamined_normal');
 		getd('../functions');
@@ -64,7 +67,11 @@ select obj_function_type
 		alpha_smooth = 1/beta_smooth;
 		// logistic parameter
 //		const_logist = 0.602;
-		const_logist = 0.10;
+
+		const_logist = 0.08;
+
+//		const_logist = 0.010;
+//		const_logist = 0.050;
 
 	case 7 then
 		getd('../functions/lorenztian');
@@ -73,6 +80,7 @@ select obj_function_type
 		alpha_smooth = 1/beta_smooth;
 		// Lorentzian parameter
 		const_lor = 2.6;
+//        const_lor = 4.6;
 
 	case 8 then
 		getd('../functions/quasi_weighted');
