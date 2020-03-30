@@ -20,7 +20,7 @@ function gf = gradf ( x )
 //    gf = diffcode_jacobian(objfun,x)';
 // analytical
 gf = zeros (nv,1)
-gf(red,1) = -1*(xm(red)-x(red))./(((1 + ((xm(red)-x(red)).^(2))./(2*var(red)*const_lor^2))^2).*(var(red)*const_lor^2));
+gf(red,1) = -1*(xm(red)-x(red))./(((1 + ((xm(red)-x(red)).^(2))./(2*var(red)*const_lor^2)).^2).*(var(red)*const_lor^2));
 
 endfunction
 
@@ -31,7 +31,7 @@ function H = hessf ( x )
 // analytical
 // TODO CHECK THIS HESSIAN WITH UNMEASURE VARIABLES
     t1 = zeros (nv,1);
-	t1(red,1) = -2*((xm(red)-x(red))^2)./(((1 + ((xm(red)-x(red)).^(2))./(2*var(red)*const_lor^2)).^3).*((var(red).^2)*const_lor.^4)) + (((1 + ((xm(red)-x(red)).^(2))./(2*var(red)*const_lor^2))^2).*(var(red)*const_lor^2))^(-1);
+	t1(red,1) = -2*((xm(red)-x(red)).^2)./(((1 + ((xm(red)-x(red)).^(2))./(2*var(red)*const_lor^2)).^3).*((var(red).^2)*const_lor.^4)) + (((1 + ((xm(red)-x(red)).^(2))./(2*var(red)*const_lor^2)).^2).*(var(red)*const_lor^2)).^(-1);
     H = diag(t1);
 
 

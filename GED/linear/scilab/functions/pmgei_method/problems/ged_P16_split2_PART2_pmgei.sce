@@ -37,22 +37,29 @@ tic;
 // from DA401 2872,50 to 2872,47
 // from  DA 301 from 225.4 to 225.37
 // from DA 301 from 2276,90 to 2276,87
+// S405   S407  S408    S453      S460     S456    S452 S411	
+xr =[2876.30;
+2876.30;
+3098.10;
+1400.00;
+1337.70;
+11.36;
+349.04;
+1178.2];
 
-xr =[225.37;167.89;1332.00;1332.00;2276.87;137.50;917.89;532.38;385.51;385.51;385.51;100.32;285.19;147.69;680.07;683.07;683.07;1593.80;1593.80;582.60;582.60;1178.20;2872.47;3.83;2876.30;2876.3;2876.30;2876.30;3098.10;1400.00;1337.70;11.36;349.04;501.44;392.10;33.80;535.24;244.46;147.64;31.13;504.11;7.00;497.11;233.72;247.55;15.84;13.37;2.47;308.47;310.94];
-xr=xr(1:33);
 szx = size(xr,1);
 runsize = 450;
 //sd =[2.06;1.31;11.12;11.16;18.61;1.22;7.81;4.74;3.32;3.32;3.32;0.85;2.26;1.34;6.35;6.35;6.24;14.97;14.97;5.28;5.28;9.27;23.76;0.03;25.96;25.96;25.96;25.96;25.87;11.46;12.2;0.1;2.98;4.37;3.34;0.29;1;2.15;1.2;1;4.43;0.06;4.18;1.93;2.12;0.12;0.12;0.02;2.86;2.74;];
-sd = 1*ones(33,1);
+sd = 2*ones(8,1);
 sds = sd;
 var=sd.^2;
-jac=jacP16_split1_part1();
+jac=jacP16_split2_part2();
 jac_col = size(jac,2);
 jac_row = size(jac,1);
 rj=rank(jac);
 sigma=diag(sds.^2);
 
-
+pause
 [adj, detect, V, V_inv, sigma_inv, diag_diag_V, Wbar] = adjust(sigma, jac);
 //original
 //[xfinal, resRand, resGrossErrorNodalRand]=generate_data(xr, sd, jac, runsize, 2, 7, 0.02, 0.07);
@@ -79,96 +86,31 @@ obj_function_type = 2;
 [res, gamaMeasuremts,gamaNodal,zr_nt_nodal, zr_nt_nodal_rand, zadj ] = calc_results_index(x_sol, jac, sigma, resGrossErrorNodalRandFi);
 //
 //
-//[avti_gt_mt, op_gt_mt, op_gt_nt] = global_test(0.000001, 0.000001, gamaMeasuremts, runsize, rj, jac_col, jac_row);
-//
-////[avt1_mt1, avt1_mt2, op_mt1, op_mt2] = measurement_test(0.05, 0.13, zadj, runsize, jac_col);
-//// cauchy
-////[avt1_mt1, avt1_mt2, op_mt1, op_mt2] = measurement_test(0.000000000000001, 0.000000000000045, zadj, runsize, jac_col)
-////[avt1_nt1, avt1_nt2, op_nt1, op_nt2] = nodal_test(0.0000000025, 0.00000006, jac_row, runsize, zr_nt_nodal);
-////
 
-//// cauchy sigma = 0.5 P_16
-//[avti_gt_mt, op_gt_mt, op_gt_nt] = global_test(0.095, 0.095, gamaMeasuremts, runsize, rj, jac_col, jac_row)
-//[avt1_mt1, avt1_mt2, op_mt1, op_mt2] = measurement_test(1.5E-5, 0.5E-3, zadj, runsize, jac_col)
-//[avt1_nt1, avt1_nt2, op_nt1, op_nt2] = nodal_test(5.2E-3, 0.9E-1, jac_row, runsize, zr_nt_nodal)
+
+//// cauchy sigma = 1 P_16
+//[avti_gt_mt, op_gt_mt, op_gt_nt] = global_test(0.085, 0.085, gamaMeasuremts, runsize, rj, jac_col, jac_row)
+//[avt1_mt1, avt1_mt2, op_mt1, op_mt2] = measurement_test(1.5E-3, 0.12E-1, zadj, runsize, jac_col)
+//[avt1_nt1, avt1_nt2, op_nt1, op_nt2] = nodal_test(3.5E-2, 1.0E-1, jac_row, runsize, zr_nt_nodal)
 //
 ////[avti_glr, op_glr_mt, aee_mt, aee_nt, op_glr_nt, avti_glr_nt ]=calc_GLR(res, V_inv, xfinal, jac, sigma, resGrossErrorNodalRandFi, 0.135, 0.21, runsize);
 //pause
-//alfa_gt_mt = 0.095; alfa_gt_nt =0.095; alfa_mt1 = 1.5E-5; alfa_mt2 =0.5E-3; alfa_nt1 = 5.2E-3; alfa_nt2 =0.9E-1;
-//nvalidate = 5; lower_bias = 5; delta_bias = 1; upper_bias = 9; lower_leak = 0.07; delta_leak = 0.02; upper_leak = 0.15; 
-//
-//
-//
-//// cauchy sigma = 0.8 P_16
-//[avti_gt_mt, op_gt_mt, op_gt_nt] = global_test(0.13, 0.13, gamaMeasuremts, runsize, rj, jac_col, jac_row)
-//[avt1_mt1, avt1_mt2, op_mt1, op_mt2] = measurement_test(7E-5, 2.2E-3, zadj, runsize, jac_col)
-//[avt1_nt1, avt1_nt2, op_nt1, op_nt2] = nodal_test(6.5E-3, 1.1E-1, jac_row, runsize, zr_nt_nodal)
-//
-////[avti_glr, op_glr_mt, aee_mt, aee_nt, op_glr_nt, avti_glr_nt ]=calc_GLR(res, V_inv, xfinal, jac, sigma, resGrossErrorNodalRandFi, 0.135, 0.21, runsize);
-//pause
-//alfa_gt_mt = 0.13; alfa_gt_nt =0.13; alfa_mt1 = 7E-5; alfa_mt2 =2.2E-3; alfa_nt1 = 6.5E-3; alfa_nt2 =1.1E-1;
-//nvalidate = 5; lower_bias = 5; delta_bias = 1; upper_bias = 9; lower_leak = 0.07; delta_leak = 0.02; upper_leak = 0.15; 
-//
-//
-
-//// cauchy sigma = 1.2 P_16
-//[avti_gt_mt, op_gt_mt, op_gt_nt] = global_test(0.13, 0.13, gamaMeasuremts, runsize, rj, jac_col, jac_row)
-//[avt1_mt1, avt1_mt2, op_mt1, op_mt2] = measurement_test(2E-5, 0.9E-3, zadj, runsize, jac_col)
-//[avt1_nt1, avt1_nt2, op_nt1, op_nt2] = nodal_test(6E-3, 1.05E-1, jac_row, runsize, zr_nt_nodal)
-//
-////[avti_glr, op_glr_mt, aee_mt, aee_nt, op_glr_nt, avti_glr_nt ]=calc_GLR(res, V_inv, xfinal, jac, sigma, resGrossErrorNodalRandFi, 0.135, 0.21, runsize);
-//pause
-//alfa_gt_mt = 0.13; alfa_gt_nt =0.13; alfa_mt1 = 2E-5; alfa_mt2 =0.9E-3; alfa_nt1 = 6E-3; alfa_nt2 =1.05E-1;
-//nvalidate = 5; lower_bias = 5; delta_bias = 1; upper_bias = 9; lower_leak = 0.07; delta_leak = 0.02; upper_leak = 0.15; 
-//
-//
+//alfa_gt_mt = 0.085; alfa_gt_nt =0.085; alfa_mt1 = 1.5E-3; alfa_mt2 =0.12E-1; alfa_nt1 = 3.5E-2; alfa_nt2 =1.0E-1;
+//nvalidate = 10; lower_bias = 5; delta_bias = 1; upper_bias = 9; lower_leak = 0.07; delta_leak = 0.02; upper_leak = 0.15; 
 
 
-// cauchy sigma = 1 P_16
-[avti_gt_mt, op_gt_mt, op_gt_nt] = global_test(0.1, 0.1, gamaMeasuremts, runsize, rj, jac_col, jac_row)
-[avt1_mt1, avt1_mt2, op_mt1, op_mt2] = measurement_test(2.5E-5, 0.9E-3, zadj, runsize, jac_col)
-[avt1_nt1, avt1_nt2, op_nt1, op_nt2] = nodal_test(6E-3, 1.05E-1, jac_row, runsize, zr_nt_nodal)
+// cauchy sigma = 2 P_16
+[avti_gt_mt, op_gt_mt, op_gt_nt] = global_test(0.085, 0.085, gamaMeasuremts, runsize, rj, jac_col, jac_row)
+[avt1_mt1, avt1_mt2, op_mt1, op_mt2] = measurement_test(1.5E-3, 0.12E-1, zadj, runsize, jac_col)
+[avt1_nt1, avt1_nt2, op_nt1, op_nt2] = nodal_test(4E-2, 1.2E-1, jac_row, runsize, zr_nt_nodal)
 
 //[avti_glr, op_glr_mt, aee_mt, aee_nt, op_glr_nt, avti_glr_nt ]=calc_GLR(res, V_inv, xfinal, jac, sigma, resGrossErrorNodalRandFi, 0.135, 0.21, runsize);
-//pause
-alfa_gt_mt = 0.1; alfa_gt_nt =0.1; alfa_mt1 = 2.5E-5; alfa_mt2 =0.9E-3; alfa_nt1 = 6E-3; alfa_nt2 =1.05E-1;
-nvalidate = 10; lower_bias = 5; delta_bias = 1; upper_bias = 9; lower_leak = 0.07; delta_leak = 0.02; upper_leak = 0.15; 
+pause
+alfa_gt_mt = 0.085; alfa_gt_nt =0.085; alfa_mt1 = 1.5E-3; alfa_mt2 =0.12E-1; alfa_nt1 = 4E-2; alfa_nt2 =1.2E-1;
+nvalidate = 5; lower_bias = 5; delta_bias = 1; upper_bias = 9; lower_leak = 0.07; delta_leak = 0.02; upper_leak = 0.15; 
 
 
 
-//// cauchy sigma = 2 P_16
-//[avti_gt_mt, op_gt_mt, op_gt_nt] = global_test(0.08, 0.08, gamaMeasuremts, runsize, rj, jac_col, jac_row)
-//[avt1_mt1, avt1_mt2, op_mt1, op_mt2] = measurement_test(3.8E-5, 1.2E-3, zadj, runsize, jac_col)
-//[avt1_nt1, avt1_nt2, op_nt1, op_nt2] = nodal_test(6.5E-3, 1.1E-1, jac_row, runsize, zr_nt_nodal)
-//
-////[avti_glr, op_glr_mt, aee_mt, aee_nt, op_glr_nt, avti_glr_nt ]=calc_GLR(res, V_inv, xfinal, jac, sigma, resGrossErrorNodalRandFi, 0.135, 0.21, runsize);
-//pause
-//alfa_gt_mt = 0.08; alfa_gt_nt =0.08; alfa_mt1 = 3.8E-5; alfa_mt2 =1.2E-3; alfa_nt1 = 6.5E-3; alfa_nt2 =1.1E-1;
-//nvalidate = 5; lower_bias = 5; delta_bias = 1; upper_bias = 9; lower_leak = 0.07; delta_leak = 0.02; upper_leak = 0.15; 
-//
-
-
-//// cauchy sigma = 3 P_16
-//[avti_gt_mt, op_gt_mt, op_gt_nt] = global_test(0.11, 0.11, gamaMeasuremts, runsize, rj, jac_col, jac_row)
-//[avt1_mt1, avt1_mt2, op_mt1, op_mt2] = measurement_test(0.4E-4, 1.3E-3, zadj, runsize, jac_col)
-//[avt1_nt1, avt1_nt2, op_nt1, op_nt2] = nodal_test(6.4E-3, 0.11, jac_row, runsize, zr_nt_nodal)
-////
-//////[avti_glr, op_glr_mt, aee_mt, aee_nt, op_glr_nt, avti_glr_nt ]=calc_GLR(res, V_inv, xfinal, jac, sigma, resGrossErrorNodalRandFi, 0.135, 0.21, runsize);
-////pause
-//alfa_gt_mt = 0.11; alfa_gt_nt =0.11; alfa_mt1 =0.4E-4; alfa_mt2 =1.3E-3; alfa_nt1 = 6.4E-3; alfa_nt2 =0.11;
-//nvalidate = 5; lower_bias = 5; delta_bias = 1; upper_bias = 9; lower_leak = 0.07; delta_leak = 0.02; upper_leak = 0.15; 
-// pause
-
-
-
-//wls
-//alfa_gt_mt = 0.1; alfa_gt_nt = 0.1; alfa_mt1 = 0.0048; alfa_mt2 =0.125; alfa_nt1 = 0.01; alfa_nt2 = 0.105;
-//cauchy
-//[avt1_mt1, avt1_mt2, op_mt1, op_mt2] = measurement_test(0.00000000000000011, 0.000000000000003, zadj, runsize, jac_col);
-//measurement_test3(0.0000000000000003, 0.00000000000001, zadj, runsize, jac_col)
-//qw
-//[avt1_mt1, avt1_mt2, op_mt1, op_mt2] = measurement_test(0.00000000011, 0.000000003, zadj, runsize, jac_col)
-//[avt1_nt1, avt1_nt2, op_nt1, op_nt2] = nodal_test(0.0000000025, 0.00000006, jac_row, runsize, zr_nt_nodal);
 is_multi = 0;
 clear res gamaMeasuremts gamaNodal zr_nt_nodal zr_nt_nodal_rand zadj x_sol resGrossErrorNodalRandFi;
 [p16_train, p16_validate]  = generate_trainning2(xr, sd, jac, runsize, nvalidate, lower_bias, delta_bias, upper_bias, lower_leak,delta_leak,upper_leak, alfa_gt_mt,alfa_gt_nt,alfa_mt1,alfa_mt1, alfa_nt1, alfa_nt2,obj_function_type, is_multi);
@@ -190,4 +132,4 @@ runtime=toc();
 //aa = clock();
 //nowtime = '_' + string(aa(4)) + '-'+ string(aa(5));
 //save ('P_resumed_' + date() + nowtime +'.sav', runtime,  adj, detect, op_nt1, op_nt2, avt1_nt1, avt1_nt2, op_mt1, op_mt2, avt1_mt1, avt1_mt2, op_gt_mt, op_gt_nt, avti_gt_mt, op_glr_mt, op_glr_nt, avti_glr, avti_glr_nt, aee_nt, aee_mt);
-cd 'pmgei_method/problems';
+cd 'pmgei_method

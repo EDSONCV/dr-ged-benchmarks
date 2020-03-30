@@ -8,6 +8,8 @@
 // 28, p. 381-402, (2004) 
 function f = objfun ( x )
 
+//    e1 = (xm-x)./(var.^(0.5));
+//    f = sum( -ones(nv,1)./(ones(nv,1) + (e1.^2/(2*const_lor^2)))  );
     e1 = (xm(red)-x(red))./(var(red).^(0.5));
     f = sum( -ones(length(red),1)./(ones(length(red),1) + (e1.^2/(2*const_lor^2)))  );
 
@@ -18,7 +20,7 @@ function gf = gradf ( x )
 //    gf = diffcode_jacobian(objfun,x)';
 // analytical
 gf = zeros (nv,1)
-gf(red,1) = -1*(xm(red)-x(red))./(((1 + ((xm(red)-x(red)).^(2))./(2*var(red)*const_lor^2))^2).*(var(red)*const_lor^2));
+gf(red,1) = -1*(xm(red)-x(red))./(((1 + ((xm(red)-x(red)).^(2))./(2*var(red)*const_lor^2)).^2).*(var(red)*const_lor^2));
 
 endfunction
 
@@ -29,8 +31,13 @@ function H = hessf ( x )
 // analytical
 // TODO CHECK THIS HESSIAN WITH UNMEASURE VARIABLES
     t1 = zeros (nv,1);
-	t1(red,1) = -2*((xm(red)-x(red))^2)./(((1 + ((xm(red)-x(red)).^(2))./(2*var(red)*const_lor^2)).^3).*((var(red).^2)*const_lor.^4)) + (((1 + ((xm(red)-x(red)).^(2))./(2*var(red)*const_lor^2))^2).*(var(red)*const_lor^2))^(-1);
+	t1(red,1) = -2*((xm(red)-x(red)).^2)./(((1 + ((xm(red)-x(red)).^(2))./(2*var(red)*const_lor^2)).^3).*((var(red).^2)*const_lor.^4)) + (((1 + ((xm(red)-x(red)).^(2))./(2*var(red)*const_lor^2)).^2).*(var(red)*const_lor^2)).^(-1);
     H = diag(t1);
+
+
+
+
+//H =diag(-2*((xm(red)-x(red))^2)./(((1 + ((xm(red)-x(red)).^(2))./(2*var(red)*const_lor^2)).^3).*((var(red).^2)*const_lor.^4)) + (((1 + ((xm(red)-x(red)).^(2))./(2*var(red)*const_lor^2))^2).*(var(red)*const_lor^2))^(-1));
 
 endfunction
 

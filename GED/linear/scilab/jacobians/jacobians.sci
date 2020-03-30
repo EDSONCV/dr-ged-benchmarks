@@ -576,7 +576,6 @@ jac = [
 endfunction
 
 
-
 function [jac]=jacP16_split1_part1()
  // problem P6 splited in 2 parts to test methods, this is the jacobian of  Part 1 of the diagram, see diagrams in folder 'data_reconciliation\diagram\png'
 //The jacobian of the constraints
@@ -584,7 +583,7 @@ function [jac]=jacP16_split1_part1()
 //S319	S316	S312	S378	S336	S357	S346	S359P1S347	S352	S356	S358	S357P	S359P2S359	S338P	S338	S341P	S341	S414	S502	S411  S401  S415    S402    S404       S405   S407  S408    S453      S460     S456    S452	
 
 jac = [
-1	1	1	1	-1	1	-1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+1	1	1	1	-1	1	-1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0 
 0	0	0	0	0	0	1	-1	-1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
 0	0	0	0	0	0	0	0	1	-1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	
 0	0	0	0	0	0	0	0	0	1	-1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	
@@ -608,6 +607,68 @@ endfunction
 
 
 function [jac]=jacP16_split1_part2()
+//The jacobian of the constraints
+ // problem P6 splited in 2 parts to test methods, this is the jacobian of  Part 2 of the diagram, see diagrams in folder 'data_reconciliation\diagram\png'
+// S502 S511	S503	S384P	S52P	S592	S581	S525	S524	S536	S527	S549	S550	S537	S598	S599	S267	S538
+
+jac = [	1      -1          -1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1 //Da404 
+	0      0	          1	0	0	-1	-1	0	0	0	0	0	0	0	0	0	0	0 // Da 405
+	0      1	          0	1	-1	0	0	0	0	0	0	0	0	0	0	0	0	0
+	0      0	          0	0	1	0	0	-1	-1	0	0	0	0	0	0	0	0	0
+	0      0	          0	0	0	0	0	0	1	-1	-1	0	0	0	0	0	0	0
+	0      0	          0	0	0	0	0	0	0	0	1	-1	-1	-1	0	0	0	0
+	0      0	          0	0	0	0	0	0	0	0	0	0	0	1	-1	-1	0	0
+	0      0	          0	0	0	0	0	0	0	0	0	0	0	0	0	1	1	-1];
+
+endfunction
+ 
+
+function [jac]=jacP16_split2_part1()
+ // problem P6 splited in 2 parts to test methods, this is the jacobian of  Part 1 of the diagram, see diagrams in folder 'data_reconciliation\diagram\png'
+//The jacobian of the constraints
+
+//S319	S316	S312	S378	S336	S357	S346	S359P1 S347	S352	S356	S358	S357P	S359P2 S359	S338P	S338	S341P	S341	S414	S502	S411  S401  S415    S402    S404       S405   
+
+
+//REMOVED S407  S408    S453      S460     S456    S452	
+
+jac = [
+1	1	1	1	-1	1	-1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0 // DA301
+0	0	0	0	0	0	1	-1	-1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0 // Split 1
+0	0	0	0	0	0	0	0	1	-1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0 // Comp 1	
+0	0	0	0	0	0	0	0	0	1	-1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0 // EA32X	
+0	0	0	0	0	0	0	0	0	0	1	-1	-1	0	0	0	0	0	0	0	0	0	0	0	0	0	0 // FA309
+0	0	0	0	0	-1	0	0	0	0	0	0	1	-1	0	0	0	0	0	0	0	0	0	0	0	0	0 // Split 2
+0	0	0	0	0	0	0	1	0	0	0	0	0	1	-1	0	0	0	0	0	0	0	0	0	0	0	0 // Mixer 1	
+0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	-1	0	-1	0	0	0	0	0	0	0	0	0 // FSPL
+0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	-1	0	0	0	0	0	0	0	0	0	0 // H338	
+0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	-1	0	0	0	0	0	0	0	0 // H341	
+0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	0	1	-1	0	1	-1	0	0	0	0 // DA 401
+0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	-1	0	0	0	0	0	0 // PTC	
+0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	1	-1	0	0 // M1	
+0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	-1	0 // 448-450	
+0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	1	-1]; // DC 401	
+
+
+endfunction
+
+
+
+function [jac]=jacP16_split2_part2()
+ // problem P6 splited in 2 parts to test methods, this is the jacobian of  Part 1 of the diagram, see diagrams in folder 'data_reconciliation\diagram\png'
+//The jacobian of the constraints
+// S405   S407  S408    S453      S460     S456    S452 S411	
+jac = [
+1	-1	0	0	0	0	0 0// 452-448	
+0    1	-1	1	0	0	0 -1 // DA 408
+0   0   1  -1  -1  -1  -1 0]; // DA 402
+
+endfunction
+
+
+
+
+function [jac]=jacP16_split2_part3()
 //The jacobian of the constraints
  // problem P6 splited in 2 parts to test methods, this is the jacobian of  Part 2 of the diagram, see diagrams in folder 'data_reconciliation\diagram\png'
 // S502 S511	S503	S384P	S52P	S592	S581	S525	S524	S536	S527	S549	S550	S537	S598	S599	S267	S538
